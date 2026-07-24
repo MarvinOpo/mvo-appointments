@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../prisma-services/client"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model services {
+  id          Int     @id @default(autoincrement())
+  title       String  @db.VarChar(50)
+  description String  @db.VarChar(255)
+  url         String? @db.VarChar(50)
+  btn_label   String  @db.VarChar(20)
+  img_src     String  @db.VarChar(50)
+  status      Boolean @default(false)
+}
+
+model services_rights {
+  id                 Int       @id @default(autoincrement())
+  service_id         Int
+  user_id            Int
+  service_user       String    @unique(map: "service_user_UNIQUE") @db.VarChar(30)
+  access_right       Int
+  has_agreed_privacy DateTime? @db.DateTime(0)
+
+  user users? @relation(fields: [user_id], references: [id])
+}
+
+model user_address {
+  id          Int     @id @default(autoincrement())
+  user_id     Int
+  id_type     String  @unique(map: "id_type") @db.VarChar(50)
+  lot_no      String? @db.VarChar(100)
+  street      String? @db.VarChar(100)
+  subdivision String? @db.VarChar(100)
+  barangay    String? @db.VarChar(100)
+  city        String? @db.VarChar(100)
+  province    String? @db.VarChar(100)
+  zip_code    String? @db.VarChar(20)
+  type        String  @db.Char(1)
+}
+
+model users {
+  id                      Int               @id @default(autoincrement())
+  designation_id          Int?
+  designation             String?           @db.VarChar(150)
+  department              String?           @db.VarChar(100)
+  division                String?           @db.VarChar(100)
+  fname                   String            @db.VarChar(50)
+  mname                   String?           @db.VarChar(50)
+  lname                   String            @db.VarChar(50)
+  ext_name                String?           @db.Char(5)
+  post_nominal            String?           @db.VarChar(200)
+  email                   String            @db.VarChar(150)
+  password                String            @db.VarChar(50)
+  birth_date              DateTime?         @db.DateTime(0)
+  birth_place             String?           @db.VarChar(100)
+  civil_status            String?           @db.VarChar(20)
+  gender                  String?           @db.Char(1)
+  height                  String?           @db.VarChar(5)
+  weight                  String?           @db.VarChar(5)
+  blood_type              String?           @db.Char(5)
+  gsis_id                 String?           @db.VarChar(30)
+  pagibig_id              String?           @db.VarChar(30)
+  phic_id                 String?           @db.VarChar(30)
+  sss_id                  String?           @db.VarChar(30)
+  tin_id                  String?           @db.VarChar(30)
+  agency                  String?           @db.VarChar(150)
+  agency_id               String?           @db.VarChar(30)
+  agency_pin              String?           @db.VarChar(30)
+  citizenship             String?           @db.VarChar(50)
+  citizenship_country     String?           @db.VarChar(30)
+  tel_no                  String?           @db.VarChar(20)
+  mobile_no               String?           @db.VarChar(20)
+  license_no              String?           @db.VarChar(50)
+  spouse_fname            String?           @db.VarChar(50)
+  spouse_mname            String?           @db.VarChar(50)
+  spouse_lname            String?           @db.VarChar(50)
+  spouse_ename            String?           @db.VarChar(20)
+  spouse_occupation       String?           @db.VarChar(50)
+  spouse_employer         String?           @db.VarChar(150)
+  spouse_business_address String?           @db.VarChar(150)
+  spouse_tel_no           String?           @db.VarChar(20)
+  father_fname            String?           @db.VarChar(50)
+  father_mname            String?           @db.VarChar(50)
+  father_lname            String?           @db.VarChar(50)
+  father_ename            String?           @db.Char(5)
+  mother_fname            String?           @db.VarChar(50)
+  mother_mname            String?           @db.VarChar(50)
+  mother_lname            String?           @db.VarChar(50)
+  mother_ename            String?           @db.Char(5)
+  is_activated            Boolean           @default(false)
+  activation_code         String            @db.Char(6)
+  login_token             String?           @db.VarChar(150)
+  profile_percent         Int               @default(0)
+  vsmmc_employee          Boolean           @default(false)
+  created_at              DateTime          @default(now()) @db.DateTime(0)
+  services_rights         services_rights[]
+
+  @@index([email], map: "idx_email")
+}

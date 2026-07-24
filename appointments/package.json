@@ -1,0 +1,26 @@
+{
+  "name": "mvo-appointments",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@google/genai": "^2.12.0",
+    "@pinia/nuxt": "^0.11.3",
+    "moment": "^2.30.1",
+    "nuxt": "^4.4.8",
+    "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
+    "vue": "^3.5.39",
+    "vue-router": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "vuetify-nuxt-module": "^1.0.0-rc.2"
+  }
+}
