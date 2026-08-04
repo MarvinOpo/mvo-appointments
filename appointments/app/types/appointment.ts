@@ -56,6 +56,7 @@ export interface QueueSession {
 }
 
 export interface QueueSessionFormData {
+    id?: number;
     dept_id: number | null;
     session_date: string | null;
     doctors_on_duty: number | null;

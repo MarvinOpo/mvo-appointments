@@ -16,6 +16,29 @@ export const options = {
         SAT: 6,
     } as Record<string, number>,
     extensionName: ["Jr.", "Sr.", "II", "III", "IV", "V"],
+    queueRoles: [
+        {
+            value: "check_in",
+            label: "Check-In",
+            description: "Register and queue patients",
+            icon: "mdi-clipboard-check-outline",
+            color: "primary",
+        },
+        {
+            value: "vital_signs",
+            label: "Vital Signs",
+            description: "Record BP, temp, weight",
+            icon: "mdi-heart-pulse",
+            color: "error",
+        },
+        {
+            value: "consult",
+            label: "Consult",
+            description: "Doctor consultation room",
+            icon: "mdi-doctor",
+            color: "success",
+        },
+    ],
     relationships: ["Self", "Child", "Spouse", "Parent", "Sibling", "Other"],
     sex: [
         { title: "Male", value: "M" },

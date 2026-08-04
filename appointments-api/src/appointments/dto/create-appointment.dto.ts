@@ -16,7 +16,7 @@ export class CreateAppointmentDto {
   patient_id: number;
 
   @IsInt()
-  dept_id: number;
+  department_id: number;
 
   @Transform(({ value }) => {
     if (typeof value !== 'string') return undefined;

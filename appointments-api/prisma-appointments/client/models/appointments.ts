@@ -30,7 +30,7 @@ export type AppointmentsAvgAggregateOutputType = {
   id: number | null
   user_id: number | null
   patient_id: number | null
-  dept_id: number | null
+  department_id: number | null
   step: number | null
   assessed_by: number | null
   queue_no: number | null
@@ -40,7 +40,7 @@ export type AppointmentsSumAggregateOutputType = {
   id: number | null
   user_id: number | null
   patient_id: number | null
-  dept_id: number | null
+  department_id: number | null
   step: number | null
   assessed_by: number | null
   queue_no: number | null
@@ -50,7 +50,7 @@ export type AppointmentsMinAggregateOutputType = {
   id: number | null
   user_id: number | null
   patient_id: number | null
-  dept_id: number | null
+  department_id: number | null
   step: number | null
   scheduled_at: Date | null
   complaint: string | null
@@ -70,7 +70,7 @@ export type AppointmentsMaxAggregateOutputType = {
   id: number | null
   user_id: number | null
   patient_id: number | null
-  dept_id: number | null
+  department_id: number | null
   step: number | null
   scheduled_at: Date | null
   complaint: string | null
@@ -90,7 +90,7 @@ export type AppointmentsCountAggregateOutputType = {
   id: number
   user_id: number
   patient_id: number
-  dept_id: number
+  department_id: number
   step: number
   scheduled_at: number
   complaint: number
@@ -112,7 +112,7 @@ export type AppointmentsAvgAggregateInputType = {
   id?: true
   user_id?: true
   patient_id?: true
-  dept_id?: true
+  department_id?: true
   step?: true
   assessed_by?: true
   queue_no?: true
@@ -122,7 +122,7 @@ export type AppointmentsSumAggregateInputType = {
   id?: true
   user_id?: true
   patient_id?: true
-  dept_id?: true
+  department_id?: true
   step?: true
   assessed_by?: true
   queue_no?: true
@@ -132,7 +132,7 @@ export type AppointmentsMinAggregateInputType = {
   id?: true
   user_id?: true
   patient_id?: true
-  dept_id?: true
+  department_id?: true
   step?: true
   scheduled_at?: true
   complaint?: true
@@ -152,7 +152,7 @@ export type AppointmentsMaxAggregateInputType = {
   id?: true
   user_id?: true
   patient_id?: true
-  dept_id?: true
+  department_id?: true
   step?: true
   scheduled_at?: true
   complaint?: true
@@ -172,7 +172,7 @@ export type AppointmentsCountAggregateInputType = {
   id?: true
   user_id?: true
   patient_id?: true
-  dept_id?: true
+  department_id?: true
   step?: true
   scheduled_at?: true
   complaint?: true
@@ -279,7 +279,7 @@ export type AppointmentsGroupByOutputType = {
   id: number
   user_id: number
   patient_id: number
-  dept_id: number
+  department_id: number
   step: number
   scheduled_at: Date
   complaint: string
@@ -322,7 +322,7 @@ export type appointmentsWhereInput = {
   id?: Prisma.IntFilter<"appointments"> | number
   user_id?: Prisma.IntFilter<"appointments"> | number
   patient_id?: Prisma.IntFilter<"appointments"> | number
-  dept_id?: Prisma.IntFilter<"appointments"> | number
+  department_id?: Prisma.IntFilter<"appointments"> | number
   step?: Prisma.IntFilter<"appointments"> | number
   scheduled_at?: Prisma.DateTimeFilter<"appointments"> | Date | string
   complaint?: Prisma.StringFilter<"appointments"> | string
@@ -344,7 +344,7 @@ export type appointmentsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   patient_id?: Prisma.SortOrder
-  dept_id?: Prisma.SortOrder
+  department_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
   complaint?: Prisma.SortOrder
@@ -365,13 +365,13 @@ export type appointmentsOrderByWithRelationInput = {
 
 export type appointmentsWhereUniqueInput = Prisma.AtLeast<{
   id?: number
-  dept_id_scheduled_at_queue_no?: Prisma.appointmentsDept_idScheduled_atQueue_noCompoundUniqueInput
+  department_id_scheduled_at_queue_no?: Prisma.appointmentsDepartment_idScheduled_atQueue_noCompoundUniqueInput
   AND?: Prisma.appointmentsWhereInput | Prisma.appointmentsWhereInput[]
   OR?: Prisma.appointmentsWhereInput[]
   NOT?: Prisma.appointmentsWhereInput | Prisma.appointmentsWhereInput[]
   user_id?: Prisma.IntFilter<"appointments"> | number
   patient_id?: Prisma.IntFilter<"appointments"> | number
-  dept_id?: Prisma.IntFilter<"appointments"> | number
+  department_id?: Prisma.IntFilter<"appointments"> | number
   step?: Prisma.IntFilter<"appointments"> | number
   scheduled_at?: Prisma.DateTimeFilter<"appointments"> | Date | string
   complaint?: Prisma.StringFilter<"appointments"> | string
@@ -387,13 +387,13 @@ export type appointmentsWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"appointments"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientsScalarRelationFilter, Prisma.patientsWhereInput>
   department?: Prisma.XOR<Prisma.DepartmentsScalarRelationFilter, Prisma.departmentsWhereInput>
-}, "id" | "dept_id_scheduled_at_queue_no">
+}, "id" | "department_id_scheduled_at_queue_no">
 
 export type appointmentsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   patient_id?: Prisma.SortOrder
-  dept_id?: Prisma.SortOrder
+  department_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
   complaint?: Prisma.SortOrder
@@ -421,7 +421,7 @@ export type appointmentsScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"appointments"> | number
   user_id?: Prisma.IntWithAggregatesFilter<"appointments"> | number
   patient_id?: Prisma.IntWithAggregatesFilter<"appointments"> | number
-  dept_id?: Prisma.IntWithAggregatesFilter<"appointments"> | number
+  department_id?: Prisma.IntWithAggregatesFilter<"appointments"> | number
   step?: Prisma.IntWithAggregatesFilter<"appointments"> | number
   scheduled_at?: Prisma.DateTimeWithAggregatesFilter<"appointments"> | Date | string
   complaint?: Prisma.StringWithAggregatesFilter<"appointments"> | string
@@ -460,7 +460,7 @@ export type appointmentsUncheckedCreateInput = {
   id?: number
   user_id: number
   patient_id: number
-  dept_id: number
+  department_id: number
   step?: number
   scheduled_at: Date | string
   complaint: string
@@ -499,7 +499,7 @@ export type appointmentsUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   user_id?: Prisma.IntFieldUpdateOperationsInput | number
   patient_id?: Prisma.IntFieldUpdateOperationsInput | number
-  dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  department_id?: Prisma.IntFieldUpdateOperationsInput | number
   step?: Prisma.IntFieldUpdateOperationsInput | number
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   complaint?: Prisma.StringFieldUpdateOperationsInput | string
@@ -519,7 +519,7 @@ export type appointmentsCreateManyInput = {
   id?: number
   user_id: number
   patient_id: number
-  dept_id: number
+  department_id: number
   step?: number
   scheduled_at: Date | string
   complaint: string
@@ -556,7 +556,7 @@ export type appointmentsUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   user_id?: Prisma.IntFieldUpdateOperationsInput | number
   patient_id?: Prisma.IntFieldUpdateOperationsInput | number
-  dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  department_id?: Prisma.IntFieldUpdateOperationsInput | number
   step?: Prisma.IntFieldUpdateOperationsInput | number
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   complaint?: Prisma.StringFieldUpdateOperationsInput | string
@@ -578,8 +578,8 @@ export type appointmentsOrderByRelevanceInput = {
   search: string
 }
 
-export type appointmentsDept_idScheduled_atQueue_noCompoundUniqueInput = {
-  dept_id: number
+export type appointmentsDepartment_idScheduled_atQueue_noCompoundUniqueInput = {
+  department_id: number
   scheduled_at: Date | string
   queue_no: number
 }
@@ -588,7 +588,7 @@ export type appointmentsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   patient_id?: Prisma.SortOrder
-  dept_id?: Prisma.SortOrder
+  department_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
   complaint?: Prisma.SortOrder
@@ -608,7 +608,7 @@ export type appointmentsAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   patient_id?: Prisma.SortOrder
-  dept_id?: Prisma.SortOrder
+  department_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   assessed_by?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
@@ -618,7 +618,7 @@ export type appointmentsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   patient_id?: Prisma.SortOrder
-  dept_id?: Prisma.SortOrder
+  department_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
   complaint?: Prisma.SortOrder
@@ -638,7 +638,7 @@ export type appointmentsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   patient_id?: Prisma.SortOrder
-  dept_id?: Prisma.SortOrder
+  department_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   scheduled_at?: Prisma.SortOrder
   complaint?: Prisma.SortOrder
@@ -658,7 +658,7 @@ export type appointmentsSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
   patient_id?: Prisma.SortOrder
-  dept_id?: Prisma.SortOrder
+  department_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   assessed_by?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
@@ -844,7 +844,7 @@ export type appointmentsScalarWhereInput = {
   id?: Prisma.IntFilter<"appointments"> | number
   user_id?: Prisma.IntFilter<"appointments"> | number
   patient_id?: Prisma.IntFilter<"appointments"> | number
-  dept_id?: Prisma.IntFilter<"appointments"> | number
+  department_id?: Prisma.IntFilter<"appointments"> | number
   step?: Prisma.IntFilter<"appointments"> | number
   scheduled_at?: Prisma.DateTimeFilter<"appointments"> | Date | string
   complaint?: Prisma.StringFilter<"appointments"> | string
@@ -881,7 +881,7 @@ export type appointmentsCreateWithoutPatientInput = {
 export type appointmentsUncheckedCreateWithoutPatientInput = {
   id?: number
   user_id: number
-  dept_id: number
+  department_id: number
   step?: number
   scheduled_at: Date | string
   complaint: string
@@ -1001,7 +1001,7 @@ export type appointmentsUncheckedUpdateManyWithoutDepartmentInput = {
 export type appointmentsCreateManyPatientInput = {
   id?: number
   user_id: number
-  dept_id: number
+  department_id: number
   step?: number
   scheduled_at: Date | string
   complaint: string
@@ -1038,7 +1038,7 @@ export type appointmentsUpdateWithoutPatientInput = {
 export type appointmentsUncheckedUpdateWithoutPatientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   user_id?: Prisma.IntFieldUpdateOperationsInput | number
-  dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  department_id?: Prisma.IntFieldUpdateOperationsInput | number
   step?: Prisma.IntFieldUpdateOperationsInput | number
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   complaint?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1057,7 +1057,7 @@ export type appointmentsUncheckedUpdateWithoutPatientInput = {
 export type appointmentsUncheckedUpdateManyWithoutPatientInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   user_id?: Prisma.IntFieldUpdateOperationsInput | number
-  dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  department_id?: Prisma.IntFieldUpdateOperationsInput | number
   step?: Prisma.IntFieldUpdateOperationsInput | number
   scheduled_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   complaint?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1079,7 +1079,7 @@ export type appointmentsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   user_id?: boolean
   patient_id?: boolean
-  dept_id?: boolean
+  department_id?: boolean
   step?: boolean
   scheduled_at?: boolean
   complaint?: boolean
@@ -1103,7 +1103,7 @@ export type appointmentsSelectScalar = {
   id?: boolean
   user_id?: boolean
   patient_id?: boolean
-  dept_id?: boolean
+  department_id?: boolean
   step?: boolean
   scheduled_at?: boolean
   complaint?: boolean
@@ -1119,7 +1119,7 @@ export type appointmentsSelectScalar = {
   created_at?: boolean
 }
 
-export type appointmentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "patient_id" | "dept_id" | "step" | "scheduled_at" | "complaint" | "type" | "subjective" | "objective" | "assessment" | "plan" | "assessed_by" | "ai_assisted" | "status" | "queue_no" | "created_at", ExtArgs["result"]["appointments"]>
+export type appointmentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "patient_id" | "department_id" | "step" | "scheduled_at" | "complaint" | "type" | "subjective" | "objective" | "assessment" | "plan" | "assessed_by" | "ai_assisted" | "status" | "queue_no" | "created_at", ExtArgs["result"]["appointments"]>
 export type appointmentsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.patientsDefaultArgs<ExtArgs>
   department?: boolean | Prisma.departmentsDefaultArgs<ExtArgs>
@@ -1135,7 +1135,7 @@ export type $appointmentsPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: number
     user_id: number
     patient_id: number
-    dept_id: number
+    department_id: number
     step: number
     scheduled_at: Date
     complaint: string
@@ -1523,7 +1523,7 @@ export interface appointmentsFieldRefs {
   readonly id: Prisma.FieldRef<"appointments", 'Int'>
   readonly user_id: Prisma.FieldRef<"appointments", 'Int'>
   readonly patient_id: Prisma.FieldRef<"appointments", 'Int'>
-  readonly dept_id: Prisma.FieldRef<"appointments", 'Int'>
+  readonly department_id: Prisma.FieldRef<"appointments", 'Int'>
   readonly step: Prisma.FieldRef<"appointments", 'Int'>
   readonly scheduled_at: Prisma.FieldRef<"appointments", 'DateTime'>
   readonly complaint: Prisma.FieldRef<"appointments", 'String'>

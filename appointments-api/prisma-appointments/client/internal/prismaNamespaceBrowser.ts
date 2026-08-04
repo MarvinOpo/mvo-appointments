@@ -100,7 +100,7 @@ export const AppointmentsScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
   patient_id: 'patient_id',
-  dept_id: 'dept_id',
+  department_id: 'department_id',
   step: 'step',
   scheduled_at: 'scheduled_at',
   complaint: 'complaint',
@@ -216,6 +216,7 @@ export type PatientsScalarFieldEnum = (typeof PatientsScalarFieldEnum)[keyof typ
 export const Queue_sessionsScalarFieldEnum = {
   id: 'id',
   dept_id: 'dept_id',
+  doctors_on_duty: 'doctors_on_duty',
   session_date: 'session_date',
   has_started: 'has_started',
   created_at: 'created_at',

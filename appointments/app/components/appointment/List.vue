@@ -39,7 +39,7 @@
             </template>
 
             <template v-slot:item.status="{ item }">
-                <template v-if="item.step" v-for="config in [getApptStatus(item.step)]" :key="item.step">
+                <template v-if="item.step" v-for="config in [getApptStatus(item.step, item.type)]" :key="item.step">
                     <v-chip :color="config?.color">{{ config?.label }}</v-chip>
                 </template>
             </template>

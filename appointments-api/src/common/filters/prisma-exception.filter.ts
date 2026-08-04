@@ -20,7 +20,7 @@ export class PrismaValidationExceptionFilter implements ExceptionFilter {
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionFilter implements ExceptionFilter {
   catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
-    console.log('PrismaExceptionFilter caught:', exception.code);
+    console.log('PrismaExceptionFilter caught:', exception);
 
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();

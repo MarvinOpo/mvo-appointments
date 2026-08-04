@@ -20,28 +20,28 @@ model access_rights {
 }
 
 model appointments {
-  id           Int      @id @default(autoincrement())
-  user_id      Int
-  patient_id   Int
-  dept_id      Int      @map("department_id")
-  step         Int      @default(1)
-  scheduled_at DateTime @db.DateTime(0)
-  complaint    String   @db.VarChar(500)
-  type         String   @db.Char(2)
-  subjective   String?  @db.VarChar(500)
-  objective    String?  @db.VarChar(500)
-  assessment   String?  @db.VarChar(500)
-  plan         String?  @db.VarChar(500)
-  assessed_by  Int?
-  ai_assisted  Boolean  @default(false)
-  status       String   @default("P") @db.Char(2)
-  queue_no     Int?
-  created_at   DateTime @default(now()) @db.DateTime(0)
+  id            Int      @id @default(autoincrement())
+  user_id       Int
+  patient_id    Int
+  department_id Int
+  step          Int      @default(1)
+  scheduled_at  DateTime @db.DateTime(0)
+  complaint     String   @db.VarChar(500)
+  type          String   @db.Char(2)
+  subjective    String?  @db.VarChar(500)
+  objective     String?  @db.VarChar(500)
+  assessment    String?  @db.VarChar(500)
+  plan          String?  @db.VarChar(500)
+  assessed_by   Int?
+  ai_assisted   Boolean  @default(false)
+  status        String   @default("P") @db.Char(2)
+  queue_no      Int?
+  created_at    DateTime @default(now()) @db.DateTime(0)
 
   patient    patients    @relation(fields: [patient_id], references: [id])
-  department departments @relation(fields: [dept_id], references: [id])
+  department departments @relation(fields: [department_id], references: [id])
 
-  @@unique([dept_id, scheduled_at, queue_no])
+  @@unique([department_id, scheduled_at, queue_no])
 }
 
 model appointment_logs {
@@ -126,12 +126,13 @@ model patients {
 }
 
 model queue_sessions {
-  id           Int      @id @default(autoincrement())
-  dept_id      Int
-  session_date DateTime @db.Date
-  has_started  Boolean  @default(false)
-  created_at   DateTime @default(now()) @db.DateTime(0)
-  updated_at   DateTime @updatedAt @db.DateTime(0)
+  id              Int      @id @default(autoincrement())
+  dept_id         Int
+  doctors_on_duty Int      @default(0)
+  session_date    DateTime @db.Date
+  has_started     Boolean  @default(false)
+  created_at      DateTime @default(now()) @db.DateTime(0)
+  updated_at      DateTime @updatedAt @db.DateTime(0)
 
   stats queue_session_stat[]
 

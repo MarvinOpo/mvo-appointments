@@ -30,7 +30,7 @@ export class AppointmentsService {
       const sameDepartmentPending = pendingAppts.some(
         (a) =>
           a.patient_id === createAppointmentDto.patient_id &&
-          a.dept_id === createAppointmentDto.dept_id,
+          a.department_id === createAppointmentDto.department_id,
       );
 
       if (sameDepartmentPending)
@@ -127,7 +127,7 @@ export class AppointmentsService {
         step: true,
       },
       where: {
-        dept_id: deptId,
+        department_id: deptId,
         scheduled_at: {
           gte: dayjs.utc(start).toDate(),
           lte: dayjs.utc(end).toDate(),
@@ -189,7 +189,7 @@ export class AppointmentsService {
 
       const result = await tx.appointments.aggregate({
         where: {
-          dept_id: appointment.dept_id,
+          department_id: appointment.department_id,
           scheduled_at: {
             gte: startOfDay,
             lte: endOfDay,

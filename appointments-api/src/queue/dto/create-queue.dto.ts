@@ -1,10 +1,13 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateQueueDto {
-  @IsNumber()
-  deptId: number;
+  @IsInt()
+  dept_id: number;
 
   @IsString()
   @IsNotEmpty()
-  date: string;
+  session_date: string;
+
+  @IsInt()
+  doctors_on_duty: number;
 }

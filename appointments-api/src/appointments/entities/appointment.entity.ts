@@ -2,7 +2,7 @@ export class Appointment {
   id: number;
   user_id: number;
   patient_id: number;
-  dept_id: number;
+  department_id: number;
   step: number;
   scheduled_at: Date;
   complaint: string;

@@ -29,16 +29,19 @@ export type AggregateQueue_sessions = {
 export type Queue_sessionsAvgAggregateOutputType = {
   id: number | null
   dept_id: number | null
+  doctors_on_duty: number | null
 }
 
 export type Queue_sessionsSumAggregateOutputType = {
   id: number | null
   dept_id: number | null
+  doctors_on_duty: number | null
 }
 
 export type Queue_sessionsMinAggregateOutputType = {
   id: number | null
   dept_id: number | null
+  doctors_on_duty: number | null
   session_date: Date | null
   has_started: boolean | null
   created_at: Date | null
@@ -48,6 +51,7 @@ export type Queue_sessionsMinAggregateOutputType = {
 export type Queue_sessionsMaxAggregateOutputType = {
   id: number | null
   dept_id: number | null
+  doctors_on_duty: number | null
   session_date: Date | null
   has_started: boolean | null
   created_at: Date | null
@@ -57,6 +61,7 @@ export type Queue_sessionsMaxAggregateOutputType = {
 export type Queue_sessionsCountAggregateOutputType = {
   id: number
   dept_id: number
+  doctors_on_duty: number
   session_date: number
   has_started: number
   created_at: number
@@ -68,16 +73,19 @@ export type Queue_sessionsCountAggregateOutputType = {
 export type Queue_sessionsAvgAggregateInputType = {
   id?: true
   dept_id?: true
+  doctors_on_duty?: true
 }
 
 export type Queue_sessionsSumAggregateInputType = {
   id?: true
   dept_id?: true
+  doctors_on_duty?: true
 }
 
 export type Queue_sessionsMinAggregateInputType = {
   id?: true
   dept_id?: true
+  doctors_on_duty?: true
   session_date?: true
   has_started?: true
   created_at?: true
@@ -87,6 +95,7 @@ export type Queue_sessionsMinAggregateInputType = {
 export type Queue_sessionsMaxAggregateInputType = {
   id?: true
   dept_id?: true
+  doctors_on_duty?: true
   session_date?: true
   has_started?: true
   created_at?: true
@@ -96,6 +105,7 @@ export type Queue_sessionsMaxAggregateInputType = {
 export type Queue_sessionsCountAggregateInputType = {
   id?: true
   dept_id?: true
+  doctors_on_duty?: true
   session_date?: true
   has_started?: true
   created_at?: true
@@ -192,6 +202,7 @@ export type queue_sessionsGroupByArgs<ExtArgs extends runtime.Types.Extensions.I
 export type Queue_sessionsGroupByOutputType = {
   id: number
   dept_id: number
+  doctors_on_duty: number
   session_date: Date
   has_started: boolean
   created_at: Date
@@ -224,6 +235,7 @@ export type queue_sessionsWhereInput = {
   NOT?: Prisma.queue_sessionsWhereInput | Prisma.queue_sessionsWhereInput[]
   id?: Prisma.IntFilter<"queue_sessions"> | number
   dept_id?: Prisma.IntFilter<"queue_sessions"> | number
+  doctors_on_duty?: Prisma.IntFilter<"queue_sessions"> | number
   session_date?: Prisma.DateTimeFilter<"queue_sessions"> | Date | string
   has_started?: Prisma.BoolFilter<"queue_sessions"> | boolean
   created_at?: Prisma.DateTimeFilter<"queue_sessions"> | Date | string
@@ -234,6 +246,7 @@ export type queue_sessionsWhereInput = {
 export type queue_sessionsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   dept_id?: Prisma.SortOrder
+  doctors_on_duty?: Prisma.SortOrder
   session_date?: Prisma.SortOrder
   has_started?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -248,6 +261,7 @@ export type queue_sessionsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.queue_sessionsWhereInput[]
   NOT?: Prisma.queue_sessionsWhereInput | Prisma.queue_sessionsWhereInput[]
   dept_id?: Prisma.IntFilter<"queue_sessions"> | number
+  doctors_on_duty?: Prisma.IntFilter<"queue_sessions"> | number
   session_date?: Prisma.DateTimeFilter<"queue_sessions"> | Date | string
   has_started?: Prisma.BoolFilter<"queue_sessions"> | boolean
   created_at?: Prisma.DateTimeFilter<"queue_sessions"> | Date | string
@@ -258,6 +272,7 @@ export type queue_sessionsWhereUniqueInput = Prisma.AtLeast<{
 export type queue_sessionsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   dept_id?: Prisma.SortOrder
+  doctors_on_duty?: Prisma.SortOrder
   session_date?: Prisma.SortOrder
   has_started?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -275,6 +290,7 @@ export type queue_sessionsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.queue_sessionsScalarWhereWithAggregatesInput | Prisma.queue_sessionsScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"queue_sessions"> | number
   dept_id?: Prisma.IntWithAggregatesFilter<"queue_sessions"> | number
+  doctors_on_duty?: Prisma.IntWithAggregatesFilter<"queue_sessions"> | number
   session_date?: Prisma.DateTimeWithAggregatesFilter<"queue_sessions"> | Date | string
   has_started?: Prisma.BoolWithAggregatesFilter<"queue_sessions"> | boolean
   created_at?: Prisma.DateTimeWithAggregatesFilter<"queue_sessions"> | Date | string
@@ -283,6 +299,7 @@ export type queue_sessionsScalarWhereWithAggregatesInput = {
 
 export type queue_sessionsCreateInput = {
   dept_id: number
+  doctors_on_duty?: number
   session_date: Date | string
   has_started?: boolean
   created_at?: Date | string
@@ -293,6 +310,7 @@ export type queue_sessionsCreateInput = {
 export type queue_sessionsUncheckedCreateInput = {
   id?: number
   dept_id: number
+  doctors_on_duty?: number
   session_date: Date | string
   has_started?: boolean
   created_at?: Date | string
@@ -302,6 +320,7 @@ export type queue_sessionsUncheckedCreateInput = {
 
 export type queue_sessionsUpdateInput = {
   dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  doctors_on_duty?: Prisma.IntFieldUpdateOperationsInput | number
   session_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   has_started?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -312,6 +331,7 @@ export type queue_sessionsUpdateInput = {
 export type queue_sessionsUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  doctors_on_duty?: Prisma.IntFieldUpdateOperationsInput | number
   session_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   has_started?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -322,6 +342,7 @@ export type queue_sessionsUncheckedUpdateInput = {
 export type queue_sessionsCreateManyInput = {
   id?: number
   dept_id: number
+  doctors_on_duty?: number
   session_date: Date | string
   has_started?: boolean
   created_at?: Date | string
@@ -330,6 +351,7 @@ export type queue_sessionsCreateManyInput = {
 
 export type queue_sessionsUpdateManyMutationInput = {
   dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  doctors_on_duty?: Prisma.IntFieldUpdateOperationsInput | number
   session_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   has_started?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -339,6 +361,7 @@ export type queue_sessionsUpdateManyMutationInput = {
 export type queue_sessionsUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  doctors_on_duty?: Prisma.IntFieldUpdateOperationsInput | number
   session_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   has_started?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -353,6 +376,7 @@ export type queue_sessionsDept_idSession_dateCompoundUniqueInput = {
 export type queue_sessionsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   dept_id?: Prisma.SortOrder
+  doctors_on_duty?: Prisma.SortOrder
   session_date?: Prisma.SortOrder
   has_started?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -362,11 +386,13 @@ export type queue_sessionsCountOrderByAggregateInput = {
 export type queue_sessionsAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   dept_id?: Prisma.SortOrder
+  doctors_on_duty?: Prisma.SortOrder
 }
 
 export type queue_sessionsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   dept_id?: Prisma.SortOrder
+  doctors_on_duty?: Prisma.SortOrder
   session_date?: Prisma.SortOrder
   has_started?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -376,6 +402,7 @@ export type queue_sessionsMaxOrderByAggregateInput = {
 export type queue_sessionsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   dept_id?: Prisma.SortOrder
+  doctors_on_duty?: Prisma.SortOrder
   session_date?: Prisma.SortOrder
   has_started?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -385,6 +412,7 @@ export type queue_sessionsMinOrderByAggregateInput = {
 export type queue_sessionsSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   dept_id?: Prisma.SortOrder
+  doctors_on_duty?: Prisma.SortOrder
 }
 
 export type Queue_sessionsScalarRelationFilter = {
@@ -408,6 +436,7 @@ export type queue_sessionsUpdateOneRequiredWithoutStatsNestedInput = {
 
 export type queue_sessionsCreateWithoutStatsInput = {
   dept_id: number
+  doctors_on_duty?: number
   session_date: Date | string
   has_started?: boolean
   created_at?: Date | string
@@ -417,6 +446,7 @@ export type queue_sessionsCreateWithoutStatsInput = {
 export type queue_sessionsUncheckedCreateWithoutStatsInput = {
   id?: number
   dept_id: number
+  doctors_on_duty?: number
   session_date: Date | string
   has_started?: boolean
   created_at?: Date | string
@@ -441,6 +471,7 @@ export type queue_sessionsUpdateToOneWithWhereWithoutStatsInput = {
 
 export type queue_sessionsUpdateWithoutStatsInput = {
   dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  doctors_on_duty?: Prisma.IntFieldUpdateOperationsInput | number
   session_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   has_started?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -450,6 +481,7 @@ export type queue_sessionsUpdateWithoutStatsInput = {
 export type queue_sessionsUncheckedUpdateWithoutStatsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   dept_id?: Prisma.IntFieldUpdateOperationsInput | number
+  doctors_on_duty?: Prisma.IntFieldUpdateOperationsInput | number
   session_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   has_started?: Prisma.BoolFieldUpdateOperationsInput | boolean
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -490,6 +522,7 @@ export type Queue_sessionsCountOutputTypeCountStatsArgs<ExtArgs extends runtime.
 export type queue_sessionsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   dept_id?: boolean
+  doctors_on_duty?: boolean
   session_date?: boolean
   has_started?: boolean
   created_at?: boolean
@@ -503,13 +536,14 @@ export type queue_sessionsSelect<ExtArgs extends runtime.Types.Extensions.Intern
 export type queue_sessionsSelectScalar = {
   id?: boolean
   dept_id?: boolean
+  doctors_on_duty?: boolean
   session_date?: boolean
   has_started?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type queue_sessionsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "dept_id" | "session_date" | "has_started" | "created_at" | "updated_at", ExtArgs["result"]["queue_sessions"]>
+export type queue_sessionsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "dept_id" | "doctors_on_duty" | "session_date" | "has_started" | "created_at" | "updated_at", ExtArgs["result"]["queue_sessions"]>
 export type queue_sessionsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   stats?: boolean | Prisma.queue_sessions$statsArgs<ExtArgs>
   _count?: boolean | Prisma.Queue_sessionsCountOutputTypeDefaultArgs<ExtArgs>
@@ -523,6 +557,7 @@ export type $queue_sessionsPayload<ExtArgs extends runtime.Types.Extensions.Inte
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     dept_id: number
+    doctors_on_duty: number
     session_date: Date
     has_started: boolean
     created_at: Date
@@ -899,6 +934,7 @@ export interface Prisma__queue_sessionsClient<T, Null = never, ExtArgs extends r
 export interface queue_sessionsFieldRefs {
   readonly id: Prisma.FieldRef<"queue_sessions", 'Int'>
   readonly dept_id: Prisma.FieldRef<"queue_sessions", 'Int'>
+  readonly doctors_on_duty: Prisma.FieldRef<"queue_sessions", 'Int'>
   readonly session_date: Prisma.FieldRef<"queue_sessions", 'DateTime'>
   readonly has_started: Prisma.FieldRef<"queue_sessions", 'Boolean'>
   readonly created_at: Prisma.FieldRef<"queue_sessions", 'DateTime'>

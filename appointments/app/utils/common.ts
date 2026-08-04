@@ -49,6 +49,10 @@ export const getFullName = (user: any) => {
         .trim();
 };
 
+export const getQueueRole = (role: string) => {
+    return options.queueRoles.find((r) => r.value === role)?.label;
+};
+
 export const getQueueStep = (step: number) => {
     switch (step) {
         case 1:
