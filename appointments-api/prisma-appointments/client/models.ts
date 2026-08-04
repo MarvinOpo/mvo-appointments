@@ -9,12 +9,15 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/access_rights.js'
-export type * from './models/appointment_logs.js'
 export type * from './models/appointments.js'
-export type * from './models/department_schedule.js'
+export type * from './models/appointment_logs.js'
 export type * from './models/departments.js'
+export type * from './models/department_schedule.js'
+export type * from './models/department_assignment.js'
 export type * from './models/holidays.js'
 export type * from './models/patient_dependents.js'
 export type * from './models/patients.js'
+export type * from './models/queue_sessions.js'
+export type * from './models/queue_session_stat.js'
 export type * from './models/user_access.js'
 export type * from './commonInputTypes.js'

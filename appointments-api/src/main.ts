@@ -8,6 +8,10 @@ import * as path from 'path';
 import { Request, Response, NextFunction } from 'express';
 
 import cookieParser from 'cookie-parser';
+import {
+  PrismaExceptionFilter,
+  PrismaValidationExceptionFilter,
+} from './common/filters/prisma-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -17,6 +21,10 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.setGlobalPrefix('api');
+  app.useGlobalFilters(
+    new PrismaValidationExceptionFilter(),
+    new PrismaExceptionFilter(),
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({

@@ -8,14 +8,40 @@ datasource db {
 }
 
 model access_rights {
-  id                       Int     @id @default(autoincrement())
-  description              String  @db.VarChar(50)
-  can_view_appointments    Boolean @default(false)
-  can_complete_appointment Boolean @default(false)
-  can_forward_appointment  Boolean @default(false)
-  can_manage_department    Boolean @default(false)
-  can_manage_access        Boolean @default(false)
-  can_manage_holidays      Boolean @default(false)
+  id                     Int     @id @default(autoincrement())
+  description            String  @db.VarChar(50)
+  can_complete_appt      Boolean @default(false)
+  can_manage_appts       Boolean @default(false)
+  can_manage_departments Boolean @default(false)
+  can_manage_access      Boolean @default(false)
+  can_manage_holidays    Boolean @default(false)
+  can_manage_queue       Boolean @default(false)
+  can_view_all_appts     Boolean @default(false)
+}
+
+model appointments {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  patient_id   Int
+  dept_id      Int      @map("department_id")
+  step         Int      @default(1)
+  scheduled_at DateTime @db.DateTime(0)
+  complaint    String   @db.VarChar(500)
+  type         String   @db.Char(2)
+  subjective   String?  @db.VarChar(500)
+  objective    String?  @db.VarChar(500)
+  assessment   String?  @db.VarChar(500)
+  plan         String?  @db.VarChar(500)
+  assessed_by  Int?
+  ai_assisted  Boolean  @default(false)
+  status       String   @default("P") @db.Char(2)
+  queue_no     Int?
+  created_at   DateTime @default(now()) @db.DateTime(0)
+
+  patient    patients    @relation(fields: [patient_id], references: [id])
+  department departments @relation(fields: [dept_id], references: [id])
+
+  @@unique([dept_id, scheduled_at, queue_no])
 }
 
 model appointment_logs {
@@ -26,22 +52,13 @@ model appointment_logs {
   created_at     DateTime @default(now()) @db.DateTime(0)
 }
 
-model appointments {
-  id            Int      @id @default(autoincrement())
-  user_id       Int
-  patient_id    Int
-  department_id Int
-  step          Int      @default(2)
-  scheduled_at  DateTime @db.DateTime
-  complaint     String   @db.VarChar(500)
-  type          String   @db.Char(2)
-  subjective    String?  @db.VarChar(500)
-  objective     String?  @db.VarChar(500)
-  assessment    String?  @db.VarChar(500)
-  plan          String?  @db.VarChar(500)
-  assessed_by   Int?
-  created_at    DateTime @default(now()) @db.DateTime(0)
-  updated_at    DateTime @default(now()) @db.DateTime(0)
+model departments {
+  id           Int                   @id @default(autoincrement())
+  name         String                @unique(map: "dept_name_UNIQUE") @db.VarChar(150)
+  code         String                @db.VarChar(50)
+  description  String                @db.VarChar(500)
+  schedules    department_schedule[]
+  appointments appointments[]
 }
 
 model department_schedule {
@@ -55,12 +72,12 @@ model department_schedule {
   department departments @relation(fields: [dept_id], references: [id])
 }
 
-model departments {
-  id          Int                   @id @default(autoincrement())
-  name        String                @unique(map: "dept_name_UNIQUE") @db.VarChar(150)
-  code        String                @db.VarChar(50)
-  description String                @db.VarChar(500)
-  schedules   department_schedule[]
+model department_assignment {
+  id      Int @id @default(autoincrement())
+  user_id Int
+  dept_id Int
+
+  @@unique([user_id, dept_id])
 }
 
 model holidays {
@@ -77,34 +94,62 @@ model patient_dependents {
 }
 
 model patients {
-  id             Int      @id @default(autoincrement())
-  user_id        Int?     @unique
+  id             Int            @id @default(autoincrement())
+  user_id        Int?           @unique
   owner_user_id  Int?
-  relationship   String?  @db.VarChar(20)
-  fname          String   @db.VarChar(50)
-  mname          String?  @db.VarChar(50)
-  lname          String   @db.VarChar(50)
-  email          String?  @db.VarChar(150)
-  ext_name       String?  @db.Char(5)
-  birth_date     DateTime @db.Date
-  civil_status   String   @db.VarChar(20)
-  sex            String   @default("M") @db.Char(1)
-  religion       String   @db.VarChar(50)
-  nationality    String   @db.VarChar(50)
-  occupation     String   @db.VarChar(150)
-  lot_no         String   @db.VarChar(100)
-  street         String   @db.VarChar(100)
-  barangay       String   @db.VarChar(100)
-  city           String   @db.VarChar(100)
-  province       String   @db.VarChar(100)
-  mobile_no      String   @db.VarChar(20)
-  spouse_name    String?  @db.VarChar(150)
-  spouse_address String?  @db.VarChar(150)
-  father_name    String   @db.VarChar(150)
-  mother_name    String   @db.VarChar(150)
-  created_at     DateTime @default(now()) @db.DateTime(0)
+  relationship   String?        @db.VarChar(20)
+  fname          String         @db.VarChar(50)
+  mname          String?        @db.VarChar(50)
+  lname          String         @db.VarChar(50)
+  email          String?        @db.VarChar(150)
+  ext_name       String?        @db.Char(5)
+  birth_date     DateTime       @db.Date
+  civil_status   String         @db.VarChar(20)
+  sex            String         @default("M") @db.Char(1)
+  religion       String         @db.VarChar(50)
+  nationality    String         @db.VarChar(50)
+  occupation     String         @db.VarChar(150)
+  lot_no         String         @db.VarChar(100)
+  street         String         @db.VarChar(100)
+  barangay       String         @db.VarChar(100)
+  city           String         @db.VarChar(100)
+  province       String         @db.VarChar(100)
+  mobile_no      String         @db.VarChar(20)
+  spouse_name    String?        @db.VarChar(150)
+  spouse_address String?        @db.VarChar(150)
+  father_name    String         @db.VarChar(150)
+  mother_name    String         @db.VarChar(150)
+  created_at     DateTime       @default(now()) @db.DateTime(0)
+  appointments   appointments[]
 
   @@index([owner_user_id])
+}
+
+model queue_sessions {
+  id           Int      @id @default(autoincrement())
+  dept_id      Int
+  session_date DateTime @db.Date
+  has_started  Boolean  @default(false)
+  created_at   DateTime @default(now()) @db.DateTime(0)
+  updated_at   DateTime @updatedAt @db.DateTime(0)
+
+  stats queue_session_stat[]
+
+  @@unique([dept_id, session_date])
+}
+
+model queue_session_stat {
+  id           Int      @id @default(autoincrement())
+  session_id   Int
+  step         Int
+  now_serving  Int      @default(0)
+  served_count Int      @default(0)
+  avg_seconds  Float    @default(0)
+  updated_at   DateTime @updatedAt @db.DateTime(0)
+
+  session queue_sessions @relation(fields: [session_id], references: [id])
+
+  @@unique([session_id, step])
 }
 
 model user_access {

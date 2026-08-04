@@ -60,8 +60,8 @@ async function refreshAccessToken(): Promise<string | null> {
  * the error yourself (e.g. inline form validation like login failures).
  */
 function notifyError(message?: string) {
-    const snackbarStore = useSnackbar();
-    snackbarStore.showSnackbar({
+    const snackbar = useSnackbar();
+    snackbar.show({
         message: message ?? "Something went wrong. Please try again.",
         title: "Error",
         type: "error",
@@ -92,13 +92,18 @@ async function request<T = any>(
     }
 
     if (res.status === 401) {
+        const body = await res.clone().json();
+
+        const { logout } = useUser();
+        if (body.message !== "Token expired") {
+            logout();
+            throw new Error("Session expired");
+        }
+
         const newToken = await refreshAccessToken();
 
         if (!newToken) {
-            const { resetStore } = useUser();
-            resetStore();
-
-            navigateTo("/");
+            logout();
             throw new Error("Session expired");
         }
 
@@ -116,7 +121,7 @@ async function request<T = any>(
     data = await res.json();
 
     if (data?.error && !silent) {
-        notifyError(data.error.message);
+        notifyError(data.message);
     }
 
     return data;
@@ -201,8 +206,8 @@ export async function updateJsonData<T = any>(
 
 export async function deleteJsonData<T = any>(
     url: string,
-    body: unknown = {},
     token: string | null = null,
+    body: unknown = {},
     silent = false,
 ): Promise<T> {
     return request<T>(

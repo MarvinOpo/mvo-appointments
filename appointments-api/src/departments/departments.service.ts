@@ -6,8 +6,10 @@ import { mvo_appointments } from '../db/prisma';
 
 @Injectable()
 export class DepartmentsService {
-  create(createDepartmentDto: CreateDepartmentDto) {
-    return 'This action adds a new department';
+  async create(createDepartmentDto: CreateDepartmentDto) {
+    return await mvo_appointments.departments.create({
+      data: createDepartmentDto,
+    });
   }
 
   findAll() {
@@ -22,8 +24,13 @@ export class DepartmentsService {
     return `This action returns a #${id} department`;
   }
 
-  update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
-    return `This action updates a #${id} department`;
+  async update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
+    return await mvo_appointments.departments.update({
+      where: {
+        id: id,
+      },
+      data: updateDepartmentDto,
+    });
   }
 
   remove(id: number) {

@@ -77,10 +77,10 @@
                                             <v-col v-if="form.type" cols="12">
                                                 <v-row no-gutters>
                                                     <v-col cols="12">
-                                                        <v-select v-model="form.department_id"
+                                                        <v-autocomplete v-model="form.department_id"
                                                             :items="filteredDepartments" item-title="name"
                                                             item-value="id" label="Department" variant="outlined"
-                                                            :rules="[rules.required]" autocomplete="off" />
+                                                            :rules="[rules.required]" autocomplete="off" clearable />
                                                     </v-col>
 
                                                     <v-col cols="auto" class="ml-auto">
@@ -115,7 +115,7 @@
                                                 hide-default-footer>
                                                 <template v-slot:default="{ items }">
                                                     <v-radio-group v-model="selectedSchedule"
-                                                        @update:model-value="getScheduledAppointments">
+                                                        @update:model-value="checkAvailability">
                                                         <v-row no-gutters>
                                                             <v-col v-for="(item, i) in items" :key="i" cols="12" sm="6"
                                                                 md="4">
@@ -135,6 +135,13 @@
                                                 </template>
                                             </v-data-iterator>
                                         </fieldset>
+                                    </v-col>
+
+                                    <v-col v-if="bookingError" cols="12">
+                                        <v-alert border="start" color="red" title="Error" variant="tonal"
+                                            density="compact">
+                                            {{ bookingError }}
+                                        </v-alert>
                                     </v-col>
 
                                     <v-col v-if="selectedSchedule" cols="12" class="pt-0">
@@ -188,7 +195,7 @@
         </v-dialog>
 
         <AppointmentDepartmentAssistant v-model="dialog.deptAssistant.isVisible" :patient="selectedPatient"
-            :departments="departments" :complaint="form.complaint" :type="form.type" />
+            :departments="departments" :complaint="form.complaint" :type="form.type" @confirm="setDepartment" />
     </div>
 </template>
 
@@ -196,6 +203,8 @@
 import moment from 'moment';
 
 const { token, user } = useUser();
+const { getScheduledAppointments } = useAppointment();
+
 const model = defineModel<boolean>({ default: false });
 
 const props = defineProps<{
@@ -204,7 +213,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    confirm: [];
+    addAppointment: [appointment: Appointment];
 }>();
 
 const step = ref(1);
@@ -212,6 +221,8 @@ const step = ref(1);
 const appointments = reactive({
     scheduled: <Appointment[]>[]
 })
+
+const bookingError = ref('');
 
 const dialog = reactive({
     deptAssistant: { isVisible: false }
@@ -231,6 +242,7 @@ const defaultForm = (): AppointmentFormData => (
         assessment: null,
         plan: null,
         assessed_by: null,
+        ai_assisted: false
     }
 )
 
@@ -251,6 +263,7 @@ const canGoToSchedule = computed(() => {
 const isLoading = ref(false);
 
 const selectedDepartment = computed(() => {
+    bookingError.value = '';
     return props.departments.find(dept => dept.id === form.value.department_id);
 })
 
@@ -326,7 +339,7 @@ const availableTime = computed(() => {
         }
 
         const scheduledCount = appointments.scheduled.filter((a) =>
-            moment(a.scheduled_at).isSame(cursor, 'hour')
+            moment.utc(a.scheduled_at).isSame(moment.utc(slotDateTime), 'hour')
         ).length;
 
         slots.push({
@@ -334,8 +347,8 @@ const availableTime = computed(() => {
             hour: cursor.hour(),
             pax,
             scheduled: scheduledCount,
-            remaining: pax - scheduledCount,
-            isFull: scheduledCount >= pax,
+            remaining: pax! - scheduledCount,
+            isFull: scheduledCount >= pax!,
         });
 
         cursor.add(1, 'hour');
@@ -344,30 +357,10 @@ const availableTime = computed(() => {
     return slots;
 });
 
-const goToSchedule = async () => {
-    const { valid } = await formInfo.value.validate();
-    if (!valid) return;
+const bookSlot = async (item: any) => {
+    bookingError.value = '';
+    isBooking.value = true;
 
-    step.value = 2;
-};
-
-const getScheduledAppointments = async () => {
-    isLoadingSchedule.value = true;
-
-    const start = moment(form.value.scheduled_at, 'MMM. DD, YYYY (ddd)').startOf('day').format('YYYY-MM-DD HH:mm:ss');
-    const end = moment(form.value.scheduled_at, 'MMM. DD, YYYY (ddd)').endOf('day').format('YYYY-MM-DD HH:mm:ss');
-
-    const param = `?start=${start}&end=${end}`
-
-    const data = await fetchJsonData(`/appointments/scheduled` + param, token.value);
-    if (data.error) return;
-
-    appointments.scheduled = data;
-
-    isLoadingSchedule.value = false;
-}
-
-const bookSlot = (item: any) => {
     form.value.scheduled_at = moment(selectedSchedule.value, 'MMM. DD, YYYY (ddd)').set({
         hour: item.hour,
         minute: 0,
@@ -378,8 +371,41 @@ const bookSlot = (item: any) => {
         form.value.user_id = user.value.id;
     }
 
-    console.log(form.value);
+    const data = await postJsonData('/appointments', form.value, token.value);
+    if (data.error) {
+        isBooking.value = false;
+        bookingError.value = data.message;
+        return;
+    }
+
+    emit('addAppointment', data);
+    isBooking.value = false;
+
+    closeDialog();
 };
+
+const goToSchedule = async () => {
+    const { valid } = await formInfo.value.validate();
+    if (!valid) return;
+
+    step.value = 2;
+};
+
+const checkAvailability = async () => {
+    isLoadingSchedule.value = true;
+
+    const schedule = moment(selectedSchedule.value, 'MMM. DD, YYYY (ddd)')
+    const data = await getScheduledAppointments(form.value.department_id!, schedule);
+    if (data.error) return;
+
+    appointments.scheduled = data;
+    isLoadingSchedule.value = false;
+}
+
+const setDepartment = (id: number) => {
+    form.value.ai_assisted = true;
+    form.value.department_id = id;
+}
 
 const closeDialog = () => {
     model.value = false;
@@ -387,8 +413,7 @@ const closeDialog = () => {
     form.value = defaultForm();
 };
 
-const confirm = () => {
-    emit('confirm');
-};
-
+watch(() => form.value.department_id, () => {
+    selectedSchedule.value = null;
+});
 </script>

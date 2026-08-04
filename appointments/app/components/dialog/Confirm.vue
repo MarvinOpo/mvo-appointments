@@ -61,8 +61,8 @@ const emit = defineEmits(["confirm", "update:modelValue"]);
 
 const confirm = async () => {
     if (props.withRemarks) {
-        const form = await formRemarks.value?.validate();
-        if (!form?.valid) return;
+        const { valid } = await formRemarks.value?.validate();
+        if (!valid) return;
     }
 
     emit("confirm", remarks.value);

@@ -4,7 +4,7 @@
             My Dependents
             <v-spacer />
             <v-btn color="accent" prepend-icon="mdi-plus" variant="elevated">
-                ADD DEPENDENT
+                Add Dependent
             </v-btn>
         </v-card-title>
 
@@ -17,13 +17,13 @@
 <script setup lang="ts">
 const dependents = ref([]);
 
-const snackbarStore = useSnackbar();
+const snackbar = useSnackbar();
 
 const getDependents = async () => {
     const data = await fetchJsonData("/dependents/mine");
 
     if (data.error) {
-        snackbarStore.showSnackbar({
+        snackbar.show({
             message: data.error.message,
             title: "Error",
             type: "error",

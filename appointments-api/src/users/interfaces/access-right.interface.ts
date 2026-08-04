@@ -1,10 +1,11 @@
 export interface AccessRight {
   id: number;
   description: string;
-  can_view_appointments: boolean;
-  can_complete_appointment: boolean;
-  can_forward_appointment: boolean;
-  can_manage_department: boolean;
+  can_complete_appt: boolean;
+  can_manage_appts: boolean;
+  can_manage_departments: boolean;
   can_manage_access: boolean;
   can_manage_holidays: boolean;
+  can_manage_queue: boolean;
+  can_view_all_appts: boolean;
 }

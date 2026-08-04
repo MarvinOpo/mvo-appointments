@@ -36,4 +36,10 @@ export interface PatientOption {
     sex: string;
 }
 
+export interface WalkInPatient {
+    name: string;
+    type: string;
+    queue_no: string;
+}
+
 export type PatientFormData = Omit<Patient, "created_at">;

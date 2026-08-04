@@ -14,6 +14,13 @@ export const useUser = () => {
         const router = useRouter();
         resetStore();
         router.push("/");
+
+        const snackbar = useSnackbar();
+        snackbar.show({
+            message: "See you again soon.",
+            title: "Good Bye!",
+            type: "bye",
+        });
     };
 
     return {

@@ -1,9 +1,9 @@
 export interface DeptSchedule {
-    id: number;
-    dept_id: number;
-    days: JSON;
-    start: string;
-    end: string;
-    type: string;
-    pax: number;
+    id?: number;
+    dept_id: number | null;
+    days: string[] | null;
+    start: string | null;
+    end: string | null;
+    type: string | null;
+    pax: number | null;
 }

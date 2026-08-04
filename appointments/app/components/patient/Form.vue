@@ -40,7 +40,7 @@
                                 <v-col cols="12" md="4">
                                     <v-date-input v-model="form.birth_date" label="Date of Birth" prepend-icon=""
                                         prepend-inner-icon="mdi-calendar" :rules="[rules.required]" variant="outlined"
-                                        density="compact" />
+                                        density="compact" autocomplete="off" />
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-select v-model="form.sex" label="Sex" :items="options.sex"
@@ -187,7 +187,7 @@ const dialog = reactive({
     },
 })
 
-const isEdit = computed(() => props.patient?.id);
+const isEdit = computed(() => !!props.patient?.id);
 const isLoading = ref(false);
 const formPatient = ref();
 const selfRegister = ref(false);
@@ -231,25 +231,26 @@ const closeDialog = () => {
 };
 
 const insertPatient = async () => {
-    const data = await postJsonData<{ patient: Patient; error?: any }>("/patients", form.value, token.value);
+    const data = await postJsonData("/patients", form.value, token.value);
     if (data.error) return;
 
-    form.value.id = data.patient.id;
-    emit("addPatient", data.patient);
-    closeDialog();
+    form.value.id = data.id;
+    emit("addPatient", data);
+
+    model.value = false;
 }
 
 const updatePatient = async () => {
-    const data = await updateJsonData<{ patient: Patient; error?: any }>("/patients/" + props.patient?.id, form.value, token.value);
+    const data = await updateJsonData("/patients/" + props.patient?.id, form.value, token.value);
     if (data.error) return;
 
-    emit("updatePatient", data.patient);
+    emit("updatePatient", data);
     closeDialog();
 }
 
 const savePatient = async () => {
-    const form = await formPatient.value.validate();
-    if (!form.valid) return;
+    const { valid } = await formPatient.value.validate();
+    if (!valid) return;
 
     isLoading.value = true;
 
@@ -273,7 +274,10 @@ onMounted(() => {
             form.value.ext_name = props.user.ext_name;
             form.value.email = props.user.email;
             form.value.birth_date = props.user.birth_date;
-            form.value.civil_status = props.user.civil_status;
+
+            if (props.user.civil_status && options.civilStatus.includes(props.user.civil_status))
+                form.value.civil_status = props.user.civil_status;
+
             form.value.sex = props.user.gender;
             form.value.mobile_no = props.user.mobile_no;
 

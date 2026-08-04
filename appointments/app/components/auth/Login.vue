@@ -61,7 +61,7 @@
 const model = defineModel<boolean>({ default: false });
 
 const emit = defineEmits<{
-    confirm: [
+    login: [
         data: {
             user: User;
             accessToken: string;
@@ -86,8 +86,8 @@ const closeDialog = () => {
 };
 
 const login = async () => {
-    const form = await formLogin.value.validate();
-    if (!form.valid) return;
+    const { valid } = await formLogin.value.validate();
+    if (!valid) return;
 
     isLoading.value = true;
 
@@ -99,7 +99,7 @@ const login = async () => {
         return;
     }
 
-    emit("confirm", data);
+    emit("login", data);
     isLoading.value = false;
     closeDialog();
 };

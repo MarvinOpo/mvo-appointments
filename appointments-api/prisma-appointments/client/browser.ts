@@ -23,25 +23,30 @@ export * from './enums.js';
  */
 export type access_rights = Prisma.access_rightsModel
 /**
+ * Model appointments
+ * 
+ */
+export type appointments = Prisma.appointmentsModel
+/**
  * Model appointment_logs
  * 
  */
 export type appointment_logs = Prisma.appointment_logsModel
 /**
- * Model appointments
+ * Model departments
  * 
  */
-export type appointments = Prisma.appointmentsModel
+export type departments = Prisma.departmentsModel
 /**
  * Model department_schedule
  * 
  */
 export type department_schedule = Prisma.department_scheduleModel
 /**
- * Model departments
+ * Model department_assignment
  * 
  */
-export type departments = Prisma.departmentsModel
+export type department_assignment = Prisma.department_assignmentModel
 /**
  * Model holidays
  * 
@@ -57,6 +62,16 @@ export type patient_dependents = Prisma.patient_dependentsModel
  * 
  */
 export type patients = Prisma.patientsModel
+/**
+ * Model queue_sessions
+ * 
+ */
+export type queue_sessions = Prisma.queue_sessionsModel
+/**
+ * Model queue_session_stat
+ * 
+ */
+export type queue_session_stat = Prisma.queue_session_statModel
 /**
  * Model user_access
  * 

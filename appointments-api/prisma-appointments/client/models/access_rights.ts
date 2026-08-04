@@ -37,34 +37,37 @@ export type Access_rightsSumAggregateOutputType = {
 export type Access_rightsMinAggregateOutputType = {
   id: number | null
   description: string | null
-  can_view_appointments: boolean | null
-  can_complete_appointment: boolean | null
-  can_forward_appointment: boolean | null
-  can_manage_department: boolean | null
+  can_complete_appt: boolean | null
+  can_manage_appts: boolean | null
+  can_manage_departments: boolean | null
   can_manage_access: boolean | null
   can_manage_holidays: boolean | null
+  can_manage_queue: boolean | null
+  can_view_all_appts: boolean | null
 }
 
 export type Access_rightsMaxAggregateOutputType = {
   id: number | null
   description: string | null
-  can_view_appointments: boolean | null
-  can_complete_appointment: boolean | null
-  can_forward_appointment: boolean | null
-  can_manage_department: boolean | null
+  can_complete_appt: boolean | null
+  can_manage_appts: boolean | null
+  can_manage_departments: boolean | null
   can_manage_access: boolean | null
   can_manage_holidays: boolean | null
+  can_manage_queue: boolean | null
+  can_view_all_appts: boolean | null
 }
 
 export type Access_rightsCountAggregateOutputType = {
   id: number
   description: number
-  can_view_appointments: number
-  can_complete_appointment: number
-  can_forward_appointment: number
-  can_manage_department: number
+  can_complete_appt: number
+  can_manage_appts: number
+  can_manage_departments: number
   can_manage_access: number
   can_manage_holidays: number
+  can_manage_queue: number
+  can_view_all_appts: number
   _all: number
 }
 
@@ -80,34 +83,37 @@ export type Access_rightsSumAggregateInputType = {
 export type Access_rightsMinAggregateInputType = {
   id?: true
   description?: true
-  can_view_appointments?: true
-  can_complete_appointment?: true
-  can_forward_appointment?: true
-  can_manage_department?: true
+  can_complete_appt?: true
+  can_manage_appts?: true
+  can_manage_departments?: true
   can_manage_access?: true
   can_manage_holidays?: true
+  can_manage_queue?: true
+  can_view_all_appts?: true
 }
 
 export type Access_rightsMaxAggregateInputType = {
   id?: true
   description?: true
-  can_view_appointments?: true
-  can_complete_appointment?: true
-  can_forward_appointment?: true
-  can_manage_department?: true
+  can_complete_appt?: true
+  can_manage_appts?: true
+  can_manage_departments?: true
   can_manage_access?: true
   can_manage_holidays?: true
+  can_manage_queue?: true
+  can_view_all_appts?: true
 }
 
 export type Access_rightsCountAggregateInputType = {
   id?: true
   description?: true
-  can_view_appointments?: true
-  can_complete_appointment?: true
-  can_forward_appointment?: true
-  can_manage_department?: true
+  can_complete_appt?: true
+  can_manage_appts?: true
+  can_manage_departments?: true
   can_manage_access?: true
   can_manage_holidays?: true
+  can_manage_queue?: true
+  can_view_all_appts?: true
   _all?: true
 }
 
@@ -200,12 +206,13 @@ export type access_rightsGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type Access_rightsGroupByOutputType = {
   id: number
   description: string
-  can_view_appointments: boolean
-  can_complete_appointment: boolean
-  can_forward_appointment: boolean
-  can_manage_department: boolean
+  can_complete_appt: boolean
+  can_manage_appts: boolean
+  can_manage_departments: boolean
   can_manage_access: boolean
   can_manage_holidays: boolean
+  can_manage_queue: boolean
+  can_view_all_appts: boolean
   _count: Access_rightsCountAggregateOutputType | null
   _avg: Access_rightsAvgAggregateOutputType | null
   _sum: Access_rightsSumAggregateOutputType | null
@@ -234,23 +241,25 @@ export type access_rightsWhereInput = {
   NOT?: Prisma.access_rightsWhereInput | Prisma.access_rightsWhereInput[]
   id?: Prisma.IntFilter<"access_rights"> | number
   description?: Prisma.StringFilter<"access_rights"> | string
-  can_view_appointments?: Prisma.BoolFilter<"access_rights"> | boolean
-  can_complete_appointment?: Prisma.BoolFilter<"access_rights"> | boolean
-  can_forward_appointment?: Prisma.BoolFilter<"access_rights"> | boolean
-  can_manage_department?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_complete_appt?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_manage_appts?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_manage_departments?: Prisma.BoolFilter<"access_rights"> | boolean
   can_manage_access?: Prisma.BoolFilter<"access_rights"> | boolean
   can_manage_holidays?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_manage_queue?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_view_all_appts?: Prisma.BoolFilter<"access_rights"> | boolean
 }
 
 export type access_rightsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  can_view_appointments?: Prisma.SortOrder
-  can_complete_appointment?: Prisma.SortOrder
-  can_forward_appointment?: Prisma.SortOrder
-  can_manage_department?: Prisma.SortOrder
+  can_complete_appt?: Prisma.SortOrder
+  can_manage_appts?: Prisma.SortOrder
+  can_manage_departments?: Prisma.SortOrder
   can_manage_access?: Prisma.SortOrder
   can_manage_holidays?: Prisma.SortOrder
+  can_manage_queue?: Prisma.SortOrder
+  can_view_all_appts?: Prisma.SortOrder
   _relevance?: Prisma.access_rightsOrderByRelevanceInput
 }
 
@@ -260,23 +269,25 @@ export type access_rightsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.access_rightsWhereInput[]
   NOT?: Prisma.access_rightsWhereInput | Prisma.access_rightsWhereInput[]
   description?: Prisma.StringFilter<"access_rights"> | string
-  can_view_appointments?: Prisma.BoolFilter<"access_rights"> | boolean
-  can_complete_appointment?: Prisma.BoolFilter<"access_rights"> | boolean
-  can_forward_appointment?: Prisma.BoolFilter<"access_rights"> | boolean
-  can_manage_department?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_complete_appt?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_manage_appts?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_manage_departments?: Prisma.BoolFilter<"access_rights"> | boolean
   can_manage_access?: Prisma.BoolFilter<"access_rights"> | boolean
   can_manage_holidays?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_manage_queue?: Prisma.BoolFilter<"access_rights"> | boolean
+  can_view_all_appts?: Prisma.BoolFilter<"access_rights"> | boolean
 }, "id">
 
 export type access_rightsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  can_view_appointments?: Prisma.SortOrder
-  can_complete_appointment?: Prisma.SortOrder
-  can_forward_appointment?: Prisma.SortOrder
-  can_manage_department?: Prisma.SortOrder
+  can_complete_appt?: Prisma.SortOrder
+  can_manage_appts?: Prisma.SortOrder
+  can_manage_departments?: Prisma.SortOrder
   can_manage_access?: Prisma.SortOrder
   can_manage_holidays?: Prisma.SortOrder
+  can_manage_queue?: Prisma.SortOrder
+  can_view_all_appts?: Prisma.SortOrder
   _count?: Prisma.access_rightsCountOrderByAggregateInput
   _avg?: Prisma.access_rightsAvgOrderByAggregateInput
   _max?: Prisma.access_rightsMaxOrderByAggregateInput
@@ -290,86 +301,94 @@ export type access_rightsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.access_rightsScalarWhereWithAggregatesInput | Prisma.access_rightsScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"access_rights"> | number
   description?: Prisma.StringWithAggregatesFilter<"access_rights"> | string
-  can_view_appointments?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
-  can_complete_appointment?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
-  can_forward_appointment?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
-  can_manage_department?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
+  can_complete_appt?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
+  can_manage_appts?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
+  can_manage_departments?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
   can_manage_access?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
   can_manage_holidays?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
+  can_manage_queue?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
+  can_view_all_appts?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
 }
 
 export type access_rightsCreateInput = {
   description: string
-  can_view_appointments?: boolean
-  can_complete_appointment?: boolean
-  can_forward_appointment?: boolean
-  can_manage_department?: boolean
+  can_complete_appt?: boolean
+  can_manage_appts?: boolean
+  can_manage_departments?: boolean
   can_manage_access?: boolean
   can_manage_holidays?: boolean
+  can_manage_queue?: boolean
+  can_view_all_appts?: boolean
 }
 
 export type access_rightsUncheckedCreateInput = {
   id?: number
   description: string
-  can_view_appointments?: boolean
-  can_complete_appointment?: boolean
-  can_forward_appointment?: boolean
-  can_manage_department?: boolean
+  can_complete_appt?: boolean
+  can_manage_appts?: boolean
+  can_manage_departments?: boolean
   can_manage_access?: boolean
   can_manage_holidays?: boolean
+  can_manage_queue?: boolean
+  can_view_all_appts?: boolean
 }
 
 export type access_rightsUpdateInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  can_view_appointments?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_complete_appointment?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_forward_appointment?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_manage_department?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_complete_appt?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_departments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_access?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type access_rightsUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  can_view_appointments?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_complete_appointment?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_forward_appointment?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_manage_department?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_complete_appt?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_departments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_access?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type access_rightsCreateManyInput = {
   id?: number
   description: string
-  can_view_appointments?: boolean
-  can_complete_appointment?: boolean
-  can_forward_appointment?: boolean
-  can_manage_department?: boolean
+  can_complete_appt?: boolean
+  can_manage_appts?: boolean
+  can_manage_departments?: boolean
   can_manage_access?: boolean
   can_manage_holidays?: boolean
+  can_manage_queue?: boolean
+  can_view_all_appts?: boolean
 }
 
 export type access_rightsUpdateManyMutationInput = {
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  can_view_appointments?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_complete_appointment?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_forward_appointment?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_manage_department?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_complete_appt?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_departments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_access?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type access_rightsUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   description?: Prisma.StringFieldUpdateOperationsInput | string
-  can_view_appointments?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_complete_appointment?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_forward_appointment?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  can_manage_department?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_complete_appt?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_departments?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_access?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type access_rightsOrderByRelevanceInput = {
@@ -381,12 +400,13 @@ export type access_rightsOrderByRelevanceInput = {
 export type access_rightsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  can_view_appointments?: Prisma.SortOrder
-  can_complete_appointment?: Prisma.SortOrder
-  can_forward_appointment?: Prisma.SortOrder
-  can_manage_department?: Prisma.SortOrder
+  can_complete_appt?: Prisma.SortOrder
+  can_manage_appts?: Prisma.SortOrder
+  can_manage_departments?: Prisma.SortOrder
   can_manage_access?: Prisma.SortOrder
   can_manage_holidays?: Prisma.SortOrder
+  can_manage_queue?: Prisma.SortOrder
+  can_view_all_appts?: Prisma.SortOrder
 }
 
 export type access_rightsAvgOrderByAggregateInput = {
@@ -396,23 +416,25 @@ export type access_rightsAvgOrderByAggregateInput = {
 export type access_rightsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  can_view_appointments?: Prisma.SortOrder
-  can_complete_appointment?: Prisma.SortOrder
-  can_forward_appointment?: Prisma.SortOrder
-  can_manage_department?: Prisma.SortOrder
+  can_complete_appt?: Prisma.SortOrder
+  can_manage_appts?: Prisma.SortOrder
+  can_manage_departments?: Prisma.SortOrder
   can_manage_access?: Prisma.SortOrder
   can_manage_holidays?: Prisma.SortOrder
+  can_manage_queue?: Prisma.SortOrder
+  can_view_all_appts?: Prisma.SortOrder
 }
 
 export type access_rightsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   description?: Prisma.SortOrder
-  can_view_appointments?: Prisma.SortOrder
-  can_complete_appointment?: Prisma.SortOrder
-  can_forward_appointment?: Prisma.SortOrder
-  can_manage_department?: Prisma.SortOrder
+  can_complete_appt?: Prisma.SortOrder
+  can_manage_appts?: Prisma.SortOrder
+  can_manage_departments?: Prisma.SortOrder
   can_manage_access?: Prisma.SortOrder
   can_manage_holidays?: Prisma.SortOrder
+  can_manage_queue?: Prisma.SortOrder
+  can_view_all_appts?: Prisma.SortOrder
 }
 
 export type access_rightsSumOrderByAggregateInput = {
@@ -440,12 +462,13 @@ export type IntFieldUpdateOperationsInput = {
 export type access_rightsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   description?: boolean
-  can_view_appointments?: boolean
-  can_complete_appointment?: boolean
-  can_forward_appointment?: boolean
-  can_manage_department?: boolean
+  can_complete_appt?: boolean
+  can_manage_appts?: boolean
+  can_manage_departments?: boolean
   can_manage_access?: boolean
   can_manage_holidays?: boolean
+  can_manage_queue?: boolean
+  can_view_all_appts?: boolean
 }, ExtArgs["result"]["access_rights"]>
 
 
@@ -453,15 +476,16 @@ export type access_rightsSelect<ExtArgs extends runtime.Types.Extensions.Interna
 export type access_rightsSelectScalar = {
   id?: boolean
   description?: boolean
-  can_view_appointments?: boolean
-  can_complete_appointment?: boolean
-  can_forward_appointment?: boolean
-  can_manage_department?: boolean
+  can_complete_appt?: boolean
+  can_manage_appts?: boolean
+  can_manage_departments?: boolean
   can_manage_access?: boolean
   can_manage_holidays?: boolean
+  can_manage_queue?: boolean
+  can_view_all_appts?: boolean
 }
 
-export type access_rightsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "can_view_appointments" | "can_complete_appointment" | "can_forward_appointment" | "can_manage_department" | "can_manage_access" | "can_manage_holidays", ExtArgs["result"]["access_rights"]>
+export type access_rightsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "can_complete_appt" | "can_manage_appts" | "can_manage_departments" | "can_manage_access" | "can_manage_holidays" | "can_manage_queue" | "can_view_all_appts", ExtArgs["result"]["access_rights"]>
 
 export type $access_rightsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "access_rights"
@@ -469,12 +493,13 @@ export type $access_rightsPayload<ExtArgs extends runtime.Types.Extensions.Inter
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     description: string
-    can_view_appointments: boolean
-    can_complete_appointment: boolean
-    can_forward_appointment: boolean
-    can_manage_department: boolean
+    can_complete_appt: boolean
+    can_manage_appts: boolean
+    can_manage_departments: boolean
     can_manage_access: boolean
     can_manage_holidays: boolean
+    can_manage_queue: boolean
+    can_view_all_appts: boolean
   }, ExtArgs["result"]["access_rights"]>
   composites: {}
 }
@@ -846,12 +871,13 @@ export interface Prisma__access_rightsClient<T, Null = never, ExtArgs extends ru
 export interface access_rightsFieldRefs {
   readonly id: Prisma.FieldRef<"access_rights", 'Int'>
   readonly description: Prisma.FieldRef<"access_rights", 'String'>
-  readonly can_view_appointments: Prisma.FieldRef<"access_rights", 'Boolean'>
-  readonly can_complete_appointment: Prisma.FieldRef<"access_rights", 'Boolean'>
-  readonly can_forward_appointment: Prisma.FieldRef<"access_rights", 'Boolean'>
-  readonly can_manage_department: Prisma.FieldRef<"access_rights", 'Boolean'>
+  readonly can_complete_appt: Prisma.FieldRef<"access_rights", 'Boolean'>
+  readonly can_manage_appts: Prisma.FieldRef<"access_rights", 'Boolean'>
+  readonly can_manage_departments: Prisma.FieldRef<"access_rights", 'Boolean'>
   readonly can_manage_access: Prisma.FieldRef<"access_rights", 'Boolean'>
   readonly can_manage_holidays: Prisma.FieldRef<"access_rights", 'Boolean'>
+  readonly can_manage_queue: Prisma.FieldRef<"access_rights", 'Boolean'>
+  readonly can_view_all_appts: Prisma.FieldRef<"access_rights", 'Boolean'>
 }
     
 

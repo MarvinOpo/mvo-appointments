@@ -53,7 +53,7 @@
                             <div class="flex-grow-1">
                                 <div class="d-flex align-center flex-wrap ga-2 mb-1">
                                     <span class="text-subtitle-1 font-weight-bold">{{ getDeptName(rec.department_id)
-                                    }}</span>
+                                        }}</span>
                                     <v-chip v-if="i === 0" size="x-small" color="primary" variant="flat">Top
                                         match</v-chip>
                                     <v-chip size="x-small" :color="confidenceColor(rec.confidence)" variant="tonal">
@@ -69,7 +69,7 @@
                     </v-card>
 
                     <v-btn variant="text" size="small" prepend-icon="mdi-pencil-outline" class="mt-2"
-                        @click="view = 'form'">
+                        @click="closeDialog">
                         None of these — let me choose manually
                     </v-btn>
                 </div>
@@ -81,7 +81,7 @@
                         <v-col cols="auto">
                             <v-btn v-if="view === 'form'" color="grey" @click="closeDialog"
                                 variant="tonal">CANCEL</v-btn>
-                            <v-btn v-else color="grey" @click="view = 'form'" variant="tonal">BACK</v-btn>
+                            <v-btn v-else color="red" @click="view = 'form'" variant="tonal">RESET</v-btn>
                         </v-col>
                         <v-col cols="auto">
                             <v-btn v-if="view === 'form'" color="green" @click="confirm" :loading="isLoading"

@@ -1,7 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     compatibilityDate: "2025-07-15",
-    css: ["~/assets/styles/styles.css"],
+    css: [
+        "~/assets/styles/styles.css",
+        "@mdi/font/css/materialdesignicons.css",
+    ],
     devtools: { enabled: true },
     modules: [
         "@pinia/nuxt",
@@ -10,6 +13,9 @@ export default defineNuxtConfig({
     ],
     vuetify: {
         vuetifyOptions: "./vuetify.options.ts",
+        moduleOptions: {
+            styles: true,
+        },
     },
     runtimeConfig: {
         public: {

@@ -53,31 +53,3 @@ export const useUserStore = defineStore("appt-services", {
 
     persist: true,
 });
-
-interface SnackbarState {
-    isVisible: boolean;
-    timeout: number;
-    color: string;
-    icon: string;
-    message: string;
-}
-
-export const useSnackbarStore = defineStore("appt-snackbar", {
-    state: (): SnackbarState => ({
-        isVisible: false,
-        timeout: 2000,
-        color: "success",
-        icon: "mdi-check-circle",
-        message: "",
-    }),
-
-    actions: {
-        showSnackbar(data: any) {
-            this.isVisible = true;
-            this.timeout = data.timeout ?? 2000;
-            this.color = data.color ?? "success";
-            this.icon = data.icon ?? "mdi-check-circle";
-            this.message = data.message ?? "";
-        },
-    },
-});

@@ -52,13 +52,16 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   access_rights: 'access_rights',
-  appointment_logs: 'appointment_logs',
   appointments: 'appointments',
-  department_schedule: 'department_schedule',
+  appointment_logs: 'appointment_logs',
   departments: 'departments',
+  department_schedule: 'department_schedule',
+  department_assignment: 'department_assignment',
   holidays: 'holidays',
   patient_dependents: 'patient_dependents',
   patients: 'patients',
+  queue_sessions: 'queue_sessions',
+  queue_session_stat: 'queue_session_stat',
   user_access: 'user_access'
 } as const
 
@@ -81,15 +84,39 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const Access_rightsScalarFieldEnum = {
   id: 'id',
   description: 'description',
-  can_view_appointments: 'can_view_appointments',
-  can_complete_appointment: 'can_complete_appointment',
-  can_forward_appointment: 'can_forward_appointment',
-  can_manage_department: 'can_manage_department',
+  can_complete_appt: 'can_complete_appt',
+  can_manage_appts: 'can_manage_appts',
+  can_manage_departments: 'can_manage_departments',
   can_manage_access: 'can_manage_access',
-  can_manage_holidays: 'can_manage_holidays'
+  can_manage_holidays: 'can_manage_holidays',
+  can_manage_queue: 'can_manage_queue',
+  can_view_all_appts: 'can_view_all_appts'
 } as const
 
 export type Access_rightsScalarFieldEnum = (typeof Access_rightsScalarFieldEnum)[keyof typeof Access_rightsScalarFieldEnum]
+
+
+export const AppointmentsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  patient_id: 'patient_id',
+  dept_id: 'dept_id',
+  step: 'step',
+  scheduled_at: 'scheduled_at',
+  complaint: 'complaint',
+  type: 'type',
+  subjective: 'subjective',
+  objective: 'objective',
+  assessment: 'assessment',
+  plan: 'plan',
+  assessed_by: 'assessed_by',
+  ai_assisted: 'ai_assisted',
+  status: 'status',
+  queue_no: 'queue_no',
+  created_at: 'created_at'
+} as const
+
+export type AppointmentsScalarFieldEnum = (typeof AppointmentsScalarFieldEnum)[keyof typeof AppointmentsScalarFieldEnum]
 
 
 export const Appointment_logsScalarFieldEnum = {
@@ -103,25 +130,14 @@ export const Appointment_logsScalarFieldEnum = {
 export type Appointment_logsScalarFieldEnum = (typeof Appointment_logsScalarFieldEnum)[keyof typeof Appointment_logsScalarFieldEnum]
 
 
-export const AppointmentsScalarFieldEnum = {
+export const DepartmentsScalarFieldEnum = {
   id: 'id',
-  user_id: 'user_id',
-  patient_id: 'patient_id',
-  department_id: 'department_id',
-  step: 'step',
-  scheduled_at: 'scheduled_at',
-  complaint: 'complaint',
-  type: 'type',
-  subjective: 'subjective',
-  objective: 'objective',
-  assessment: 'assessment',
-  plan: 'plan',
-  assessed_by: 'assessed_by',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  name: 'name',
+  code: 'code',
+  description: 'description'
 } as const
 
-export type AppointmentsScalarFieldEnum = (typeof AppointmentsScalarFieldEnum)[keyof typeof AppointmentsScalarFieldEnum]
+export type DepartmentsScalarFieldEnum = (typeof DepartmentsScalarFieldEnum)[keyof typeof DepartmentsScalarFieldEnum]
 
 
 export const Department_scheduleScalarFieldEnum = {
@@ -137,14 +153,13 @@ export const Department_scheduleScalarFieldEnum = {
 export type Department_scheduleScalarFieldEnum = (typeof Department_scheduleScalarFieldEnum)[keyof typeof Department_scheduleScalarFieldEnum]
 
 
-export const DepartmentsScalarFieldEnum = {
+export const Department_assignmentScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  code: 'code',
-  description: 'description'
+  user_id: 'user_id',
+  dept_id: 'dept_id'
 } as const
 
-export type DepartmentsScalarFieldEnum = (typeof DepartmentsScalarFieldEnum)[keyof typeof DepartmentsScalarFieldEnum]
+export type Department_assignmentScalarFieldEnum = (typeof Department_assignmentScalarFieldEnum)[keyof typeof Department_assignmentScalarFieldEnum]
 
 
 export const HolidaysScalarFieldEnum = {
@@ -198,6 +213,31 @@ export const PatientsScalarFieldEnum = {
 export type PatientsScalarFieldEnum = (typeof PatientsScalarFieldEnum)[keyof typeof PatientsScalarFieldEnum]
 
 
+export const Queue_sessionsScalarFieldEnum = {
+  id: 'id',
+  dept_id: 'dept_id',
+  session_date: 'session_date',
+  has_started: 'has_started',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type Queue_sessionsScalarFieldEnum = (typeof Queue_sessionsScalarFieldEnum)[keyof typeof Queue_sessionsScalarFieldEnum]
+
+
+export const Queue_session_statScalarFieldEnum = {
+  id: 'id',
+  session_id: 'session_id',
+  step: 'step',
+  now_serving: 'now_serving',
+  served_count: 'served_count',
+  avg_seconds: 'avg_seconds',
+  updated_at: 'updated_at'
+} as const
+
+export type Queue_session_statScalarFieldEnum = (typeof Queue_session_statScalarFieldEnum)[keyof typeof Queue_session_statScalarFieldEnum]
+
+
 export const User_accessScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
@@ -238,14 +278,6 @@ export const access_rightsOrderByRelevanceFieldEnum = {
 export type access_rightsOrderByRelevanceFieldEnum = (typeof access_rightsOrderByRelevanceFieldEnum)[keyof typeof access_rightsOrderByRelevanceFieldEnum]
 
 
-export const appointment_logsOrderByRelevanceFieldEnum = {
-  action: 'action',
-  remarks: 'remarks'
-} as const
-
-export type appointment_logsOrderByRelevanceFieldEnum = (typeof appointment_logsOrderByRelevanceFieldEnum)[keyof typeof appointment_logsOrderByRelevanceFieldEnum]
-
-
 export const NullsOrder = {
   first: 'first',
   last: 'last'
@@ -260,10 +292,28 @@ export const appointmentsOrderByRelevanceFieldEnum = {
   subjective: 'subjective',
   objective: 'objective',
   assessment: 'assessment',
-  plan: 'plan'
+  plan: 'plan',
+  status: 'status'
 } as const
 
 export type appointmentsOrderByRelevanceFieldEnum = (typeof appointmentsOrderByRelevanceFieldEnum)[keyof typeof appointmentsOrderByRelevanceFieldEnum]
+
+
+export const appointment_logsOrderByRelevanceFieldEnum = {
+  action: 'action',
+  remarks: 'remarks'
+} as const
+
+export type appointment_logsOrderByRelevanceFieldEnum = (typeof appointment_logsOrderByRelevanceFieldEnum)[keyof typeof appointment_logsOrderByRelevanceFieldEnum]
+
+
+export const departmentsOrderByRelevanceFieldEnum = {
+  name: 'name',
+  code: 'code',
+  description: 'description'
+} as const
+
+export type departmentsOrderByRelevanceFieldEnum = (typeof departmentsOrderByRelevanceFieldEnum)[keyof typeof departmentsOrderByRelevanceFieldEnum]
 
 
 export const JsonNullValueFilter = {
@@ -288,15 +338,6 @@ export const department_scheduleOrderByRelevanceFieldEnum = {
 } as const
 
 export type department_scheduleOrderByRelevanceFieldEnum = (typeof department_scheduleOrderByRelevanceFieldEnum)[keyof typeof department_scheduleOrderByRelevanceFieldEnum]
-
-
-export const departmentsOrderByRelevanceFieldEnum = {
-  name: 'name',
-  code: 'code',
-  description: 'description'
-} as const
-
-export type departmentsOrderByRelevanceFieldEnum = (typeof departmentsOrderByRelevanceFieldEnum)[keyof typeof departmentsOrderByRelevanceFieldEnum]
 
 
 export const holidaysOrderByRelevanceFieldEnum = {

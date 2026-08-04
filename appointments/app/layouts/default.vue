@@ -77,22 +77,22 @@
             </span>
         </footer>
 
-        <!-- <v-snackbar v-model="snackbarStore.isVisible" :timeout="snackbarStore.timeout" width="400"
-            :color="snackbarStore.color" location="bottom right" class="mr-5 mb-13">
+        <v-snackbar v-model="snackbar.isVisible" :timeout="snackbar.timeout" width="400" :color="snackbar.color"
+            location="bottom right" class="mr-5 mb-13">
             <div class="d-flex">
-                <v-icon size="50">{{ snackbarStore.icon }}</v-icon>
+                <v-icon size="50">{{ snackbar.icon }}</v-icon>
                 <div class="align-self-center position-relative">
                     <v-card-title class="pt-0 pb-0">
-                        {{ snackbarStore.title }}
+                        {{ snackbar.title }}
                     </v-card-title>
                     <v-card-text class="pb-0">
-                        {{ snackbarStore.message }}
+                        {{ snackbar.message }}
                     </v-card-text>
                 </div>
             </div>
-        </v-snackbar> -->
+        </v-snackbar>
 
-        <AuthLogin v-model="dialog.login.isVisible" @confirm="login" />
+        <AuthLogin v-model="dialog.login.isVisible" @login="login" />
 
         <v-dialog v-model="isLoggingIn" width="400">
             <LayoutLoader label="Logging in. Please wait." />
@@ -121,6 +121,8 @@ const dialog = reactive({
 
 const isLoggingIn = ref(false);
 
+const snackbar = useSnackbar();
+
 const toolbar = ref({
     menu: [
         { href: "#home", label: "Home" },
@@ -133,13 +135,17 @@ const toolbar = ref({
 const login = (data: { user: User; accessToken: string; access: AccessRights }) => {
     isLoggingIn.value = true;
 
-    console.log(data);
     setUser(data.user);
     setAccess(data.access);
     setToken(data.accessToken);
 
     router.push("/my/appointments").then(() => {
         isLoggingIn.value = false;
+        snackbar.show({
+            message: `Welcome back ${data.user.fname}`,
+            title: `Hello!`,
+            type: "greeting",
+        });
     });
 };
 

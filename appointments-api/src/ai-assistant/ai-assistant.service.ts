@@ -29,7 +29,7 @@ export class AiAssistantService {
 
   private async callGeminiAndParse(prompt: string, attempt = 1): Promise<any> {
     const interaction = await this.ai.interactions.create({
-      model: 'gemini-3.5-flash',
+      model: 'gemini-3.5-flash-lite',
       input: prompt,
     });
 
@@ -66,13 +66,6 @@ export class AiAssistantService {
 
   private buildPrompt(dto: CreateAiAssistantDto, departments: unknown[]) {
     return `You are helping match a patient to the correct hospital department for a consultation.
-            Patient info:
-            - Complaint: ${dto.complaint}
-            ${dto.location ? `- Location of symptom: ${dto.location}` : ''}
-            - Symptom duration: ${dto.duration}
-            - Severity: ${dto.severity}
-            - Sex: ${dto.sex}F
-            - Age: ${dto.age}
 
             Available departments:
             ${JSON.stringify(departments, null, 2)}
@@ -90,6 +83,14 @@ export class AiAssistantService {
               "recommendations": [
                 { "department_id": number, "confidence": "high" | "medium" | "low", "reason": string }
               ]
-            }`;
+            }
+
+            Patient info:
+            - Complaint: ${dto.complaint}
+            ${dto.location ? `- Location of symptom: ${dto.location}` : ''}
+            - Symptom duration: ${dto.duration}
+            - Severity: ${dto.severity}
+            - Sex: ${dto.sex}
+            - Age: ${dto.age}`;
   }
 }

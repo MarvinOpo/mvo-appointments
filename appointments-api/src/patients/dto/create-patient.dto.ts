@@ -11,6 +11,8 @@ import {
 } from 'class-validator';
 
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 export class CreatePatientDto {
   @IsOptional()
@@ -49,12 +51,8 @@ export class CreatePatientDto {
   @Transform(({ value }) => {
     if (typeof value !== 'string') return undefined;
 
-    const parsed = dayjs(
-      value,
-      ['YYYY-MM-DD HH:mm:ss', 'YYYY-MM-DDTHH:mm:ssZ'],
-      true,
-    );
-    return parsed.isValid() ? parsed.toISOString() : undefined;
+    const parsed = dayjs.utc(value);
+    return parsed.isValid() ? parsed.startOf('day').toISOString() : undefined;
   })
   @IsDateString()
   birth_date: string;

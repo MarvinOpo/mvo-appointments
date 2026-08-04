@@ -359,6 +359,16 @@ export type department_scheduleUncheckedUpdateManyInput = {
   type?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
+export type Department_scheduleListRelationFilter = {
+  every?: Prisma.department_scheduleWhereInput
+  some?: Prisma.department_scheduleWhereInput
+  none?: Prisma.department_scheduleWhereInput
+}
+
+export type department_scheduleOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type department_scheduleOrderByRelevanceInput = {
   fields: Prisma.department_scheduleOrderByRelevanceFieldEnum | Prisma.department_scheduleOrderByRelevanceFieldEnum[]
   sort: Prisma.SortOrder
@@ -403,16 +413,6 @@ export type department_scheduleSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   dept_id?: Prisma.SortOrder
   pax?: Prisma.SortOrder
-}
-
-export type Department_scheduleListRelationFilter = {
-  every?: Prisma.department_scheduleWhereInput
-  some?: Prisma.department_scheduleWhereInput
-  none?: Prisma.department_scheduleWhereInput
-}
-
-export type department_scheduleOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
 }
 
 export type department_scheduleCreateNestedManyWithoutDepartmentInput = {

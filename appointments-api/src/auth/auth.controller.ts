@@ -43,8 +43,6 @@ export class AuthController {
     const cookies = req.cookies as Record<string, string> | undefined;
     const refreshToken = cookies?.['refreshToken'];
 
-    console.log('Ref Token', refreshToken);
-
     if (!refreshToken) {
       throw new HttpException('No refresh token', CODES.UNAUTHORIZED);
     }

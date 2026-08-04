@@ -8,6 +8,8 @@ import { DependentsModule } from './dependents/dependents.module';
 import { PatientsModule } from './patients/patients.module';
 import { DepartmentsModule } from './departments/departments.module';
 import { AiAssistantModule } from './ai-assistant/ai-assistant.module';
+import { DepartmentScheduleModule } from './department-schedule/department-schedule.module';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { AiAssistantModule } from './ai-assistant/ai-assistant.module';
     PatientsModule,
     DepartmentsModule,
     AiAssistantModule,
+    DepartmentScheduleModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [AppService],

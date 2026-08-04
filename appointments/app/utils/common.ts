@@ -1,11 +1,65 @@
 import moment from "moment";
 
+export const formatDate = (date: string, format: string) =>
+    moment(date).format(format);
+
+export const formatUTCDate = (date: string, format: string) =>
+    moment.utc(date).format(format);
+
 export const getAge = (birthDate: string | Date) =>
     moment().diff(birthDate, "years");
+
+export const getApptStatus = (step: number, type: string | null) => {
+    switch (step) {
+        case 1:
+            return {
+                label: "For Confirmation",
+                color: "grey",
+            };
+        case 2:
+            return {
+                label: type === "T" ? "For Teleconsult" : "For Check In",
+                color: "blue",
+            };
+        case 3:
+            return {
+                label: type === "T" ? "Completed" : "For Vital Signs",
+                color: type === "T" ? "green" : "blue",
+            };
+        case 4:
+            return {
+                label: "For Consultation",
+                color: "blue",
+            };
+        case 5:
+            return {
+                label: "Completed",
+                color: "green",
+            };
+    }
+};
+
+export const getApptType = (type: string | null) =>
+    type === "T" ? "Teleconsult" : "Face to Face";
 
 export const getFullName = (user: any) => {
     return [user.fname, user.mname, user.lname, user.ext_name]
         .filter(Boolean)
         .join(" ")
         .trim();
+};
+
+export const getQueueStep = (step: number) => {
+    switch (step) {
+        case 1:
+            return "FOR CONFIRMATION";
+        case 2:
+            return "FOR CHECK IN";
+        case 3:
+            return "FOR VITAL SIGNS";
+        case 4:
+            return "FOR CONSULTATION";
+        case 5:
+            return "COMPLETED";
+    }
 };
