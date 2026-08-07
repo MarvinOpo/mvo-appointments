@@ -113,6 +113,8 @@ export const AppointmentsScalarFieldEnum = {
   ai_assisted: 'ai_assisted',
   status: 'status',
   queue_no: 'queue_no',
+  order_no: 'order_no',
+  priority: 'priority',
   created_at: 'created_at'
 } as const
 

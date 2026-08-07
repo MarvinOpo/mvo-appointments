@@ -45,9 +45,18 @@ export interface AppointmentQueue {
     step: number;
 }
 
+export interface AppointmentWalkin {
+    id: number;
+    queue_no: number;
+    type: string;
+    step: number;
+}
+
 export interface QueueSession {
     id: number;
     dept_id: number;
+    dept_name: string;
+    dept_code: string;
     session_date: string;
     doctors_on_duty: number;
     has_started: boolean;

@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { QueueService } from './queue.service';
 import { CreateQueueDto } from './dto/create-queue.dto';
-import { UpdateQueueDto } from './dto/update-queue.dto';
+import { UpdateQueueDto, UpdateQueueStatDto } from './dto/update-queue.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('queue')
@@ -50,6 +50,14 @@ export class QueueController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateQueueDto: UpdateQueueDto) {
     return this.queueService.update(+id, updateQueueDto);
+  }
+
+  @Patch('stat/:id/skip')
+  callSkip(
+    @Param('id') id: string,
+    @Body() updateQueueStatDto: UpdateQueueStatDto,
+  ) {
+    return this.queueService.callSkip(+id, updateQueueStatDto);
   }
 
   @Delete(':id')

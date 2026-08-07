@@ -32,19 +32,12 @@
                     <template v-slot:item.options="{ item }">
                         <v-row justify="center">
                             <v-col cols="auto">
-                                <v-tooltip v-if="item.has_started" location="top">
+                                <v-tooltip location="top">
                                     <template v-slot:activator="{ props }">
                                         <v-icon @click="openDialogSessionForm(item)" color="blue" v-bind="props"
                                             size="x-large">mdi-monitor-eye</v-icon>
                                     </template>
                                     <span>View Session</span>
-                                </v-tooltip>
-
-                                <v-tooltip v-else location="top">
-                                    <template v-slot:activator="{ props }">
-                                        <v-icon color="blue" v-bind="props" size="x-large">mdi-clock-start</v-icon>
-                                    </template>
-                                    <span>Start Queue</span>
                                 </v-tooltip>
                             </v-col>
                         </v-row>
@@ -80,7 +73,7 @@ const dialog = reactive({
 
 const sessions = reactive({
     headers: <any[]>[
-        { title: 'Department', align: 'start', key: 'department_name', sortable: false },
+        { title: 'Department', align: 'start', key: 'dept_name', sortable: false },
         { title: 'Session Date', align: 'center', key: 'session_date', sortable: false },
         { title: 'Doctors On Duty', align: 'center', key: 'doctors_on_duty', sortable: false },
         { title: 'Started?', align: 'center', key: 'has_started', sortable: false },
@@ -96,6 +89,8 @@ const getQueueSessions = async () => {
     const param = `?date=${moment('2026/08/05 00:00:00').format('YYYY-MM-DD')}`
     const data = await fetchJsonData('/queue/sessions/today' + param, token.value);
     if (data.error) return;
+
+    console.log(data);
 
     sessions.list = data.map((item: any) => ({
         ...item,

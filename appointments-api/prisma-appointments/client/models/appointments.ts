@@ -34,6 +34,7 @@ export type AppointmentsAvgAggregateOutputType = {
   step: number | null
   assessed_by: number | null
   queue_no: number | null
+  order_no: number | null
 }
 
 export type AppointmentsSumAggregateOutputType = {
@@ -44,6 +45,7 @@ export type AppointmentsSumAggregateOutputType = {
   step: number | null
   assessed_by: number | null
   queue_no: number | null
+  order_no: number | null
 }
 
 export type AppointmentsMinAggregateOutputType = {
@@ -63,6 +65,8 @@ export type AppointmentsMinAggregateOutputType = {
   ai_assisted: boolean | null
   status: string | null
   queue_no: number | null
+  order_no: number | null
+  priority: $Enums.PriorityType | null
   created_at: Date | null
 }
 
@@ -83,6 +87,8 @@ export type AppointmentsMaxAggregateOutputType = {
   ai_assisted: boolean | null
   status: string | null
   queue_no: number | null
+  order_no: number | null
+  priority: $Enums.PriorityType | null
   created_at: Date | null
 }
 
@@ -103,6 +109,8 @@ export type AppointmentsCountAggregateOutputType = {
   ai_assisted: number
   status: number
   queue_no: number
+  order_no: number
+  priority: number
   created_at: number
   _all: number
 }
@@ -116,6 +124,7 @@ export type AppointmentsAvgAggregateInputType = {
   step?: true
   assessed_by?: true
   queue_no?: true
+  order_no?: true
 }
 
 export type AppointmentsSumAggregateInputType = {
@@ -126,6 +135,7 @@ export type AppointmentsSumAggregateInputType = {
   step?: true
   assessed_by?: true
   queue_no?: true
+  order_no?: true
 }
 
 export type AppointmentsMinAggregateInputType = {
@@ -145,6 +155,8 @@ export type AppointmentsMinAggregateInputType = {
   ai_assisted?: true
   status?: true
   queue_no?: true
+  order_no?: true
+  priority?: true
   created_at?: true
 }
 
@@ -165,6 +177,8 @@ export type AppointmentsMaxAggregateInputType = {
   ai_assisted?: true
   status?: true
   queue_no?: true
+  order_no?: true
+  priority?: true
   created_at?: true
 }
 
@@ -185,6 +199,8 @@ export type AppointmentsCountAggregateInputType = {
   ai_assisted?: true
   status?: true
   queue_no?: true
+  order_no?: true
+  priority?: true
   created_at?: true
   _all?: true
 }
@@ -292,6 +308,8 @@ export type AppointmentsGroupByOutputType = {
   ai_assisted: boolean
   status: string
   queue_no: number | null
+  order_no: number | null
+  priority: $Enums.PriorityType
   created_at: Date
   _count: AppointmentsCountAggregateOutputType | null
   _avg: AppointmentsAvgAggregateOutputType | null
@@ -335,6 +353,8 @@ export type appointmentsWhereInput = {
   ai_assisted?: Prisma.BoolFilter<"appointments"> | boolean
   status?: Prisma.StringFilter<"appointments"> | string
   queue_no?: Prisma.IntNullableFilter<"appointments"> | number | null
+  order_no?: Prisma.IntNullableFilter<"appointments"> | number | null
+  priority?: Prisma.EnumPriorityTypeFilter<"appointments"> | $Enums.PriorityType
   created_at?: Prisma.DateTimeFilter<"appointments"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientsScalarRelationFilter, Prisma.patientsWhereInput>
   department?: Prisma.XOR<Prisma.DepartmentsScalarRelationFilter, Prisma.departmentsWhereInput>
@@ -357,6 +377,8 @@ export type appointmentsOrderByWithRelationInput = {
   ai_assisted?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrderInput | Prisma.SortOrder
+  order_no?: Prisma.SortOrderInput | Prisma.SortOrder
+  priority?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   patient?: Prisma.patientsOrderByWithRelationInput
   department?: Prisma.departmentsOrderByWithRelationInput
@@ -384,6 +406,8 @@ export type appointmentsWhereUniqueInput = Prisma.AtLeast<{
   ai_assisted?: Prisma.BoolFilter<"appointments"> | boolean
   status?: Prisma.StringFilter<"appointments"> | string
   queue_no?: Prisma.IntNullableFilter<"appointments"> | number | null
+  order_no?: Prisma.IntNullableFilter<"appointments"> | number | null
+  priority?: Prisma.EnumPriorityTypeFilter<"appointments"> | $Enums.PriorityType
   created_at?: Prisma.DateTimeFilter<"appointments"> | Date | string
   patient?: Prisma.XOR<Prisma.PatientsScalarRelationFilter, Prisma.patientsWhereInput>
   department?: Prisma.XOR<Prisma.DepartmentsScalarRelationFilter, Prisma.departmentsWhereInput>
@@ -406,6 +430,8 @@ export type appointmentsOrderByWithAggregationInput = {
   ai_assisted?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrderInput | Prisma.SortOrder
+  order_no?: Prisma.SortOrderInput | Prisma.SortOrder
+  priority?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   _count?: Prisma.appointmentsCountOrderByAggregateInput
   _avg?: Prisma.appointmentsAvgOrderByAggregateInput
@@ -434,6 +460,8 @@ export type appointmentsScalarWhereWithAggregatesInput = {
   ai_assisted?: Prisma.BoolWithAggregatesFilter<"appointments"> | boolean
   status?: Prisma.StringWithAggregatesFilter<"appointments"> | string
   queue_no?: Prisma.IntNullableWithAggregatesFilter<"appointments"> | number | null
+  order_no?: Prisma.IntNullableWithAggregatesFilter<"appointments"> | number | null
+  priority?: Prisma.EnumPriorityTypeWithAggregatesFilter<"appointments"> | $Enums.PriorityType
   created_at?: Prisma.DateTimeWithAggregatesFilter<"appointments"> | Date | string
 }
 
@@ -451,6 +479,8 @@ export type appointmentsCreateInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
   patient: Prisma.patientsCreateNestedOneWithoutAppointmentsInput
   department: Prisma.departmentsCreateNestedOneWithoutAppointmentsInput
@@ -473,6 +503,8 @@ export type appointmentsUncheckedCreateInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
 }
 
@@ -490,6 +522,8 @@ export type appointmentsUpdateInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.patientsUpdateOneRequiredWithoutAppointmentsNestedInput
   department?: Prisma.departmentsUpdateOneRequiredWithoutAppointmentsNestedInput
@@ -512,6 +546,8 @@ export type appointmentsUncheckedUpdateInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -532,6 +568,8 @@ export type appointmentsCreateManyInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
 }
 
@@ -549,6 +587,8 @@ export type appointmentsUpdateManyMutationInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -569,6 +609,8 @@ export type appointmentsUncheckedUpdateManyInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -601,6 +643,8 @@ export type appointmentsCountOrderByAggregateInput = {
   ai_assisted?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
+  order_no?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -612,6 +656,7 @@ export type appointmentsAvgOrderByAggregateInput = {
   step?: Prisma.SortOrder
   assessed_by?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
+  order_no?: Prisma.SortOrder
 }
 
 export type appointmentsMaxOrderByAggregateInput = {
@@ -631,6 +676,8 @@ export type appointmentsMaxOrderByAggregateInput = {
   ai_assisted?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
+  order_no?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -651,6 +698,8 @@ export type appointmentsMinOrderByAggregateInput = {
   ai_assisted?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
+  order_no?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -662,6 +711,7 @@ export type appointmentsSumOrderByAggregateInput = {
   step?: Prisma.SortOrder
   assessed_by?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
+  order_no?: Prisma.SortOrder
 }
 
 export type AppointmentsListRelationFilter = {
@@ -688,6 +738,10 @@ export type NullableIntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type EnumPriorityTypeFieldUpdateOperationsInput = {
+  set?: $Enums.PriorityType
 }
 
 export type appointmentsCreateNestedManyWithoutDepartmentInput = {
@@ -788,6 +842,8 @@ export type appointmentsCreateWithoutDepartmentInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
   patient: Prisma.patientsCreateNestedOneWithoutAppointmentsInput
 }
@@ -808,6 +864,8 @@ export type appointmentsUncheckedCreateWithoutDepartmentInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
 }
 
@@ -857,6 +915,8 @@ export type appointmentsScalarWhereInput = {
   ai_assisted?: Prisma.BoolFilter<"appointments"> | boolean
   status?: Prisma.StringFilter<"appointments"> | string
   queue_no?: Prisma.IntNullableFilter<"appointments"> | number | null
+  order_no?: Prisma.IntNullableFilter<"appointments"> | number | null
+  priority?: Prisma.EnumPriorityTypeFilter<"appointments"> | $Enums.PriorityType
   created_at?: Prisma.DateTimeFilter<"appointments"> | Date | string
 }
 
@@ -874,6 +934,8 @@ export type appointmentsCreateWithoutPatientInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
   department: Prisma.departmentsCreateNestedOneWithoutAppointmentsInput
 }
@@ -894,6 +956,8 @@ export type appointmentsUncheckedCreateWithoutPatientInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
 }
 
@@ -939,6 +1003,8 @@ export type appointmentsCreateManyDepartmentInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
 }
 
@@ -956,6 +1022,8 @@ export type appointmentsUpdateWithoutDepartmentInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   patient?: Prisma.patientsUpdateOneRequiredWithoutAppointmentsNestedInput
 }
@@ -976,6 +1044,8 @@ export type appointmentsUncheckedUpdateWithoutDepartmentInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -995,6 +1065,8 @@ export type appointmentsUncheckedUpdateManyWithoutDepartmentInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1014,6 +1086,8 @@ export type appointmentsCreateManyPatientInput = {
   ai_assisted?: boolean
   status?: string
   queue_no?: number | null
+  order_no?: number | null
+  priority?: $Enums.PriorityType
   created_at?: Date | string
 }
 
@@ -1031,6 +1105,8 @@ export type appointmentsUpdateWithoutPatientInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.departmentsUpdateOneRequiredWithoutAppointmentsNestedInput
 }
@@ -1051,6 +1127,8 @@ export type appointmentsUncheckedUpdateWithoutPatientInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1070,6 +1148,8 @@ export type appointmentsUncheckedUpdateManyWithoutPatientInput = {
   ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  priority?: Prisma.EnumPriorityTypeFieldUpdateOperationsInput | $Enums.PriorityType
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1092,6 +1172,8 @@ export type appointmentsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   ai_assisted?: boolean
   status?: boolean
   queue_no?: boolean
+  order_no?: boolean
+  priority?: boolean
   created_at?: boolean
   patient?: boolean | Prisma.patientsDefaultArgs<ExtArgs>
   department?: boolean | Prisma.departmentsDefaultArgs<ExtArgs>
@@ -1116,10 +1198,12 @@ export type appointmentsSelectScalar = {
   ai_assisted?: boolean
   status?: boolean
   queue_no?: boolean
+  order_no?: boolean
+  priority?: boolean
   created_at?: boolean
 }
 
-export type appointmentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "patient_id" | "department_id" | "step" | "scheduled_at" | "complaint" | "type" | "subjective" | "objective" | "assessment" | "plan" | "assessed_by" | "ai_assisted" | "status" | "queue_no" | "created_at", ExtArgs["result"]["appointments"]>
+export type appointmentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "patient_id" | "department_id" | "step" | "scheduled_at" | "complaint" | "type" | "subjective" | "objective" | "assessment" | "plan" | "assessed_by" | "ai_assisted" | "status" | "queue_no" | "order_no" | "priority" | "created_at", ExtArgs["result"]["appointments"]>
 export type appointmentsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.patientsDefaultArgs<ExtArgs>
   department?: boolean | Prisma.departmentsDefaultArgs<ExtArgs>
@@ -1148,6 +1232,8 @@ export type $appointmentsPayload<ExtArgs extends runtime.Types.Extensions.Intern
     ai_assisted: boolean
     status: string
     queue_no: number | null
+    order_no: number | null
+    priority: $Enums.PriorityType
     created_at: Date
   }, ExtArgs["result"]["appointments"]>
   composites: {}
@@ -1536,6 +1622,8 @@ export interface appointmentsFieldRefs {
   readonly ai_assisted: Prisma.FieldRef<"appointments", 'Boolean'>
   readonly status: Prisma.FieldRef<"appointments", 'String'>
   readonly queue_no: Prisma.FieldRef<"appointments", 'Int'>
+  readonly order_no: Prisma.FieldRef<"appointments", 'Int'>
+  readonly priority: Prisma.FieldRef<"appointments", 'PriorityType'>
   readonly created_at: Prisma.FieldRef<"appointments", 'DateTime'>
 }
     

@@ -23,6 +23,7 @@ export const options = {
             description: "Register and queue patients",
             icon: "mdi-clipboard-check-outline",
             color: "primary",
+            step: 2,
         },
         {
             value: "vital_signs",
@@ -30,6 +31,7 @@ export const options = {
             description: "Record BP, temp, weight",
             icon: "mdi-heart-pulse",
             color: "error",
+            step: 3,
         },
         {
             value: "consult",
@@ -37,6 +39,7 @@ export const options = {
             description: "Doctor consultation room",
             icon: "mdi-doctor",
             color: "success",
+            step: 4,
         },
     ],
     relationships: ["Self", "Child", "Spouse", "Parent", "Sibling", "Other"],

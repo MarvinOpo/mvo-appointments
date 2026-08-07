@@ -197,10 +197,12 @@ export class AppointmentsService {
         },
         _max: {
           queue_no: true,
+          order_no: true,
         },
       });
 
       const nextQueueNo = (result._max.queue_no ?? 0) + 1;
+      const nextOrderNo = (result._max.order_no ?? 0) + 1;
 
       await this.createLogs(
         tx,
@@ -209,12 +211,13 @@ export class AppointmentsService {
         updateAppointmentDto.remarks ?? 'Your appointment has been approved.',
       );
 
-      return tx.appointments.update({
+      return await tx.appointments.update({
         where: { id: id },
         data: {
           step: 2,
           status: 'O',
           queue_no: nextQueueNo,
+          order_no: nextOrderNo,
         },
       });
     });

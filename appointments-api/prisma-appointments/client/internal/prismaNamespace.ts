@@ -1278,6 +1278,8 @@ export const AppointmentsScalarFieldEnum = {
   ai_assisted: 'ai_assisted',
   status: 'status',
   queue_no: 'queue_no',
+  order_no: 'order_no',
+  priority: 'priority',
   created_at: 'created_at'
 } as const
 
@@ -1571,6 +1573,13 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+    
+
+
+/**
+ * Reference to a field of type 'PriorityType'
+ */
+export type EnumPriorityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PriorityType'>
     
 
 

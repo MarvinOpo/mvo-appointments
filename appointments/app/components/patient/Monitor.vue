@@ -39,7 +39,8 @@
                         <div class="now-serving-label">Now Serving</div>
                         <div class="now-serving-number font-weight-bold text-primary my-2">
                             {{
-                                queueStat?.now_serving ? `${department?.code}-${queueStat?.now_serving}` : 'Not Started'
+                                queueStat?.now_serving ?
+                                    `${department?.code}-${queueStat?.now_serving}` : '-'
                             }}
                         </div>
                         <v-chip v-if="isMyTurn" color="success" size="large" prepend-icon="mdi-bell-ring">
@@ -77,7 +78,7 @@ const department = computed(() => props.appointment.department);
 const headers = computed(() => [
     { title: 'My Number', value: `${department.value?.code}-${queueNo.value}` },
     { title: `Position in Queue(${timeRange.value})`, value: queuePosition.value },
-    { title: 'Doctors on Duty', value: session.value.doctors_on_duty },
+    { title: 'Doctors on Duty', value: session.value?.doctors_on_duty },
     { title: 'Average Wait Time', value: `${avgWaitTime.value} min` },
 ]);
 
@@ -85,14 +86,7 @@ const queueNo = computed(() => props.appointment.queue_no);
 
 const scheduledAppointments = ref<AppointmentQueue[]>([]);
 
-const session = ref<QueueSession>({
-    id: 0,
-    dept_id: props.appointment.department_id || 0,
-    session_date: moment(props.appointment.scheduled_at).format('YYYY-MM-DD'),
-    doctors_on_duty: 0,
-    has_started: false,
-    stats: [],
-});
+const session = ref<QueueSession | null>(null);
 
 const socket = ref<ReturnType<typeof connectSocket> | null>(null);
 
@@ -162,7 +156,7 @@ watch(model, async (isOpen) => {
         await getQueueItems();
         await getQueueSession();
 
-        if (session.value.has_started) {
+        if (session.value?.has_started) {
             socket.value = connectSocket();
             socket.value.emit('joinQueue', { step: props.appointment.step, deptId: props.appointment.department_id });
             socket.value.on('queue:update', handleQueueUpdate);

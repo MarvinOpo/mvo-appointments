@@ -7,6 +7,14 @@ datasource db {
   provider = "mysql"
 }
 
+enum PriorityType {
+  EMPLOYEE
+  SENIOR
+  PWD
+  PREGNANT
+  REGULAR
+}
+
 model access_rights {
   id                     Int     @id @default(autoincrement())
   description            String  @db.VarChar(50)
@@ -20,23 +28,25 @@ model access_rights {
 }
 
 model appointments {
-  id            Int      @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   user_id       Int
   patient_id    Int
   department_id Int
-  step          Int      @default(1)
-  scheduled_at  DateTime @db.DateTime(0)
-  complaint     String   @db.VarChar(500)
-  type          String   @db.Char(2)
-  subjective    String?  @db.VarChar(500)
-  objective     String?  @db.VarChar(500)
-  assessment    String?  @db.VarChar(500)
-  plan          String?  @db.VarChar(500)
+  step          Int          @default(1)
+  scheduled_at  DateTime     @db.DateTime(0)
+  complaint     String       @db.VarChar(500)
+  type          String       @db.Char(2)
+  subjective    String?      @db.VarChar(500)
+  objective     String?      @db.VarChar(500)
+  assessment    String?      @db.VarChar(500)
+  plan          String?      @db.VarChar(500)
   assessed_by   Int?
-  ai_assisted   Boolean  @default(false)
-  status        String   @default("P") @db.Char(2)
+  ai_assisted   Boolean      @default(false)
+  status        String       @default("P") @db.Char(2)
   queue_no      Int?
-  created_at    DateTime @default(now()) @db.DateTime(0)
+  order_no      Int?
+  priority      PriorityType @default(REGULAR)
+  created_at    DateTime     @default(now()) @db.DateTime(0)
 
   patient    patients    @relation(fields: [patient_id], references: [id])
   department departments @relation(fields: [department_id], references: [id])

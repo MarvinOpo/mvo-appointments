@@ -67,3 +67,10 @@ export const getQueueStep = (step: number) => {
             return "COMPLETED";
     }
 };
+
+export const spellOutCode = (code: string) => {
+    return code
+        .split("")
+        .map((c) => (c === "-" ? "dash" : c))
+        .join(" ");
+};
