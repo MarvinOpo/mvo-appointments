@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateQueueDto } from './dto/create-queue.dto';
 import { UpdateQueueDto, UpdateQueueStatDto } from './dto/update-queue.dto';
 
@@ -99,8 +99,36 @@ export class QueueService {
     return `This action returns a #${id} queue`;
   }
 
-  update(id: number, updateQueueDto: UpdateQueueDto) {
-    return `This action updates a #${id} queue`;
+  async updateDoctorCount(id: number, doctorsOnDuty: number) {
+    return await mvo_appointments.queue_sessions.update({
+      where: { id },
+      data: { doctors_on_duty: doctorsOnDuty },
+    });
+  }
+
+  async callComplete(id: number, updateQueueStatDto: UpdateQueueStatDto) {
+    return await mvo_appointments.$transaction(async (tx) => {
+      const { duration } = updateQueueStatDto;
+
+      const stat = await tx.queue_session_stat.findFirst({ where: { id } });
+      if (!stat) throw new NotFoundException('Queue stat not found');
+
+      const data: {
+        served_count?: number;
+        avg_seconds?: number;
+        now_serving: number;
+      } = {
+        now_serving: 0,
+      };
+
+      if (duration) {
+        const totalSeconds = stat.avg_seconds * stat.served_count;
+        data.served_count = stat.served_count + 1;
+        data.avg_seconds = (totalSeconds + duration) / (stat.served_count + 1);
+      }
+
+      return await tx.queue_session_stat.update({ where: { id }, data });
+    });
   }
 
   async callSkip(id: number, updateQueueStatDto: UpdateQueueStatDto) {
@@ -138,6 +166,11 @@ export class QueueService {
         where: { id },
         data: {
           now_serving,
+        },
+        include: {
+          session: {
+            select: { session_date: true },
+          },
         },
       });
     });

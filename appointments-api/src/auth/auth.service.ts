@@ -21,7 +21,7 @@ export class AuthService {
 
     const user = await vsmmc_services.users.findFirst({
       where: { email },
-      include: { services_rights: { where: { service_id: 4 } } },
+      include: { services_rights: { where: { service_id: 5 } } },
     });
 
     if (!user) throw new HttpException('User not found', CODES.NOT_FOUND);

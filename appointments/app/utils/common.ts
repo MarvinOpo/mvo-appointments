@@ -1,5 +1,14 @@
 import moment from "moment";
 
+export const formatAvgTime = (seconds?: number | null) => {
+    if (!seconds) return "-";
+
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.round(seconds % 60);
+
+    return `${mins}:${secs.toString().padStart(2, "0")} mins`;
+};
+
 export const formatDate = (date: string, format: string) =>
     moment(date).format(format);
 

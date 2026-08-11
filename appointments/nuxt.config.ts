@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: {
             API_BASE: process.env.API_BASE || "http://localhost:3000/api",
+            WS_BASE: process.env.WS_BASE || "http://localhost:9004",
         },
     },
     imports: {

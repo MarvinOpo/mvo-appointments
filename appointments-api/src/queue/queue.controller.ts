@@ -47,19 +47,6 @@ export class QueueController {
     return this.queueService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQueueDto: UpdateQueueDto) {
-    return this.queueService.update(+id, updateQueueDto);
-  }
-
-  @Patch('stat/:id/skip')
-  callSkip(
-    @Param('id') id: string,
-    @Body() updateQueueStatDto: UpdateQueueStatDto,
-  ) {
-    return this.queueService.callSkip(+id, updateQueueStatDto);
-  }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.queueService.remove(+id);

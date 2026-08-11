@@ -22,7 +22,7 @@ function buildHeaders(
 let isRefreshing = false;
 let refreshPromise: Promise<string | null> | null = null;
 
-async function refreshAccessToken(): Promise<string | null> {
+export async function refreshAccessToken(): Promise<string | null> {
     // avoid firing multiple parallel refresh calls if several requests 401 at once
     if (isRefreshing && refreshPromise) return refreshPromise;
 
@@ -88,10 +88,14 @@ async function request<T = any>(
             notifyError(
                 "Unable to reach the server. Please check your connection.",
             );
-        throw e;
+
+        return {
+            error: true,
+            message: "Connection failed. Please try again.",
+        } as T;
     }
 
-    if (res.status === 401) {
+    if (res.status === 401 && token) {
         const body = await res.clone().json();
 
         const { logout } = useUser();

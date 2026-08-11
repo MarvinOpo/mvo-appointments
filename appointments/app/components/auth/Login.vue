@@ -15,7 +15,7 @@
             </v-card-title>
 
             <v-card-text>
-                <div v-if="error" class="text-white bg-red pa-3 mb-5 w-100">
+                <div v-if="error" class="text-center text-white bg-red pa-3 mb-5 w-100">
                     {{ error }}
                 </div>
 
@@ -94,7 +94,7 @@ const login = async () => {
     const data = await postJsonData("/auth/login", credential);
 
     if (data.error) {
-        error.value = data.error;
+        error.value = data.message;
         isLoading.value = false;
         return;
     }

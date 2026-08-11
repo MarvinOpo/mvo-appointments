@@ -49,7 +49,8 @@
         <QueueSessionForm v-model="dialog.session.isVisible" :session="dialog.session.data" @open-session="openSession"
             @open-monitor="openMonitor" />
 
-        <QueueStation v-model="dialog.station.isVisible" :role="dialog.station.role" :session="dialog.station.data" />
+        <QueueStation v-model="dialog.station.isVisible" :role="dialog.station.role" :session="dialog.station.data"
+            @update-doctor-count="handleDoctorCount" />
     </div>
 </template>
 
@@ -90,14 +91,16 @@ const getQueueSessions = async () => {
     const data = await fetchJsonData('/queue/sessions/today' + param, token.value);
     if (data.error) return;
 
-    console.log(data);
-
     sessions.list = data.map((item: any) => ({
         ...item,
         has_started: item.has_started ? true : false,
         doctors_on_duty: item.doctors_on_duty ?? null
     }));
     sessions.isLoading = false;
+}
+
+const handleDoctorCount = (doctorCount: number) => {
+    dialog.session.data!.doctors_on_duty = doctorCount;
 }
 
 const openDialogSessionForm = (item: QueueSession) => {
@@ -113,11 +116,18 @@ const openMonitor = (role: string) => {
     dialog.station.isVisible = true;
     dialog.station.role = role;
     dialog.station.data = dialog.session.data;
+
+    dialog.session.isVisible = false;
 }
 
 onMounted(() => {
     getQueueSessions();
 })
+
+definePageMeta({
+    middleware: 'require-access',
+    requiredAccess: ['can_manage_queue']
+});
 </script>
 
 <style scoped></style>

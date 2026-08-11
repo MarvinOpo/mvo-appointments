@@ -10,6 +10,8 @@ import { UsersService } from 'src/users/users.service';
 import { Request } from 'express';
 import { UserDto } from 'src/users/dto/user.dto';
 import { plainToInstance } from 'class-transformer';
+import { Socket } from 'socket.io';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -67,5 +69,26 @@ export class AuthGuard implements CanActivate {
   private extractToken(req: Request): string | undefined {
     const [type, token] = req.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
+  }
+}
+
+@Injectable()
+export class WsAuthGuard implements CanActivate {
+  constructor(private jwtService: JwtService) {}
+
+  canActivate(context: ExecutionContext): boolean {
+    const client: Socket = context.switchToWs().getClient();
+    const token = client.handshake.auth?.token;
+    try {
+      const payload = this.jwtService.verify(token, {
+        secret: process.env.JWT_ACCESS_SECRET,
+      });
+      client.data.user = payload;
+      return true;
+    } catch (err: any) {
+      throw new WsException(
+        err.name === 'TokenExpiredError' ? 'TokenExpired' : 'Unauthorized',
+      );
+    }
   }
 }

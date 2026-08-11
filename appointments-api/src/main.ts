@@ -12,6 +12,7 @@ import {
   PrismaExceptionFilter,
   PrismaValidationExceptionFilter,
 } from './common/filters/prisma-exception.filter';
+import { IoAdapter } from '@nestjs/platform-socket.io';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -19,6 +20,8 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
+
+  app.useWebSocketAdapter(new IoAdapter(app));
 
   app.setGlobalPrefix('api');
   app.useGlobalFilters(
@@ -48,20 +51,22 @@ async function bootstrap() {
 
   app.useStaticAssets(join(process.cwd(), 'public'));
 
-  // SPA fallback — must come AFTER useStaticAssets
   app.use((req: Request, res: Response, next: NextFunction) => {
-    if (req.path.startsWith('/api') || req.path.startsWith('/_nuxt')) {
+    if (
+      req.path.startsWith('/api') ||
+      req.path.startsWith('/_nuxt') ||
+      req.path.startsWith('/socket.io')
+    ) {
       return next();
     }
     if (req.path.includes('.')) {
-      return next(); // let express handle static files with extensions
+      return next();
     }
 
-    // For all other routes (e.g. /forms, /bucket/ipcr), serve the SPA shell
     const fallback = path.resolve(process.cwd(), 'public', 'index.html');
     res.sendFile(fallback);
   });
-
+  
   await app.listen(9004, '0.0.0.0');
 }
 

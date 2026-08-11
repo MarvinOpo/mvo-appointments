@@ -136,9 +136,7 @@ export class AppointmentsService {
           in: ['P', 'O'],
         },
       },
-      orderBy: {
-        queue_no: 'asc',
-      },
+      orderBy: [{ scheduled_at: 'asc' }, { order_no: 'asc' }],
     });
   }
 
@@ -190,10 +188,7 @@ export class AppointmentsService {
       const result = await tx.appointments.aggregate({
         where: {
           department_id: appointment.department_id,
-          scheduled_at: {
-            gte: startOfDay,
-            lte: endOfDay,
-          },
+          scheduled_at: appointment.scheduled_at,
         },
         _max: {
           queue_no: true,
@@ -219,6 +214,40 @@ export class AppointmentsService {
           queue_no: nextQueueNo,
           order_no: nextOrderNo,
         },
+      });
+    });
+  }
+
+  async updateStep(id: number, step: number) {
+    return await mvo_appointments.$transaction(async (tx) => {
+      let action = '';
+      let remarks = '';
+
+      const data: { step?: number; status?: string } = {
+        step: step + 1,
+      };
+
+      switch (step) {
+        case 2:
+          action = 'Checked In';
+          remarks = 'Patient checked in and queued for vital signs.';
+          break;
+        case 3:
+          action = 'Vital Signs';
+          remarks = 'Vital signs taken; patient queued for consultation.';
+          break;
+        case 4:
+          action = 'Consultation';
+          remarks = 'Consultation completed. Appointment closed.';
+          data.status = 'C';
+          break;
+      }
+
+      await this.createLogs(tx, id, action, remarks);
+
+      return await tx.appointments.update({
+        where: { id: id },
+        data,
       });
     });
   }

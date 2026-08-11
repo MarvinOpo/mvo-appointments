@@ -2,15 +2,27 @@ import { io, type Socket } from "socket.io-client";
 
 let socket: Socket | null = null;
 
-export function useQueueSocket() {
+export const useQueueSocket = () => {
     const connectSocket = () => {
         if (!socket) {
-            socket = io("/queue", {
+            const { token } = useUser();
+            const config = useRuntimeConfig();
+
+            socket = io(`${config.public.WS_BASE}/queue`, {
                 withCredentials: true,
+                auth: { token: token.value },
             });
         }
         return socket;
     };
 
-    return { connectSocket };
-}
+    const reconnectWithFreshToken = (newToken: string) => {
+        if (socket) {
+            socket.auth = { token: newToken };
+            socket.disconnect();
+            socket.connect();
+        }
+    };
+
+    return { connectSocket, reconnectWithFreshToken };
+};
