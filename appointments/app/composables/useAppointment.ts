@@ -3,6 +3,7 @@ import type { Moment } from "moment";
 const appointmentId = ref(0);
 const appointmentStep = ref(1);
 const appointmentType = ref<AppointmentType>("T");
+const appointmentStatus = ref("");
 const isVisible = ref(false);
 
 export const useAppointment = () => {
@@ -10,10 +11,12 @@ export const useAppointment = () => {
         id: number,
         step: number,
         type: AppointmentType,
+        status: string,
     ) => {
         appointmentId.value = id;
         appointmentStep.value = step;
         appointmentType.value = type;
+        appointmentStatus.value = status;
 
         isVisible.value = true;
     };
@@ -39,6 +42,7 @@ export const useAppointment = () => {
         appointmentId,
         appointmentStep,
         appointmentType,
+        appointmentStatus,
         trackAppointment,
         getScheduledAppointments,
     });

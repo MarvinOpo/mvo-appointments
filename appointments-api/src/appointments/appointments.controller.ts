@@ -30,9 +30,20 @@ export class AppointmentsController {
   @UseGuards(AuthGuard)
   @Permissions('can_manage_appointments')
   @Get()
-  findAppointmentByStatus(@Query('status') status: string) {
+  findAppointmentByStatus(
+    @Query('status') status: string,
+    @Query('fname') fname?: string,
+    @Query('lname') lname?: string,
+    @Query('type') type?: string,
+    @Query('schedule') schedule?: string,
+  ) {
     const statusArray = status?.split(',');
-    return this.appointmentsService.findAppointmentByStatus(statusArray);
+    return this.appointmentsService.findAppointmentByStatus(statusArray, {
+      fname,
+      lname,
+      type,
+      schedule,
+    });
   }
 
   @UseGuards(AuthGuard)
@@ -61,12 +72,33 @@ export class AppointmentsController {
     return this.appointmentsService.findLogs(+id);
   }
 
+  @UseGuards(AuthGuard)
+  @Permissions('can_manage_appointments')
   @Patch(':id/approve')
   approve(
     @Param('id') id: string,
     @Body() updateAppointmentDto: UpdateAppointmentDto,
   ) {
     return this.appointmentsService.approve(+id, updateAppointmentDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Permissions('can_manage_appointments')
+  @Patch(':id/resched')
+  resched(
+    @Param('id') id: string,
+    @Body() updateAppointmentDto: UpdateAppointmentDto,
+  ) {
+    return this.appointmentsService.resched(+id, updateAppointmentDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id/cancel')
+  cancel(
+    @Param('id') id: string,
+    @Body() updateAppointmentDto: UpdateAppointmentDto,
+  ) {
+    return this.appointmentsService.cancel(+id, updateAppointmentDto);
   }
 
   @Delete(':id')

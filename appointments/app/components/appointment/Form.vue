@@ -251,6 +251,7 @@ const form = ref<AppointmentFormData>(defaultForm());
 const formInfo = ref();
 
 const filteredDepartments = computed(() => {
+    form.value.department_id = null;
     return props.departments.filter(dept =>
         dept.schedules?.some(schedule => schedule.type === form.value.type)
     )
@@ -261,6 +262,8 @@ const canGoToSchedule = computed(() => {
 })
 
 const isLoading = ref(false);
+
+const isLoadingSchedule = ref(false);
 
 const selectedDepartment = computed(() => {
     bookingError.value = '';
@@ -279,7 +282,6 @@ const timeHeaders = [
     { title: '', key: 'options', sortable: false },
 ];
 
-const isLoadingSchedule = ref(false);
 
 const isBooking = ref(false);
 

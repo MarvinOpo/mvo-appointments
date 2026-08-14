@@ -12,6 +12,7 @@ export interface Appointment {
     assessment: string | null;
     plan: string | null;
     assessed_by: number | null;
+    status: string | null;
     ai_assisted: boolean;
     queue_no?: number | null;
     created_at: string | null;
@@ -38,9 +39,17 @@ export interface AppointmentLog {
     created_at: string;
 }
 
+export interface AppointmentReschedForm {
+    id: number;
+    department_id: number | null;
+    type: AppointmentType;
+    complaint: string;
+    scheduled_at: string;
+}
+
 export type AppointmentType = "T" | "F";
 
 export type AppointmentFormData = Omit<
     Appointment,
-    "created_at" | "updated_at"
+    "created_at" | "updated_at" | "status"
 >;

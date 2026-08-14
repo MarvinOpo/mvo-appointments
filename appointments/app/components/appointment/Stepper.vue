@@ -6,15 +6,23 @@
             <v-divider />
 
             <template v-if="type === 'T'">
-                <v-stepper-item :value="2" title="Teleconsultation" :color="step > 2 ? 'green' : 'blue'"
-                    :complete="step > 2" />
+                <v-stepper-item v-if="!cancelledAppt" :value="2" title="Teleconsultation"
+                    :color="step > 2 ? 'green' : 'blue'" :complete="step > 2" />
+
+                <v-stepper-item v-else :rules="[() => false]" :subtitle="cancelDetails" title="Teleconsultation"
+                    :value="2"></v-stepper-item>
+
                 <v-divider />
 
                 <v-stepper-item :value="3" title="Completed" :color="step >= 3 ? 'green' : 'blue'"
                     :complete="step >= 3" />
             </template>
             <template v-else>
-                <v-stepper-item :value="2" title="Check In" :color="step > 2 ? 'green' : 'blue'" :complete="step > 2" />
+                <v-stepper-item v-if="!cancelledAppt" :value="2" title="Check In" :color="step > 2 ? 'green' : 'blue'"
+                    :complete="step > 2" />
+
+                <v-stepper-item v-else :rules="[() => false]" :subtitle="cancelDetails" title="Check In"
+                    :value="2"></v-stepper-item>
                 <v-divider />
 
                 <v-stepper-item :value="3" title="Vital Signs" :color="step > 3 ? 'green' : 'blue'"
@@ -36,5 +44,12 @@
 const props = defineProps<{
     step: number;
     type: 'T' | 'F';
+    status: string;
 }>();
+
+const cancelledAppt = computed(() => ['X', 'NS'].includes(props.status));
+const cancelDetails = computed(() => {
+    if (props.status === 'X') return 'Cancelled';
+    if (props.status === 'NS') return 'No Show';
+});
 </script>

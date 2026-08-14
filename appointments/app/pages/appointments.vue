@@ -18,7 +18,7 @@
         </v-card>
 
         <AppointmentLogs v-model="appt.isVisible" :appointment-id="appt.appointmentId" :step="appt.appointmentStep"
-            :type="appt.appointmentType" />
+            :type="appt.appointmentType"  :status="appt.appointmentStatus"/>
     </div>
 </template>
 

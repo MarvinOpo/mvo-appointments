@@ -22,7 +22,7 @@
                         </v-col>
 
                         <v-col cols="auto" class="pr-0">
-                            <v-btn @click="confirm" :color="color" variant="text">
+                            <v-btn @click="confirm" :loading="isLoading" :color="color" variant="text">
                                 {{ positiveText }}
                             </v-btn>
                         </v-col>
@@ -54,6 +54,8 @@ const props = defineProps({
     },
 });
 
+const isLoading = ref(false);
+
 const formRemarks = ref();
 const remarks = ref("");
 
@@ -65,6 +67,8 @@ const confirm = async () => {
         if (!valid) return;
     }
 
+    isLoading.value = true;
+
     emit("confirm", remarks.value);
 };
 
@@ -72,4 +76,10 @@ const cancel = () => {
     emit("update:modelValue", false);
 }
 
+watch(() => props.modelValue, () => {
+    if (props.modelValue) {
+        isLoading.value = false;
+        remarks.value = "";
+    }
+});
 </script>

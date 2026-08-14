@@ -18,7 +18,24 @@ export const formatUTCDate = (date: string, format: string) =>
 export const getAge = (birthDate: string | Date) =>
     moment().diff(birthDate, "years");
 
-export const getApptStatus = (step: number, type: string | null) => {
+export const getApptStatus = (
+    step: number,
+    status: string | null,
+    type: string | null,
+) => {
+    switch (status) {
+        case "X":
+            return {
+                label: "Cancelled",
+                color: "red",
+            };
+        case "NS":
+            return {
+                label: "No Show",
+                color: "red",
+            };
+    }
+
     switch (step) {
         case 1:
             return {

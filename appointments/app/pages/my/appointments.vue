@@ -34,15 +34,15 @@
                         </template>
 
                         <template v-slot:item.status="{ item }">
-                            <template v-if="item.step" v-for="config in [getApptStatus(item.step, item.type)]"
-                                :key="item.step">
+                            <template v-if="item.step"
+                                v-for="config in [getApptStatus(item.step, item.status, item.type)]" :key="item.step">
                                 <v-chip :color="config?.color">{{ config?.label }}</v-chip>
                             </template>
                         </template>
 
                         <template v-slot:item.options="{ item }">
                             <v-row justify="center">
-                                <v-col v-if="item.step == 2 && item.type == 'F'" cols="auto">
+                                <v-col v-if="item.step >= 2 && item.step < 5 && item.type == 'F'" cols="auto">
                                     <v-tooltip location="top">
                                         <template v-slot:activator="{ props }">
                                             <v-icon @click="openDialogMonitor(item)" color="blue" v-bind="props"
@@ -61,7 +61,8 @@
             <AppointmentForm v-model="dialog.appointmentForm.isVisible" :patients="patients.list"
                 :departments="departments.list" @add-appointment="handleNewAppt" />
             <AppointmentLogs v-model="dialog.logs.isVisible" :appointment-id="dialog.logs.appointmentId"
-                :step="dialog.logs.appointmentStep" :type="dialog.logs.appointmentType" />
+                :step="dialog.logs.appointmentStep" :type="dialog.logs.appointmentType"
+                :status="dialog.logs.appointmentStatus" />
 
             <PatientMonitor v-model="dialog.monitor.isVisible" :appointment="dialog.monitor.appointment" />
         </div>
@@ -93,7 +94,8 @@ const dialog = reactive({
         isVisible: false,
         appointmentId: 0,
         appointmentStep: 1,
-        appointmentType: <AppointmentType>'T'
+        appointmentType: <AppointmentType>'T',
+        appointmentStatus: 'P',
     },
     monitor: {
         isVisible: false,
@@ -179,6 +181,7 @@ const trackAppt = (appt: Appointment) => {
     if (appt.id) dialog.logs.appointmentId = appt.id;
     if (appt.step) dialog.logs.appointmentStep = appt.step;
     if (appt.type) dialog.logs.appointmentType = appt.type;
+    if (appt.status) dialog.logs.appointmentStatus = appt.status;
 
     dialog.logs.isVisible = true;
 }

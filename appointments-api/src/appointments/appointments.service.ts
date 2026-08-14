@@ -2,6 +2,7 @@ import {
   ConflictException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
@@ -58,6 +59,7 @@ export class AppointmentsService {
       return appt;
     });
   }
+
   findAll() {
     return `This action returns all mvo_appointments`;
   }
@@ -89,10 +91,33 @@ export class AppointmentsService {
     });
   }
 
-  async findAppointmentByStatus(status: string | string[]) {
+  async findAppointmentByStatus(
+    status: string | string[],
+    filters: {
+      fname?: string;
+      lname?: string;
+      type?: string;
+      schedule?: string;
+    },
+  ) {
+    const { fname, lname, type, schedule } = filters;
+
+    const patientFilter = {
+      ...(fname && { fname: { contains: fname } }),
+      ...(lname && { lname: { contains: lname } }),
+    };
+
     return await mvo_appointments.appointments.findMany({
       where: {
         status: Array.isArray(status) ? { in: status } : status,
+        ...(Object.keys(patientFilter).length && { patient: patientFilter }),
+        ...(type && { type }),
+        ...(schedule && {
+          scheduled_at: {
+            gte: dayjs.utc(schedule).startOf('day').toDate(),
+            lte: dayjs.utc(schedule).endOf('day').toDate(),
+          },
+        }),
       },
       include: {
         patient: {
@@ -176,15 +201,6 @@ export class AppointmentsService {
         where: { id: id },
       });
 
-      const startOfDay = dayjs
-        .utc(appointment.scheduled_at)
-        .startOf('day')
-        .toDate();
-      const endOfDay = dayjs
-        .utc(appointment.scheduled_at)
-        .endOf('day')
-        .toDate();
-
       const result = await tx.appointments.aggregate({
         where: {
           department_id: appointment.department_id,
@@ -213,6 +229,96 @@ export class AppointmentsService {
           status: 'O',
           queue_no: nextQueueNo,
           order_no: nextOrderNo,
+        },
+      });
+    });
+  }
+
+  async resched(id: number, updateAppointmentDto: UpdateAppointmentDto) {
+    return await mvo_appointments.$transaction(async (tx) => {
+      const existingAppt = await tx.$queryRaw<Appointment[]>`
+        SELECT * FROM appointments
+        WHERE id = ${id}
+        FOR UPDATE
+      `;
+
+      if (!existingAppt.length)
+        throw new NotFoundException('Appointment not found.');
+
+      const appointment = existingAppt[0];
+
+      const pendingAppts = await tx.$queryRaw<Appointment[]>`
+        SELECT * FROM appointments
+        WHERE user_id = ${appointment.user_id} AND step <= 2 AND id != ${id}
+        FOR UPDATE
+      `;
+
+      if (pendingAppts.length > 2)
+        throw new ConflictException('You already have 3 pending appointments.');
+
+      const sameDepartmentPending = pendingAppts.some(
+        (a) =>
+          a.patient_id === appointment.patient_id &&
+          a.department_id ===
+            (updateAppointmentDto.department_id ?? appointment.department_id),
+      );
+
+      if (sameDepartmentPending)
+        throw new ConflictException(
+          'This patient already has a pending appointment for this department. Please complete it before booking another.',
+        );
+
+      const appt = await tx.appointments.update({
+        where: { id },
+        data: {
+          ...updateAppointmentDto,
+          step: 2,
+          status: 'O',
+        },
+        include: {
+          patient: {
+            select: {
+              fname: true,
+              lname: true,
+              mname: true,
+              ext_name: true,
+              email: true,
+              birth_date: true,
+              mobile_no: true,
+            },
+          },
+          department: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+
+      await this.createLogs(
+        tx,
+        appt.id,
+        'Reschedule Appointment',
+        'Successfully rescheduled an appointment',
+      );
+
+      return appt;
+    });
+  }
+
+  async cancel(id: number, updateAppointmentDto: UpdateAppointmentDto) {
+    return await mvo_appointments.$transaction(async (tx) => {
+      await this.createLogs(
+        tx,
+        id,
+        'Appointment Cancelled',
+        `Remarks: ${updateAppointmentDto.remarks}`,
+      );
+
+      return await tx.appointments.update({
+        where: { id: id },
+        data: {
+          status: 'X',
         },
       });
     });

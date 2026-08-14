@@ -8,7 +8,7 @@
             </v-card-title>
 
             <v-card-text>
-                <AppointmentStepper :step="step" :type="type" />
+                <AppointmentStepper :step="step" :type="type" :status="status" />
 
                 <LayoutLoader v-if="isLoading" :loading="isLoading" />
 
@@ -41,6 +41,7 @@ const model = defineModel<boolean>({ default: false });
 const props = defineProps<{
     appointmentId: number | null;
     step: number;
+    status: string;
     type: 'T' | 'F';
 }>();
 
