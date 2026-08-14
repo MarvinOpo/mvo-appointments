@@ -13,7 +13,11 @@
         <v-list-item v-if="access?.can_manage_queue" to="/queue/sessions" prepend-icon="mdi-human-queue"
             title="Queue Sessions" link />
 
-        <v-list-item to="/forms" prepend-icon="mdi-file-document-multiple" title="Forms" link />
+        <v-list-item v-if="access?.can_manage_holidays" to="/holidays" prepend-icon="mdi-sun-clock-outline"
+            title="Holidays" link />
+
+        <v-list-item v-if="access?.can_manage_access" to="/access" prepend-icon="mdi-account-group" title="User Access"
+            link />
 
         <v-list-item @click="logout" prepend-icon="mdi-logout" title="Logout" link />
 

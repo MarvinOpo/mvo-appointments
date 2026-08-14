@@ -166,8 +166,8 @@ export type Department_assignmentScalarFieldEnum = (typeof Department_assignment
 
 export const HolidaysScalarFieldEnum = {
   id: 'id',
-  holiday: 'holiday',
-  target: 'target',
+  date: 'date',
+  dept_ids: 'dept_ids',
   description: 'description'
 } as const
 

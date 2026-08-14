@@ -124,6 +124,11 @@ const openDepartmentSchedule = (data: Department | null) => {
 onMounted(() => {
     getDepartments();
 })
+
+definePageMeta({
+    middleware: 'require-access',
+    requiredAccess: ['can_manage_departments']
+});
 </script>
 
 <style scoped></style>

@@ -12,7 +12,7 @@
 
                 <v-card-text>
                     <v-data-table :headers="appointments.headers" :items="appointments.list"
-                        :loading="appointments.isLoading">
+                        :loading="appointments.isLoading" :mobile="smAndDown">
                         <template v-slot:item.track="{ item }">
                             <v-btn @click="trackAppt(item)" color="green" prepend-icon="mdi-magnify"
                                 variant="tonal">Track</v-btn>
@@ -51,13 +51,23 @@
                                         <span>Check Queue</span>
                                     </v-tooltip>
                                 </v-col>
+
+                                <v-col v-if="item.step == 2 && ['P', 'O'].includes(item.status!)" cols="auto">
+                                    <v-tooltip location="top">
+                                        <template v-slot:activator="{ props }">
+                                            <v-icon @click="openDialogCancel(item.id!)" color="red" v-bind="props"
+                                                size="x-large">mdi-cancel</v-icon>
+                                        </template>
+                                        <span>Cancel Appointment</span>
+                                    </v-tooltip>
+                                </v-col>
                             </v-row>
                         </template>
                     </v-data-table>
                 </v-card-text>
             </v-card>
 
-            <PatientForm v-model="dialog.patientForm.isVisible" type="self" :user="user" />
+            <PatientForm v-model="dialog.patientForm.isVisible" type="self" />
             <AppointmentForm v-model="dialog.appointmentForm.isVisible" :patients="patients.list"
                 :departments="departments.list" @add-appointment="handleNewAppt" />
             <AppointmentLogs v-model="dialog.logs.isVisible" :appointment-id="dialog.logs.appointmentId"
@@ -65,10 +75,14 @@
                 :status="dialog.logs.appointmentStatus" />
 
             <PatientMonitor v-model="dialog.monitor.isVisible" :appointment="dialog.monitor.appointment" />
+
+            <DialogConfirm v-model="dialog.cancel.isVisible" :label="dialog.cancel.label" positive-text="CONFIRM"
+                @confirm="cancelAppointment" with-remarks />
         </div>
     </template>
 
 <script setup lang="ts">
+const { smAndDown } = useDisplay();
 const { access, hasLoggedIn, user, token } = useUser();
 
 const appointments = reactive({
@@ -89,6 +103,11 @@ const appointments = reactive({
 const dialog = reactive({
     appointmentForm: {
         isVisible: false,
+    },
+    cancel: {
+        id: 0,
+        isVisible: false,
+        label: 'Are you sure you want to cancel this appointment?',
     },
     logs: {
         isVisible: false,
@@ -115,6 +134,25 @@ const patients = reactive({
 })
 
 const snackbar = useSnackbar();
+
+const cancelAppointment = async (remarks: string) => {
+    const body = { remarks }
+    const data = await updateJsonData(`/appointments/${dialog.cancel.id}/cancel`, body, token.value);
+    if (data.error) return;
+
+    const index = appointments.list.findIndex(item => item.id === dialog.cancel.id);
+    if (index !== -1) {
+        appointments.list[index]!.status = 'X';
+
+        snackbar.show({
+            message: "Appointment successfully cancelled",
+            title: "Success",
+            type: "success",
+        })
+
+        dialog.cancel.isVisible = false;
+    }
+}
 
 const getAppointments = async () => {
     const data = await fetchJsonData("/appointments/mine", token.value);
@@ -175,6 +213,11 @@ const handleNewAppt = (appt: Appointment) => {
 const openDialogMonitor = (appt: Appointment) => {
     dialog.monitor.appointment = appt;
     dialog.monitor.isVisible = true;
+}
+
+const openDialogCancel = (id: number) => {
+    dialog.cancel.id = id;
+    dialog.cancel.isVisible = true;
 }
 
 const trackAppt = (appt: Appointment) => {

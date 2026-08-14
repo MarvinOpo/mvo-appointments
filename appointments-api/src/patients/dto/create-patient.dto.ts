@@ -51,8 +51,9 @@ export class CreatePatientDto {
   @Transform(({ value }) => {
     if (typeof value !== 'string') return undefined;
 
-    const parsed = dayjs.utc(value);
-    return parsed.isValid() ? parsed.startOf('day').toISOString() : undefined;
+    const datePart = value.slice(0, 10);
+    const parsed = dayjs.utc(datePart, 'YYYY-MM-DD', true);
+    return parsed.isValid() ? parsed.toISOString() : undefined;
   })
   @IsDateString()
   birth_date: string;

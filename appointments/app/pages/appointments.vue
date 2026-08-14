@@ -18,7 +18,7 @@
         </v-card>
 
         <AppointmentLogs v-model="appt.isVisible" :appointment-id="appt.appointmentId" :step="appt.appointmentStep"
-            :type="appt.appointmentType"  :status="appt.appointmentStatus"/>
+            :type="appt.appointmentType" :status="appt.appointmentStatus" />
     </div>
 </template>
 
@@ -38,6 +38,11 @@ const statusMap: Record<number, string[]> = {
 };
 
 const status = computed(() => statusMap[appointments.tab]);
+
+definePageMeta({
+    middleware: 'require-access',
+    requiredAccess: ['can_manage_appts']
+});
 
 </script>
 

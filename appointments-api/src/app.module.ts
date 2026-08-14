@@ -10,6 +10,7 @@ import { DepartmentsModule } from './departments/departments.module';
 import { AiAssistantModule } from './ai-assistant/ai-assistant.module';
 import { DepartmentScheduleModule } from './department-schedule/department-schedule.module';
 import { QueueModule } from './queue/queue.module';
+import { HolidaysModule } from './holidays/holidays.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { QueueModule } from './queue/queue.module';
     AiAssistantModule,
     DepartmentScheduleModule,
     QueueModule,
+    HolidaysModule,
   ],
   controllers: [AppController],
   providers: [AppService],

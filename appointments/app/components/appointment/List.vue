@@ -85,7 +85,7 @@
                         <v-col cols="auto">
                             <v-tooltip location="top">
                                 <template v-slot:activator="{ props }">
-                                    <v-icon @click="openDialogCancel(item)" color="red" v-bind="props"
+                                    <v-icon @click="openDialogCancel(item.id!)" color="red" v-bind="props"
                                         size="x-large">mdi-cancel</v-icon>
                                 </template>
                                 <span>Cancel</span>
@@ -133,9 +133,9 @@ const dialog = reactive({
         data: <Appointment>{},
     },
     cancel: {
+        id: 0,
         isVisible: false,
         label: 'Are you sure you want to cancel this appointment?',
-        data: <Appointment>{}
     }
 })
 
@@ -170,10 +170,10 @@ const snackbar = useSnackbar();
 
 const cancelAppointment = async (remarks: string) => {
     const body = { remarks }
-    const data = await updateJsonData(`/appointments/${dialog.cancel.data.id}/cancel`, body, token.value);
+    const data = await updateJsonData(`/appointments/${dialog.cancel.id}/cancel`, body, token.value);
     if (data.error) return;
 
-    const index = list.value.findIndex(item => item.id === dialog.cancel.data.id);
+    const index = list.value.findIndex(item => item.id === dialog.cancel.id);
     if (index !== -1) {
         list.value.splice(index, 1);
 
@@ -245,8 +245,8 @@ const openDialogApprove = (item: Appointment) => {
     dialog.approve.isVisible = true;
 };
 
-const openDialogCancel = (item: Appointment) => {
-    dialog.cancel.data = item;
+const openDialogCancel = (id: number) => {
+    dialog.cancel.id = id;
     dialog.cancel.isVisible = true;
 };
 

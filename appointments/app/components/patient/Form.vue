@@ -71,7 +71,7 @@
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="form.mobile_no" label="Mobile Number"
-                                        :rules="[rules.required]" variant="outlined" density="compact" />
+                                        :rules="[rules.required, rules.phone]" variant="outlined" density="compact" />
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-text-field v-model="form.email" label="Email" type="email" variant="outlined"
@@ -165,13 +165,12 @@
 </template>
 
 <script setup lang="ts">
-const { token, logout } = useUser();
+const { token, user, logout } = useUser();
 
 const model = defineModel<boolean>({ default: false });
 
 const props = defineProps<{
     type: 'self' | 'dependent';
-    user: User | null;
     patient?: Patient | null;
 }>();
 
@@ -254,52 +253,64 @@ const savePatient = async () => {
 
     isLoading.value = true;
 
+    if (user.value) {
+        form.value.owner_user_id = Number(user.value.id);
+        form.value.birth_date = formatDate(form.value.birth_date!, 'YYYY-MM-DD HH:mm:ss');
+        if (!form.value.email) form.value.email = user.value.email;
+    }
+
     if (!props.patient?.id) await insertPatient();
     else await updatePatient();
 
     isLoading.value = false;
 };
 
+watch(() => props.patient, () => {
+    if (props.patient) {
+        form.value = { ...props.patient };
+    }
+})
+
 onMounted(() => {
     if (props.type === 'self' && !isEdit.value) {
         selfRegister.value = true;
 
-        if (props.user) {
-            form.value.owner_user_id = props.user.id;
-            form.value.user_id = props.user.id;
+        if (user.value) {
+            form.value.owner_user_id = user.value.id;
+            form.value.user_id = user.value.id;
             form.value.relationship = 'Self';
-            form.value.fname = props.user.fname;
-            form.value.mname = props.user.mname;
-            form.value.lname = props.user.lname;
-            form.value.ext_name = props.user.ext_name;
-            form.value.email = props.user.email;
-            form.value.birth_date = props.user.birth_date;
+            form.value.fname = user.value.fname;
+            form.value.mname = user.value.mname;
+            form.value.lname = user.value.lname;
+            form.value.ext_name = user.value.ext_name;
+            form.value.email = user.value.email;
+            form.value.birth_date = user.value.birth_date;
 
-            if (props.user.civil_status && options.civilStatus.includes(props.user.civil_status))
-                form.value.civil_status = props.user.civil_status;
+            if (user.value.civil_status && options.civilStatus.includes(user.value.civil_status))
+                form.value.civil_status = user.value.civil_status;
 
-            form.value.sex = props.user.gender;
-            form.value.mobile_no = props.user.mobile_no;
+            form.value.sex = user.value.gender;
+            form.value.mobile_no = user.value.mobile_no;
 
             form.value.spouse_name = getFullName({
-                fname: props.user.spouse_fname,
-                mname: props.user.spouse_mname,
-                lname: props.user.spouse_lname,
-                ename: props.user.spouse_ename
+                fname: user.value.spouse_fname,
+                mname: user.value.spouse_mname,
+                lname: user.value.spouse_lname,
+                ename: user.value.spouse_ename
             })
 
             form.value.father_name = getFullName({
-                fname: props.user.father_fname,
-                mname: props.user.father_mname,
-                lname: props.user.father_lname,
-                ename: props.user.father_ename
+                fname: user.value.father_fname,
+                mname: user.value.father_mname,
+                lname: user.value.father_lname,
+                ename: user.value.father_ename
             })
 
             form.value.mother_name = getFullName({
-                fname: props.user.mother_fname,
-                mname: props.user.mother_mname,
-                lname: props.user.mother_lname,
-                ename: props.user.mother_ename
+                fname: user.value.mother_fname,
+                mname: user.value.mother_mname,
+                lname: user.value.mother_lname,
+                ename: user.value.mother_ename
             })
         }
     }

@@ -62,8 +62,14 @@ export class PatientsService {
     return patient || {};
   }
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
-    return `This action updates a #${id} patient`;
+  async update(id: number, updatePatientDto: UpdatePatientDto, userId: number) {
+    return await mvo_appointments.patients.update({
+      where: {
+        id,
+        OR: [{ user_id: userId }, { owner_user_id: userId }],
+      },
+      data: updatePatientDto,
+    });
   }
 
   remove(id: number) {

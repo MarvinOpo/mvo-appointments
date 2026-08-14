@@ -92,8 +92,8 @@ model department_assignment {
 
 model holidays {
   id          Int      @id @default(autoincrement())
-  holiday     DateTime @db.Date
-  target      Int?
+  date        DateTime @db.Date
+  dept_ids    Json?
   description String   @db.VarChar(255)
 }
 

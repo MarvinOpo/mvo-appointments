@@ -97,8 +97,9 @@ export class AppointmentsController {
   cancel(
     @Param('id') id: string,
     @Body() updateAppointmentDto: UpdateAppointmentDto,
+    @Req() req: Request & { user: UserDto },
   ) {
-    return this.appointmentsService.cancel(+id, updateAppointmentDto);
+    return this.appointmentsService.cancel(+id, updateAppointmentDto, req.user);
   }
 
   @Delete(':id')

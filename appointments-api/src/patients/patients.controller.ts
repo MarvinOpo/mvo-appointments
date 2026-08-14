@@ -19,6 +19,7 @@ import { UserDto } from 'src/users/dto/user.dto';
 export class PatientsController {
   constructor(private readonly patientsService: PatientsService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createPatientDto: CreatePatientDto) {
     return this.patientsService.create(createPatientDto);
@@ -35,8 +36,6 @@ export class PatientsController {
     return this.patientsService.findMine(request.user.id);
   }
 
-  // @UseGuards(AuthGuard, PermissionsGuard)
-  // @Permissions('can_create_ipcr')
   @UseGuards(AuthGuard)
   @Get('self')
   findSelf(@Req() request: Request & { user: UserDto }) {
@@ -48,9 +47,14 @@ export class PatientsController {
     return this.patientsService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
-    return this.patientsService.update(+id, updatePatientDto);
+  update(
+    @Param('id') id: string,
+    @Body() updatePatientDto: UpdatePatientDto,
+    @Req() request: Request & { user: UserDto },
+  ) {
+    return this.patientsService.update(+id, updatePatientDto, request.user.id);
   }
 
   @Delete(':id')

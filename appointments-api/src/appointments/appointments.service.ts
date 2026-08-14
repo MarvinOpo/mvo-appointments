@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  ForbiddenException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -13,6 +14,7 @@ import { Appointment } from './entities/appointment.entity';
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { UserDto } from 'src/users/dto/user.dto';
 dayjs.extend(utc);
 
 @Injectable()
@@ -306,8 +308,39 @@ export class AppointmentsService {
     });
   }
 
-  async cancel(id: number, updateAppointmentDto: UpdateAppointmentDto) {
+  async cancel(
+    id: number,
+    updateAppointmentDto: UpdateAppointmentDto,
+    user: UserDto,
+  ) {
     return await mvo_appointments.$transaction(async (tx) => {
+      const appointment = await tx.appointments.findUnique({
+        where: { id },
+        include: {
+          patient: {
+            select: {
+              user_id: true,
+              owner_user_id: true,
+            },
+          },
+        },
+      });
+
+      if (!appointment) {
+        throw new NotFoundException('Appointment not found');
+      }
+
+      const canManage = user.access?.can_manage_appts ?? false;
+      const isOwner =
+        appointment.patient.user_id === user.id ||
+        appointment.patient.owner_user_id === user.id;
+
+      if (!canManage && !isOwner) {
+        throw new ForbiddenException(
+          'You are not allowed to cancel this appointment',
+        );
+      }
+
       await this.createLogs(
         tx,
         id,
@@ -316,7 +349,7 @@ export class AppointmentsService {
       );
 
       return await tx.appointments.update({
-        where: { id: id },
+        where: { id },
         data: {
           status: 'X',
         },
