@@ -26,3 +26,20 @@ export interface User {
     mother_lname: string | null;
     mother_ename: string | null;
 }
+
+export interface UserAccess {
+    id: number;
+    user_id: number;
+    email: string;
+    fname: string;
+    mname: string | null;
+    lname: string;
+    dept_ids: number[] | null;
+    access_right: number;
+}
+
+export interface UserAccessFormData {
+    email: string | null;
+    access_right: number | null;
+    dept_ids: number[];
+}

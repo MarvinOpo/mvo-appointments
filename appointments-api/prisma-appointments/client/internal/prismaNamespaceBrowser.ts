@@ -244,7 +244,7 @@ export type Queue_session_statScalarFieldEnum = (typeof Queue_session_statScalar
 export const User_accessScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
-  departments: 'departments',
+  dept_ids: 'dept_ids',
   access_right: 'access_right'
 } as const
 

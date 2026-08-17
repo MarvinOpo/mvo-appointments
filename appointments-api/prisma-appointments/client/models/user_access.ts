@@ -53,7 +53,7 @@ export type User_accessMaxAggregateOutputType = {
 export type User_accessCountAggregateOutputType = {
   id: number
   user_id: number
-  departments: number
+  dept_ids: number
   access_right: number
   _all: number
 }
@@ -86,7 +86,7 @@ export type User_accessMaxAggregateInputType = {
 export type User_accessCountAggregateInputType = {
   id?: true
   user_id?: true
-  departments?: true
+  dept_ids?: true
   access_right?: true
   _all?: true
 }
@@ -180,7 +180,7 @@ export type user_accessGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inte
 export type User_accessGroupByOutputType = {
   id: number
   user_id: number
-  departments: runtime.JsonValue | null
+  dept_ids: runtime.JsonValue | null
   access_right: number
   _count: User_accessCountAggregateOutputType | null
   _avg: User_accessAvgAggregateOutputType | null
@@ -210,15 +210,17 @@ export type user_accessWhereInput = {
   NOT?: Prisma.user_accessWhereInput | Prisma.user_accessWhereInput[]
   id?: Prisma.IntFilter<"user_access"> | number
   user_id?: Prisma.IntFilter<"user_access"> | number
-  departments?: Prisma.JsonNullableFilter<"user_access">
+  dept_ids?: Prisma.JsonNullableFilter<"user_access">
   access_right?: Prisma.IntFilter<"user_access"> | number
+  access?: Prisma.XOR<Prisma.Access_rightsScalarRelationFilter, Prisma.access_rightsWhereInput>
 }
 
 export type user_accessOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  departments?: Prisma.SortOrderInput | Prisma.SortOrder
+  dept_ids?: Prisma.SortOrderInput | Prisma.SortOrder
   access_right?: Prisma.SortOrder
+  access?: Prisma.access_rightsOrderByWithRelationInput
 }
 
 export type user_accessWhereUniqueInput = Prisma.AtLeast<{
@@ -227,14 +229,15 @@ export type user_accessWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.user_accessWhereInput | Prisma.user_accessWhereInput[]
   OR?: Prisma.user_accessWhereInput[]
   NOT?: Prisma.user_accessWhereInput | Prisma.user_accessWhereInput[]
-  departments?: Prisma.JsonNullableFilter<"user_access">
+  dept_ids?: Prisma.JsonNullableFilter<"user_access">
   access_right?: Prisma.IntFilter<"user_access"> | number
+  access?: Prisma.XOR<Prisma.Access_rightsScalarRelationFilter, Prisma.access_rightsWhereInput>
 }, "id" | "user_id">
 
 export type user_accessOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  departments?: Prisma.SortOrderInput | Prisma.SortOrder
+  dept_ids?: Prisma.SortOrderInput | Prisma.SortOrder
   access_right?: Prisma.SortOrder
   _count?: Prisma.user_accessCountOrderByAggregateInput
   _avg?: Prisma.user_accessAvgOrderByAggregateInput
@@ -249,60 +252,69 @@ export type user_accessScalarWhereWithAggregatesInput = {
   NOT?: Prisma.user_accessScalarWhereWithAggregatesInput | Prisma.user_accessScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"user_access"> | number
   user_id?: Prisma.IntWithAggregatesFilter<"user_access"> | number
-  departments?: Prisma.JsonNullableWithAggregatesFilter<"user_access">
+  dept_ids?: Prisma.JsonNullableWithAggregatesFilter<"user_access">
   access_right?: Prisma.IntWithAggregatesFilter<"user_access"> | number
 }
 
 export type user_accessCreateInput = {
   user_id: number
-  departments?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  access_right: number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  access: Prisma.access_rightsCreateNestedOneWithoutUserAccessesInput
 }
 
 export type user_accessUncheckedCreateInput = {
   id?: number
   user_id: number
-  departments?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   access_right: number
 }
 
 export type user_accessUpdateInput = {
   user_id?: Prisma.IntFieldUpdateOperationsInput | number
-  departments?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  access_right?: Prisma.IntFieldUpdateOperationsInput | number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  access?: Prisma.access_rightsUpdateOneRequiredWithoutUserAccessesNestedInput
 }
 
 export type user_accessUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   user_id?: Prisma.IntFieldUpdateOperationsInput | number
-  departments?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   access_right?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type user_accessCreateManyInput = {
   id?: number
   user_id: number
-  departments?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   access_right: number
 }
 
 export type user_accessUpdateManyMutationInput = {
   user_id?: Prisma.IntFieldUpdateOperationsInput | number
-  departments?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  access_right?: Prisma.IntFieldUpdateOperationsInput | number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
 }
 
 export type user_accessUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   user_id?: Prisma.IntFieldUpdateOperationsInput | number
-  departments?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   access_right?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type User_accessListRelationFilter = {
+  every?: Prisma.user_accessWhereInput
+  some?: Prisma.user_accessWhereInput
+  none?: Prisma.user_accessWhereInput
+}
+
+export type user_accessOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type user_accessCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   user_id?: Prisma.SortOrder
-  departments?: Prisma.SortOrder
+  dept_ids?: Prisma.SortOrder
   access_right?: Prisma.SortOrder
 }
 
@@ -330,13 +342,126 @@ export type user_accessSumOrderByAggregateInput = {
   access_right?: Prisma.SortOrder
 }
 
+export type user_accessCreateNestedManyWithoutAccessInput = {
+  create?: Prisma.XOR<Prisma.user_accessCreateWithoutAccessInput, Prisma.user_accessUncheckedCreateWithoutAccessInput> | Prisma.user_accessCreateWithoutAccessInput[] | Prisma.user_accessUncheckedCreateWithoutAccessInput[]
+  connectOrCreate?: Prisma.user_accessCreateOrConnectWithoutAccessInput | Prisma.user_accessCreateOrConnectWithoutAccessInput[]
+  createMany?: Prisma.user_accessCreateManyAccessInputEnvelope
+  connect?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+}
+
+export type user_accessUncheckedCreateNestedManyWithoutAccessInput = {
+  create?: Prisma.XOR<Prisma.user_accessCreateWithoutAccessInput, Prisma.user_accessUncheckedCreateWithoutAccessInput> | Prisma.user_accessCreateWithoutAccessInput[] | Prisma.user_accessUncheckedCreateWithoutAccessInput[]
+  connectOrCreate?: Prisma.user_accessCreateOrConnectWithoutAccessInput | Prisma.user_accessCreateOrConnectWithoutAccessInput[]
+  createMany?: Prisma.user_accessCreateManyAccessInputEnvelope
+  connect?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+}
+
+export type user_accessUpdateManyWithoutAccessNestedInput = {
+  create?: Prisma.XOR<Prisma.user_accessCreateWithoutAccessInput, Prisma.user_accessUncheckedCreateWithoutAccessInput> | Prisma.user_accessCreateWithoutAccessInput[] | Prisma.user_accessUncheckedCreateWithoutAccessInput[]
+  connectOrCreate?: Prisma.user_accessCreateOrConnectWithoutAccessInput | Prisma.user_accessCreateOrConnectWithoutAccessInput[]
+  upsert?: Prisma.user_accessUpsertWithWhereUniqueWithoutAccessInput | Prisma.user_accessUpsertWithWhereUniqueWithoutAccessInput[]
+  createMany?: Prisma.user_accessCreateManyAccessInputEnvelope
+  set?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+  disconnect?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+  delete?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+  connect?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+  update?: Prisma.user_accessUpdateWithWhereUniqueWithoutAccessInput | Prisma.user_accessUpdateWithWhereUniqueWithoutAccessInput[]
+  updateMany?: Prisma.user_accessUpdateManyWithWhereWithoutAccessInput | Prisma.user_accessUpdateManyWithWhereWithoutAccessInput[]
+  deleteMany?: Prisma.user_accessScalarWhereInput | Prisma.user_accessScalarWhereInput[]
+}
+
+export type user_accessUncheckedUpdateManyWithoutAccessNestedInput = {
+  create?: Prisma.XOR<Prisma.user_accessCreateWithoutAccessInput, Prisma.user_accessUncheckedCreateWithoutAccessInput> | Prisma.user_accessCreateWithoutAccessInput[] | Prisma.user_accessUncheckedCreateWithoutAccessInput[]
+  connectOrCreate?: Prisma.user_accessCreateOrConnectWithoutAccessInput | Prisma.user_accessCreateOrConnectWithoutAccessInput[]
+  upsert?: Prisma.user_accessUpsertWithWhereUniqueWithoutAccessInput | Prisma.user_accessUpsertWithWhereUniqueWithoutAccessInput[]
+  createMany?: Prisma.user_accessCreateManyAccessInputEnvelope
+  set?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+  disconnect?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+  delete?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+  connect?: Prisma.user_accessWhereUniqueInput | Prisma.user_accessWhereUniqueInput[]
+  update?: Prisma.user_accessUpdateWithWhereUniqueWithoutAccessInput | Prisma.user_accessUpdateWithWhereUniqueWithoutAccessInput[]
+  updateMany?: Prisma.user_accessUpdateManyWithWhereWithoutAccessInput | Prisma.user_accessUpdateManyWithWhereWithoutAccessInput[]
+  deleteMany?: Prisma.user_accessScalarWhereInput | Prisma.user_accessScalarWhereInput[]
+}
+
+export type user_accessCreateWithoutAccessInput = {
+  user_id: number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+}
+
+export type user_accessUncheckedCreateWithoutAccessInput = {
+  id?: number
+  user_id: number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+}
+
+export type user_accessCreateOrConnectWithoutAccessInput = {
+  where: Prisma.user_accessWhereUniqueInput
+  create: Prisma.XOR<Prisma.user_accessCreateWithoutAccessInput, Prisma.user_accessUncheckedCreateWithoutAccessInput>
+}
+
+export type user_accessCreateManyAccessInputEnvelope = {
+  data: Prisma.user_accessCreateManyAccessInput | Prisma.user_accessCreateManyAccessInput[]
+  skipDuplicates?: boolean
+}
+
+export type user_accessUpsertWithWhereUniqueWithoutAccessInput = {
+  where: Prisma.user_accessWhereUniqueInput
+  update: Prisma.XOR<Prisma.user_accessUpdateWithoutAccessInput, Prisma.user_accessUncheckedUpdateWithoutAccessInput>
+  create: Prisma.XOR<Prisma.user_accessCreateWithoutAccessInput, Prisma.user_accessUncheckedCreateWithoutAccessInput>
+}
+
+export type user_accessUpdateWithWhereUniqueWithoutAccessInput = {
+  where: Prisma.user_accessWhereUniqueInput
+  data: Prisma.XOR<Prisma.user_accessUpdateWithoutAccessInput, Prisma.user_accessUncheckedUpdateWithoutAccessInput>
+}
+
+export type user_accessUpdateManyWithWhereWithoutAccessInput = {
+  where: Prisma.user_accessScalarWhereInput
+  data: Prisma.XOR<Prisma.user_accessUpdateManyMutationInput, Prisma.user_accessUncheckedUpdateManyWithoutAccessInput>
+}
+
+export type user_accessScalarWhereInput = {
+  AND?: Prisma.user_accessScalarWhereInput | Prisma.user_accessScalarWhereInput[]
+  OR?: Prisma.user_accessScalarWhereInput[]
+  NOT?: Prisma.user_accessScalarWhereInput | Prisma.user_accessScalarWhereInput[]
+  id?: Prisma.IntFilter<"user_access"> | number
+  user_id?: Prisma.IntFilter<"user_access"> | number
+  dept_ids?: Prisma.JsonNullableFilter<"user_access">
+  access_right?: Prisma.IntFilter<"user_access"> | number
+}
+
+export type user_accessCreateManyAccessInput = {
+  id?: number
+  user_id: number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+}
+
+export type user_accessUpdateWithoutAccessInput = {
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+}
+
+export type user_accessUncheckedUpdateWithoutAccessInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+}
+
+export type user_accessUncheckedUpdateManyWithoutAccessInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  user_id?: Prisma.IntFieldUpdateOperationsInput | number
+  dept_ids?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+}
+
 
 
 export type user_accessSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   user_id?: boolean
-  departments?: boolean
+  dept_ids?: boolean
   access_right?: boolean
+  access?: boolean | Prisma.access_rightsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user_access"]>
 
 
@@ -344,19 +469,24 @@ export type user_accessSelect<ExtArgs extends runtime.Types.Extensions.InternalA
 export type user_accessSelectScalar = {
   id?: boolean
   user_id?: boolean
-  departments?: boolean
+  dept_ids?: boolean
   access_right?: boolean
 }
 
-export type user_accessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "departments" | "access_right", ExtArgs["result"]["user_access"]>
+export type user_accessOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "dept_ids" | "access_right", ExtArgs["result"]["user_access"]>
+export type user_accessInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  access?: boolean | Prisma.access_rightsDefaultArgs<ExtArgs>
+}
 
 export type $user_accessPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "user_access"
-  objects: {}
+  objects: {
+    access: Prisma.$access_rightsPayload<ExtArgs>
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     user_id: number
-    departments: runtime.JsonValue | null
+    dept_ids: runtime.JsonValue | null
     access_right: number
   }, ExtArgs["result"]["user_access"]>
   composites: {}
@@ -698,6 +828,7 @@ readonly fields: user_accessFieldRefs;
  */
 export interface Prisma__user_accessClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  access<T extends Prisma.access_rightsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.access_rightsDefaultArgs<ExtArgs>>): Prisma.Prisma__access_rightsClient<runtime.Types.Result.GetResult<Prisma.$access_rightsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -729,7 +860,7 @@ export interface Prisma__user_accessClient<T, Null = never, ExtArgs extends runt
 export interface user_accessFieldRefs {
   readonly id: Prisma.FieldRef<"user_access", 'Int'>
   readonly user_id: Prisma.FieldRef<"user_access", 'Int'>
-  readonly departments: Prisma.FieldRef<"user_access", 'Json'>
+  readonly dept_ids: Prisma.FieldRef<"user_access", 'Json'>
   readonly access_right: Prisma.FieldRef<"user_access", 'Int'>
 }
     
@@ -747,6 +878,10 @@ export type user_accessFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the user_access
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
   /**
    * Filter, which user_access to fetch.
    */
@@ -766,6 +901,10 @@ export type user_accessFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Exten
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
+  /**
    * Filter, which user_access to fetch.
    */
   where: Prisma.user_accessWhereUniqueInput
@@ -783,6 +922,10 @@ export type user_accessFindFirstArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the user_access
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
   /**
    * Filter, which user_access to fetch.
    */
@@ -832,6 +975,10 @@ export type user_accessFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extens
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
+  /**
    * Filter, which user_access to fetch.
    */
   where?: Prisma.user_accessWhereInput
@@ -879,6 +1026,10 @@ export type user_accessFindManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the user_access
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
   /**
    * Filter, which user_accesses to fetch.
    */
@@ -928,6 +1079,10 @@ export type user_accessCreateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
+  /**
    * The data needed to create a user_access.
    */
   data: Prisma.XOR<Prisma.user_accessCreateInput, Prisma.user_accessUncheckedCreateInput>
@@ -956,6 +1111,10 @@ export type user_accessUpdateArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the user_access
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
   /**
    * The data needed to update a user_access.
    */
@@ -997,6 +1156,10 @@ export type user_accessUpsertArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
+  /**
    * The filter to search for the user_access to update in case it exists.
    */
   where: Prisma.user_accessWhereUniqueInput
@@ -1022,6 +1185,10 @@ export type user_accessDeleteArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Omit specific fields from the user_access
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
   /**
    * Filter which user_access to delete.
    */
@@ -1054,4 +1221,8 @@ export type user_accessDefaultArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Omit specific fields from the user_access
    */
   omit?: Prisma.user_accessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
 }

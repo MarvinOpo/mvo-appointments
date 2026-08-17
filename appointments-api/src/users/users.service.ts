@@ -8,6 +8,10 @@ export class UsersService {
     return `This action returns all users`;
   }
 
+  async findAccessRights() {
+    return await mvo_appointments.access_rights.findMany();
+  }
+
   async findOne(id: number) {
     return await vsmmc_services.users.findUnique({
       where: {

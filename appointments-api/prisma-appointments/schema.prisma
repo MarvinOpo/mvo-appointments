@@ -16,15 +16,16 @@ enum PriorityType {
 }
 
 model access_rights {
-  id                     Int     @id @default(autoincrement())
-  description            String  @db.VarChar(50)
-  can_complete_appt      Boolean @default(false)
-  can_manage_appts       Boolean @default(false)
-  can_manage_departments Boolean @default(false)
-  can_manage_access      Boolean @default(false)
-  can_manage_holidays    Boolean @default(false)
-  can_manage_queue       Boolean @default(false)
-  can_view_all_appts     Boolean @default(false)
+  id                     Int           @id @default(autoincrement())
+  description            String        @db.VarChar(50)
+  can_complete_appt      Boolean       @default(false)
+  can_manage_appts       Boolean       @default(false)
+  can_manage_departments Boolean       @default(false)
+  can_manage_access      Boolean       @default(false)
+  can_manage_holidays    Boolean       @default(false)
+  can_manage_queue       Boolean       @default(false)
+  can_view_all_appts     Boolean       @default(false)
+  userAccesses           user_access[]
 }
 
 model appointments {
@@ -166,6 +167,8 @@ model queue_session_stat {
 model user_access {
   id           Int   @id @default(autoincrement())
   user_id      Int   @unique(map: "user_id_UNIQUE")
-  departments  Json?
+  dept_ids     Json?
   access_right Int
+
+  access access_rights @relation(fields: [access_right], references: [id])
 }

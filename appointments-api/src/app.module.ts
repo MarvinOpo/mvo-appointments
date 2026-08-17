@@ -11,6 +11,7 @@ import { AiAssistantModule } from './ai-assistant/ai-assistant.module';
 import { DepartmentScheduleModule } from './department-schedule/department-schedule.module';
 import { QueueModule } from './queue/queue.module';
 import { HolidaysModule } from './holidays/holidays.module';
+import { UserAccessModule } from './user-access/user-access.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HolidaysModule } from './holidays/holidays.module';
     DepartmentScheduleModule,
     QueueModule,
     HolidaysModule,
+    UserAccessModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -248,6 +248,7 @@ export type access_rightsWhereInput = {
   can_manage_holidays?: Prisma.BoolFilter<"access_rights"> | boolean
   can_manage_queue?: Prisma.BoolFilter<"access_rights"> | boolean
   can_view_all_appts?: Prisma.BoolFilter<"access_rights"> | boolean
+  userAccesses?: Prisma.User_accessListRelationFilter
 }
 
 export type access_rightsOrderByWithRelationInput = {
@@ -260,6 +261,7 @@ export type access_rightsOrderByWithRelationInput = {
   can_manage_holidays?: Prisma.SortOrder
   can_manage_queue?: Prisma.SortOrder
   can_view_all_appts?: Prisma.SortOrder
+  userAccesses?: Prisma.user_accessOrderByRelationAggregateInput
   _relevance?: Prisma.access_rightsOrderByRelevanceInput
 }
 
@@ -276,6 +278,7 @@ export type access_rightsWhereUniqueInput = Prisma.AtLeast<{
   can_manage_holidays?: Prisma.BoolFilter<"access_rights"> | boolean
   can_manage_queue?: Prisma.BoolFilter<"access_rights"> | boolean
   can_view_all_appts?: Prisma.BoolFilter<"access_rights"> | boolean
+  userAccesses?: Prisma.User_accessListRelationFilter
 }, "id">
 
 export type access_rightsOrderByWithAggregationInput = {
@@ -319,6 +322,7 @@ export type access_rightsCreateInput = {
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  userAccesses?: Prisma.user_accessCreateNestedManyWithoutAccessInput
 }
 
 export type access_rightsUncheckedCreateInput = {
@@ -331,6 +335,7 @@ export type access_rightsUncheckedCreateInput = {
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  userAccesses?: Prisma.user_accessUncheckedCreateNestedManyWithoutAccessInput
 }
 
 export type access_rightsUpdateInput = {
@@ -342,6 +347,7 @@ export type access_rightsUpdateInput = {
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userAccesses?: Prisma.user_accessUpdateManyWithoutAccessNestedInput
 }
 
 export type access_rightsUncheckedUpdateInput = {
@@ -354,6 +360,7 @@ export type access_rightsUncheckedUpdateInput = {
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  userAccesses?: Prisma.user_accessUncheckedUpdateManyWithoutAccessNestedInput
 }
 
 export type access_rightsCreateManyInput = {
@@ -441,6 +448,11 @@ export type access_rightsSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
+export type Access_rightsScalarRelationFilter = {
+  is?: Prisma.access_rightsWhereInput
+  isNot?: Prisma.access_rightsWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -457,6 +469,111 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type access_rightsCreateNestedOneWithoutUserAccessesInput = {
+  create?: Prisma.XOR<Prisma.access_rightsCreateWithoutUserAccessesInput, Prisma.access_rightsUncheckedCreateWithoutUserAccessesInput>
+  connectOrCreate?: Prisma.access_rightsCreateOrConnectWithoutUserAccessesInput
+  connect?: Prisma.access_rightsWhereUniqueInput
+}
+
+export type access_rightsUpdateOneRequiredWithoutUserAccessesNestedInput = {
+  create?: Prisma.XOR<Prisma.access_rightsCreateWithoutUserAccessesInput, Prisma.access_rightsUncheckedCreateWithoutUserAccessesInput>
+  connectOrCreate?: Prisma.access_rightsCreateOrConnectWithoutUserAccessesInput
+  upsert?: Prisma.access_rightsUpsertWithoutUserAccessesInput
+  connect?: Prisma.access_rightsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.access_rightsUpdateToOneWithWhereWithoutUserAccessesInput, Prisma.access_rightsUpdateWithoutUserAccessesInput>, Prisma.access_rightsUncheckedUpdateWithoutUserAccessesInput>
+}
+
+export type access_rightsCreateWithoutUserAccessesInput = {
+  description: string
+  can_complete_appt?: boolean
+  can_manage_appts?: boolean
+  can_manage_departments?: boolean
+  can_manage_access?: boolean
+  can_manage_holidays?: boolean
+  can_manage_queue?: boolean
+  can_view_all_appts?: boolean
+}
+
+export type access_rightsUncheckedCreateWithoutUserAccessesInput = {
+  id?: number
+  description: string
+  can_complete_appt?: boolean
+  can_manage_appts?: boolean
+  can_manage_departments?: boolean
+  can_manage_access?: boolean
+  can_manage_holidays?: boolean
+  can_manage_queue?: boolean
+  can_view_all_appts?: boolean
+}
+
+export type access_rightsCreateOrConnectWithoutUserAccessesInput = {
+  where: Prisma.access_rightsWhereUniqueInput
+  create: Prisma.XOR<Prisma.access_rightsCreateWithoutUserAccessesInput, Prisma.access_rightsUncheckedCreateWithoutUserAccessesInput>
+}
+
+export type access_rightsUpsertWithoutUserAccessesInput = {
+  update: Prisma.XOR<Prisma.access_rightsUpdateWithoutUserAccessesInput, Prisma.access_rightsUncheckedUpdateWithoutUserAccessesInput>
+  create: Prisma.XOR<Prisma.access_rightsCreateWithoutUserAccessesInput, Prisma.access_rightsUncheckedCreateWithoutUserAccessesInput>
+  where?: Prisma.access_rightsWhereInput
+}
+
+export type access_rightsUpdateToOneWithWhereWithoutUserAccessesInput = {
+  where?: Prisma.access_rightsWhereInput
+  data: Prisma.XOR<Prisma.access_rightsUpdateWithoutUserAccessesInput, Prisma.access_rightsUncheckedUpdateWithoutUserAccessesInput>
+}
+
+export type access_rightsUpdateWithoutUserAccessesInput = {
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  can_complete_appt?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_departments?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_access?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type access_rightsUncheckedUpdateWithoutUserAccessesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  can_complete_appt?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_departments?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_access?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+
+/**
+ * Count Type Access_rightsCountOutputType
+ */
+
+export type Access_rightsCountOutputType = {
+  userAccesses: number
+}
+
+export type Access_rightsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  userAccesses?: boolean | Access_rightsCountOutputTypeCountUserAccessesArgs
+}
+
+/**
+ * Access_rightsCountOutputType without action
+ */
+export type Access_rightsCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Access_rightsCountOutputType
+   */
+  select?: Prisma.Access_rightsCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * Access_rightsCountOutputType without action
+ */
+export type Access_rightsCountOutputTypeCountUserAccessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.user_accessWhereInput
+}
 
 
 export type access_rightsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -469,6 +586,8 @@ export type access_rightsSelect<ExtArgs extends runtime.Types.Extensions.Interna
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  userAccesses?: boolean | Prisma.access_rights$userAccessesArgs<ExtArgs>
+  _count?: boolean | Prisma.Access_rightsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["access_rights"]>
 
 
@@ -486,10 +605,16 @@ export type access_rightsSelectScalar = {
 }
 
 export type access_rightsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "can_complete_appt" | "can_manage_appts" | "can_manage_departments" | "can_manage_access" | "can_manage_holidays" | "can_manage_queue" | "can_view_all_appts", ExtArgs["result"]["access_rights"]>
+export type access_rightsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  userAccesses?: boolean | Prisma.access_rights$userAccessesArgs<ExtArgs>
+  _count?: boolean | Prisma.Access_rightsCountOutputTypeDefaultArgs<ExtArgs>
+}
 
 export type $access_rightsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "access_rights"
-  objects: {}
+  objects: {
+    userAccesses: Prisma.$user_accessPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     description: string
@@ -840,6 +965,7 @@ readonly fields: access_rightsFieldRefs;
  */
 export interface Prisma__access_rightsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  userAccesses<T extends Prisma.access_rights$userAccessesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.access_rights$userAccessesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$user_accessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -895,6 +1021,10 @@ export type access_rightsFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
+  /**
    * Filter, which access_rights to fetch.
    */
   where: Prisma.access_rightsWhereUniqueInput
@@ -913,6 +1043,10 @@ export type access_rightsFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
+  /**
    * Filter, which access_rights to fetch.
    */
   where: Prisma.access_rightsWhereUniqueInput
@@ -930,6 +1064,10 @@ export type access_rightsFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the access_rights
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
   /**
    * Filter, which access_rights to fetch.
    */
@@ -979,6 +1117,10 @@ export type access_rightsFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
+  /**
    * Filter, which access_rights to fetch.
    */
   where?: Prisma.access_rightsWhereInput
@@ -1026,6 +1168,10 @@ export type access_rightsFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Omit specific fields from the access_rights
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
   /**
    * Filter, which access_rights to fetch.
    */
@@ -1075,6 +1221,10 @@ export type access_rightsCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
+  /**
    * The data needed to create a access_rights.
    */
   data: Prisma.XOR<Prisma.access_rightsCreateInput, Prisma.access_rightsUncheckedCreateInput>
@@ -1103,6 +1253,10 @@ export type access_rightsUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the access_rights
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
   /**
    * The data needed to update a access_rights.
    */
@@ -1144,6 +1298,10 @@ export type access_rightsUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
+  /**
    * The filter to search for the access_rights to update in case it exists.
    */
   where: Prisma.access_rightsWhereUniqueInput
@@ -1170,6 +1328,10 @@ export type access_rightsDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
+  /**
    * Filter which access_rights to delete.
    */
   where: Prisma.access_rightsWhereUniqueInput
@@ -1190,6 +1352,30 @@ export type access_rightsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * access_rights.userAccesses
+ */
+export type access_rights$userAccessesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the user_access
+   */
+  select?: Prisma.user_accessSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the user_access
+   */
+  omit?: Prisma.user_accessOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.user_accessInclude<ExtArgs> | null
+  where?: Prisma.user_accessWhereInput
+  orderBy?: Prisma.user_accessOrderByWithRelationInput | Prisma.user_accessOrderByWithRelationInput[]
+  cursor?: Prisma.user_accessWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.User_accessScalarFieldEnum | Prisma.User_accessScalarFieldEnum[]
+}
+
+/**
  * access_rights without action
  */
 export type access_rightsDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1201,4 +1387,8 @@ export type access_rightsDefaultArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the access_rights
    */
   omit?: Prisma.access_rightsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.access_rightsInclude<ExtArgs> | null
 }

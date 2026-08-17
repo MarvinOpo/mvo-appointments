@@ -10,14 +10,17 @@
         <v-list-item v-if="access?.can_manage_departments" to="/departments" prepend-icon="mdi-hospital-building"
             title="Departments" link />
 
+        <v-list-item v-if="access?.can_manage_appts" to="/teleconsult" prepend-icon="mdi-phone" title="Teleconsult"
+            link />
+
         <v-list-item v-if="access?.can_manage_queue" to="/queue/sessions" prepend-icon="mdi-human-queue"
             title="Queue Sessions" link />
 
         <v-list-item v-if="access?.can_manage_holidays" to="/holidays" prepend-icon="mdi-sun-clock-outline"
             title="Holidays" link />
 
-        <v-list-item v-if="access?.can_manage_access" to="/access" prepend-icon="mdi-account-group" title="User Access"
-            link />
+        <v-list-item v-if="access?.can_manage_access" to="/user/access" prepend-icon="mdi-account-group"
+            title="User Access" link />
 
         <v-list-item @click="logout" prepend-icon="mdi-logout" title="Logout" link />
 

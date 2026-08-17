@@ -21,7 +21,6 @@ export class AuthService {
 
     const user = await vsmmc_services.users.findFirst({
       where: { email },
-      include: { services_rights: { where: { service_id: 5 } } },
     });
 
     if (!user) throw new HttpException('User not found', CODES.NOT_FOUND);
@@ -30,14 +29,13 @@ export class AuthService {
       throw new HttpException('Invalid password', CODES.UNAUTHORIZED);
 
     let access: AccessRight | null = null;
-    if (user.services_rights.length) {
-      const accessId = user.services_rights[0].access_right;
+    const userAccess = await mvo_appointments.user_access.findFirst({
+      where: { user_id: user.id },
+      include: { access: true },
+    });
 
-      if (accessId) {
-        access = await mvo_appointments.access_rights.findFirst({
-          where: { id: accessId },
-        });
-      }
+    if (userAccess) {
+      access = userAccess.access;
     }
 
     const payload = { sub: user.id, email: user.email, access };

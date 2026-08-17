@@ -69,7 +69,12 @@ export const getApptType = (type: string | null) =>
     type === "T" ? "Teleconsult" : "Face to Face";
 
 export const getFullName = (user: any) => {
-    return [user.fname, user.mname, user.lname, user.ext_name]
+    return [
+        user.fname,
+        user.mname ? `${user.mname[0]}.` : "",
+        user.lname,
+        user.ext_name,
+    ]
         .filter(Boolean)
         .join(" ")
         .trim();
