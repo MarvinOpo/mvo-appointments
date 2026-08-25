@@ -6,7 +6,10 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
-import { UpdateAppointmentDto } from './dto/update-appointment.dto';
+import {
+  UpdateAppointmentDto,
+  UpdateAppointmentSoapDto,
+} from './dto/update-appointment.dto';
 
 import { mvo_appointments } from '../db/prisma';
 import { Prisma } from 'prisma-appointments/client/client';
@@ -135,6 +138,7 @@ export class AppointmentsService {
         },
         department: {
           select: {
+            id: true,
             name: true,
           },
         },
@@ -145,13 +149,28 @@ export class AppointmentsService {
     });
   }
 
-  async findScheduled(deptId: number, start: string, end: string) {
+  async findScheduled(
+    deptId: number,
+    start: string,
+    end: string,
+    user: UserDto,
+  ) {
     return await mvo_appointments.appointments.findMany({
       select: {
         id: true,
         scheduled_at: true,
         queue_no: true,
         step: true,
+        ...(user.access?.can_manage_queue && {
+          patient: {
+            select: {
+              id: true,
+              fname: true,
+              lname: true,
+              mname: true,
+            },
+          },
+        }),
       },
       where: {
         department_id: deptId,
@@ -236,6 +255,31 @@ export class AppointmentsService {
     });
   }
 
+  async updateSoap(
+    id: number,
+    updateAppointmentSoapDto: UpdateAppointmentSoapDto,
+  ) {
+    return await mvo_appointments.$transaction(async (tx) => {
+      const updatedAppt = await tx.appointments.update({
+        where: { id: id },
+        data: {
+          step: 3,
+          status: 'C',
+          ...updateAppointmentSoapDto,
+        },
+      });
+
+      await this.createLogs(
+        tx,
+        id,
+        'Consultation',
+        'Consultation completed. Appointment closed.',
+      );
+
+      return updatedAppt;
+    });
+  }
+
   async resched(id: number, updateAppointmentDto: UpdateAppointmentDto) {
     return await mvo_appointments.$transaction(async (tx) => {
       const existingAppt = await tx.$queryRaw<Appointment[]>`
@@ -276,6 +320,7 @@ export class AppointmentsService {
           ...updateAppointmentDto,
           step: 2,
           status: 'O',
+          redirected: true,
         },
         include: {
           patient: {
@@ -389,9 +434,5 @@ export class AppointmentsService {
         data,
       });
     });
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} appointment`;
   }
 }

@@ -3,6 +3,8 @@ export interface AppointmentQueue {
     scheduled_at: string;
     queue_no: number;
     step: number;
+
+    patient?: Patient;
 }
 
 export interface AppointmentWalkin {
@@ -37,6 +39,7 @@ export interface SessionStat {
     session_id: number;
     step: number;
     now_serving: number;
+    served_sched: string;
     served_count: number;
     avg_seconds: number;
 }
@@ -46,4 +49,10 @@ export interface QueueUpdate {
     stat: SessionStat;
     queue: AppointmentQueue[];
     session: QueueSession;
+}
+
+export interface QueueMonitor {
+    id: number;
+    name: string;
+    dept_ids: number[];
 }

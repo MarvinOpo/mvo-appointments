@@ -35,7 +35,10 @@ export class AuthService {
     });
 
     if (userAccess) {
-      access = userAccess.access;
+      access = {
+        ...userAccess.access,
+        dept_ids: userAccess.dept_ids as number[] | null,
+      };
     }
 
     const payload = { sub: user.id, email: user.email, access };
@@ -71,19 +74,21 @@ export class AuthService {
 
       const user = await vsmmc_services.users.findFirst({
         where: { id: payload.sub },
-        include: { services_rights: { where: { service_id: 4 } } },
       });
 
       if (!user) throw new HttpException('User not found', CODES.NOT_FOUND);
 
       let access: AccessRight | null = null;
-      if (user.services_rights.length) {
-        const accessId = user.services_rights[0].access_right;
-        if (accessId) {
-          access = await mvo_appointments.access_rights.findFirst({
-            where: { id: accessId },
-          });
-        }
+      const userAccess = await mvo_appointments.user_access.findFirst({
+        where: { user_id: user.id },
+        include: { access: true },
+      });
+
+      if (userAccess) {
+        access = {
+          ...userAccess.access,
+          dept_ids: userAccess.dept_ids as number[] | null,
+        };
       }
 
       const newAccessToken = await this.jwtService.signAsync(

@@ -1,4 +1,6 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateAiAssistantDto } from './create-ai-assistant.dto';
+import { DepartmentAiAssistantDto } from './create-ai-assistant.dto';
 
-export class UpdateAiAssistantDto extends PartialType(CreateAiAssistantDto) {}
+export class UpdateDepartmentAiAssistantDto extends PartialType(
+  DepartmentAiAssistantDto,
+) {}

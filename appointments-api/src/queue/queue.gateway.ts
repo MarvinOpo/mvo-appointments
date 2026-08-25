@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { Req, UseGuards } from '@nestjs/common';
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -20,6 +20,7 @@ import {
 import { AppointmentsService } from 'src/appointments/appointments.service';
 
 import dayjs from 'dayjs';
+import { UserDto } from 'src/users/dto/user.dto';
 
 @WebSocketGateway({
   cors: {
@@ -45,17 +46,18 @@ export class QueueGateway {
   @UseGuards(WsAuthGuard, QueueStaffGuard)
   @SubscribeMessage('queue:updateDoctorCount')
   async handleDoctorCount(@MessageBody() data: SocketDoctorDataDto) {
-    const room = `queue:${data.deptId}:${data.step}`;
+    const room = `queue:${data.deptId}:1`;
+    const room2 = `queue:${data.deptId}:2`;
+    const room3 = `queue:${data.deptId}:3`;
 
     const session = await this.queueService.updateDoctorCount(
       data.sessionId,
       data.doctorsOnDuty,
     );
 
-    this.emitQueueUpdate(room, {
-      action: 'updateDoctorCount',
-      session,
-    });
+    this.emitQueueUpdate(room, { action: 'updateDoctorCount', session });
+    this.emitQueueUpdate(room2, { action: 'updateDoctorCount', session });
+    this.emitQueueUpdate(room3, { action: 'updateDoctorCount', session });
   }
 
   @UseGuards(WsAuthGuard)
@@ -65,9 +67,6 @@ export class QueueGateway {
     @ConnectedSocket() client: Socket,
   ) {
     const room = `queue:${data.deptId}:${data.step}`;
-
-    console.log('Joined room:', room);
-
     client.join(room);
   }
 
@@ -82,8 +81,14 @@ export class QueueGateway {
 
   @UseGuards(WsAuthGuard, QueueStaffGuard)
   @SubscribeMessage('queue:callComplete')
-  async handleComplete(@MessageBody() data: SocketApptDataDto) {
+  async handleComplete(
+    @MessageBody() data: SocketApptDataDto,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const user = client.data.user as UserDto;
+
     const room = `queue:${data.deptId}:${data.step}`;
+    const room2 = `queue:${data.deptId}:${data.step + 1}`;
 
     const updatedStat = await this.queueService.callComplete(
       data.statId,
@@ -106,9 +111,16 @@ export class QueueGateway {
       data.deptId,
       start,
       end,
+      user,
     );
 
     this.emitQueueUpdate(room, {
+      action: 'callComplete',
+      stat: updatedStat,
+      queue: updatedQueue,
+    });
+
+    this.emitQueueUpdate(room2, {
       action: 'callComplete',
       stat: updatedStat,
       queue: updatedQueue,
@@ -119,12 +131,16 @@ export class QueueGateway {
 
   @UseGuards(WsAuthGuard, QueueStaffGuard)
   @SubscribeMessage('queue:callSkip')
-  async handleSkip(@MessageBody() data: SocketStatDataDto) {
+  async handleSkip(
+    @MessageBody() data: SocketStatDataDto,
+    @ConnectedSocket() client: Socket,
+  ) {
     const room = `queue:${data.deptId}:${data.step}`;
     const updatedStat = await this.queueService.callSkip(
       data.statId,
       data.payload,
     );
+    const user = client.data.user as UserDto;
 
     const start = dayjs(updatedStat.session.session_date)
       .startOf('day')
@@ -137,6 +153,7 @@ export class QueueGateway {
       data.deptId,
       start,
       end,
+      user,
     );
 
     this.emitQueueUpdate(room, {

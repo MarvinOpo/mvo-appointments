@@ -1,5 +1,8 @@
 <template>
     <v-list color="blue" nav>
+        <v-list-item v-if="access?.can_manage_appts" to="/dashboard" prepend-icon="mdi-view-dashboard" title="Dashboard"
+            link />
+
         <v-list-item v-if="access?.can_manage_appts" to="/appointments" prepend-icon="mdi-account-group"
             title="Appointments" link />
 

@@ -1,6 +1,12 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateQueueDto } from './create-queue.dto';
-import { IsInt, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UpdateQueueDto extends PartialType(CreateQueueDto) {}
 export class UpdateQueueStatDto {
@@ -10,6 +16,10 @@ export class UpdateQueueStatDto {
 
   @IsInt()
   now_serving?: number;
+
+  @IsNotEmpty()
+  @IsString()
+  served_sched: string;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   duration?: number;

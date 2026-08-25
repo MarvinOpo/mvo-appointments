@@ -29,25 +29,27 @@ model access_rights {
 }
 
 model appointments {
-  id            Int          @id @default(autoincrement())
-  user_id       Int
-  patient_id    Int
-  department_id Int
-  step          Int          @default(1)
-  scheduled_at  DateTime     @db.DateTime(0)
-  complaint     String       @db.VarChar(500)
-  type          String       @db.Char(2)
-  subjective    String?      @db.VarChar(500)
-  objective     String?      @db.VarChar(500)
-  assessment    String?      @db.VarChar(500)
-  plan          String?      @db.VarChar(500)
-  assessed_by   Int?
-  ai_assisted   Boolean      @default(false)
-  status        String       @default("P") @db.Char(2)
-  queue_no      Int?
-  order_no      Int?
-  priority      PriorityType @default(REGULAR)
-  created_at    DateTime     @default(now()) @db.DateTime(0)
+  id               Int          @id @default(autoincrement())
+  user_id          Int
+  patient_id       Int
+  department_id    Int
+  step             Int          @default(1)
+  scheduled_at     DateTime     @db.DateTime(0)
+  complaint        String       @db.VarChar(500)
+  type             String       @db.Char(2)
+  subjective       String?      @db.Text
+  objective        String?      @db.Text
+  assessment       String?      @db.Text
+  plan             String?      @db.Text
+  assessed_by      Int?
+  ai_dept_matched  Boolean      @default(false)
+  ai_soap_assisted Boolean      @default(false)
+  redirected       Boolean      @default(false)
+  status           String       @default("P") @db.Char(2)
+  queue_no         Int?
+  order_no         Int?
+  priority         PriorityType @default(REGULAR)
+  created_at       DateTime     @default(now()) @db.DateTime(0)
 
   patient    patients    @relation(fields: [patient_id], references: [id])
   department departments @relation(fields: [department_id], references: [id])
@@ -155,6 +157,7 @@ model queue_session_stat {
   session_id   Int
   step         Int
   now_serving  Int      @default(0)
+  served_sched String?
   served_count Int      @default(0)
   avg_seconds  Float    @default(0)
   updated_at   DateTime @updatedAt @db.DateTime(0)

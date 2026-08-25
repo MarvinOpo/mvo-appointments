@@ -62,7 +62,9 @@ export type AppointmentsMinAggregateOutputType = {
   assessment: string | null
   plan: string | null
   assessed_by: number | null
-  ai_assisted: boolean | null
+  ai_dept_matched: boolean | null
+  ai_soap_assisted: boolean | null
+  redirected: boolean | null
   status: string | null
   queue_no: number | null
   order_no: number | null
@@ -84,7 +86,9 @@ export type AppointmentsMaxAggregateOutputType = {
   assessment: string | null
   plan: string | null
   assessed_by: number | null
-  ai_assisted: boolean | null
+  ai_dept_matched: boolean | null
+  ai_soap_assisted: boolean | null
+  redirected: boolean | null
   status: string | null
   queue_no: number | null
   order_no: number | null
@@ -106,7 +110,9 @@ export type AppointmentsCountAggregateOutputType = {
   assessment: number
   plan: number
   assessed_by: number
-  ai_assisted: number
+  ai_dept_matched: number
+  ai_soap_assisted: number
+  redirected: number
   status: number
   queue_no: number
   order_no: number
@@ -152,7 +158,9 @@ export type AppointmentsMinAggregateInputType = {
   assessment?: true
   plan?: true
   assessed_by?: true
-  ai_assisted?: true
+  ai_dept_matched?: true
+  ai_soap_assisted?: true
+  redirected?: true
   status?: true
   queue_no?: true
   order_no?: true
@@ -174,7 +182,9 @@ export type AppointmentsMaxAggregateInputType = {
   assessment?: true
   plan?: true
   assessed_by?: true
-  ai_assisted?: true
+  ai_dept_matched?: true
+  ai_soap_assisted?: true
+  redirected?: true
   status?: true
   queue_no?: true
   order_no?: true
@@ -196,7 +206,9 @@ export type AppointmentsCountAggregateInputType = {
   assessment?: true
   plan?: true
   assessed_by?: true
-  ai_assisted?: true
+  ai_dept_matched?: true
+  ai_soap_assisted?: true
+  redirected?: true
   status?: true
   queue_no?: true
   order_no?: true
@@ -305,7 +317,9 @@ export type AppointmentsGroupByOutputType = {
   assessment: string | null
   plan: string | null
   assessed_by: number | null
-  ai_assisted: boolean
+  ai_dept_matched: boolean
+  ai_soap_assisted: boolean
+  redirected: boolean
   status: string
   queue_no: number | null
   order_no: number | null
@@ -350,7 +364,9 @@ export type appointmentsWhereInput = {
   assessment?: Prisma.StringNullableFilter<"appointments"> | string | null
   plan?: Prisma.StringNullableFilter<"appointments"> | string | null
   assessed_by?: Prisma.IntNullableFilter<"appointments"> | number | null
-  ai_assisted?: Prisma.BoolFilter<"appointments"> | boolean
+  ai_dept_matched?: Prisma.BoolFilter<"appointments"> | boolean
+  ai_soap_assisted?: Prisma.BoolFilter<"appointments"> | boolean
+  redirected?: Prisma.BoolFilter<"appointments"> | boolean
   status?: Prisma.StringFilter<"appointments"> | string
   queue_no?: Prisma.IntNullableFilter<"appointments"> | number | null
   order_no?: Prisma.IntNullableFilter<"appointments"> | number | null
@@ -374,7 +390,9 @@ export type appointmentsOrderByWithRelationInput = {
   assessment?: Prisma.SortOrderInput | Prisma.SortOrder
   plan?: Prisma.SortOrderInput | Prisma.SortOrder
   assessed_by?: Prisma.SortOrderInput | Prisma.SortOrder
-  ai_assisted?: Prisma.SortOrder
+  ai_dept_matched?: Prisma.SortOrder
+  ai_soap_assisted?: Prisma.SortOrder
+  redirected?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrderInput | Prisma.SortOrder
   order_no?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -403,7 +421,9 @@ export type appointmentsWhereUniqueInput = Prisma.AtLeast<{
   assessment?: Prisma.StringNullableFilter<"appointments"> | string | null
   plan?: Prisma.StringNullableFilter<"appointments"> | string | null
   assessed_by?: Prisma.IntNullableFilter<"appointments"> | number | null
-  ai_assisted?: Prisma.BoolFilter<"appointments"> | boolean
+  ai_dept_matched?: Prisma.BoolFilter<"appointments"> | boolean
+  ai_soap_assisted?: Prisma.BoolFilter<"appointments"> | boolean
+  redirected?: Prisma.BoolFilter<"appointments"> | boolean
   status?: Prisma.StringFilter<"appointments"> | string
   queue_no?: Prisma.IntNullableFilter<"appointments"> | number | null
   order_no?: Prisma.IntNullableFilter<"appointments"> | number | null
@@ -427,7 +447,9 @@ export type appointmentsOrderByWithAggregationInput = {
   assessment?: Prisma.SortOrderInput | Prisma.SortOrder
   plan?: Prisma.SortOrderInput | Prisma.SortOrder
   assessed_by?: Prisma.SortOrderInput | Prisma.SortOrder
-  ai_assisted?: Prisma.SortOrder
+  ai_dept_matched?: Prisma.SortOrder
+  ai_soap_assisted?: Prisma.SortOrder
+  redirected?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrderInput | Prisma.SortOrder
   order_no?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -457,7 +479,9 @@ export type appointmentsScalarWhereWithAggregatesInput = {
   assessment?: Prisma.StringNullableWithAggregatesFilter<"appointments"> | string | null
   plan?: Prisma.StringNullableWithAggregatesFilter<"appointments"> | string | null
   assessed_by?: Prisma.IntNullableWithAggregatesFilter<"appointments"> | number | null
-  ai_assisted?: Prisma.BoolWithAggregatesFilter<"appointments"> | boolean
+  ai_dept_matched?: Prisma.BoolWithAggregatesFilter<"appointments"> | boolean
+  ai_soap_assisted?: Prisma.BoolWithAggregatesFilter<"appointments"> | boolean
+  redirected?: Prisma.BoolWithAggregatesFilter<"appointments"> | boolean
   status?: Prisma.StringWithAggregatesFilter<"appointments"> | string
   queue_no?: Prisma.IntNullableWithAggregatesFilter<"appointments"> | number | null
   order_no?: Prisma.IntNullableWithAggregatesFilter<"appointments"> | number | null
@@ -476,7 +500,9 @@ export type appointmentsCreateInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -500,7 +526,9 @@ export type appointmentsUncheckedCreateInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -519,7 +547,9 @@ export type appointmentsUpdateInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -543,7 +573,9 @@ export type appointmentsUncheckedUpdateInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -565,7 +597,9 @@ export type appointmentsCreateManyInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -584,7 +618,9 @@ export type appointmentsUpdateManyMutationInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -606,7 +642,9 @@ export type appointmentsUncheckedUpdateManyInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -640,7 +678,9 @@ export type appointmentsCountOrderByAggregateInput = {
   assessment?: Prisma.SortOrder
   plan?: Prisma.SortOrder
   assessed_by?: Prisma.SortOrder
-  ai_assisted?: Prisma.SortOrder
+  ai_dept_matched?: Prisma.SortOrder
+  ai_soap_assisted?: Prisma.SortOrder
+  redirected?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
   order_no?: Prisma.SortOrder
@@ -673,7 +713,9 @@ export type appointmentsMaxOrderByAggregateInput = {
   assessment?: Prisma.SortOrder
   plan?: Prisma.SortOrder
   assessed_by?: Prisma.SortOrder
-  ai_assisted?: Prisma.SortOrder
+  ai_dept_matched?: Prisma.SortOrder
+  ai_soap_assisted?: Prisma.SortOrder
+  redirected?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
   order_no?: Prisma.SortOrder
@@ -695,7 +737,9 @@ export type appointmentsMinOrderByAggregateInput = {
   assessment?: Prisma.SortOrder
   plan?: Prisma.SortOrder
   assessed_by?: Prisma.SortOrder
-  ai_assisted?: Prisma.SortOrder
+  ai_dept_matched?: Prisma.SortOrder
+  ai_soap_assisted?: Prisma.SortOrder
+  redirected?: Prisma.SortOrder
   status?: Prisma.SortOrder
   queue_no?: Prisma.SortOrder
   order_no?: Prisma.SortOrder
@@ -839,7 +883,9 @@ export type appointmentsCreateWithoutDepartmentInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -861,7 +907,9 @@ export type appointmentsUncheckedCreateWithoutDepartmentInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -912,7 +960,9 @@ export type appointmentsScalarWhereInput = {
   assessment?: Prisma.StringNullableFilter<"appointments"> | string | null
   plan?: Prisma.StringNullableFilter<"appointments"> | string | null
   assessed_by?: Prisma.IntNullableFilter<"appointments"> | number | null
-  ai_assisted?: Prisma.BoolFilter<"appointments"> | boolean
+  ai_dept_matched?: Prisma.BoolFilter<"appointments"> | boolean
+  ai_soap_assisted?: Prisma.BoolFilter<"appointments"> | boolean
+  redirected?: Prisma.BoolFilter<"appointments"> | boolean
   status?: Prisma.StringFilter<"appointments"> | string
   queue_no?: Prisma.IntNullableFilter<"appointments"> | number | null
   order_no?: Prisma.IntNullableFilter<"appointments"> | number | null
@@ -931,7 +981,9 @@ export type appointmentsCreateWithoutPatientInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -953,7 +1005,9 @@ export type appointmentsUncheckedCreateWithoutPatientInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -1000,7 +1054,9 @@ export type appointmentsCreateManyDepartmentInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -1019,7 +1075,9 @@ export type appointmentsUpdateWithoutDepartmentInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1041,7 +1099,9 @@ export type appointmentsUncheckedUpdateWithoutDepartmentInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1062,7 +1122,9 @@ export type appointmentsUncheckedUpdateManyWithoutDepartmentInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1083,7 +1145,9 @@ export type appointmentsCreateManyPatientInput = {
   assessment?: string | null
   plan?: string | null
   assessed_by?: number | null
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: string
   queue_no?: number | null
   order_no?: number | null
@@ -1102,7 +1166,9 @@ export type appointmentsUpdateWithoutPatientInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1124,7 +1190,9 @@ export type appointmentsUncheckedUpdateWithoutPatientInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1145,7 +1213,9 @@ export type appointmentsUncheckedUpdateManyWithoutPatientInput = {
   assessment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   plan?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assessed_by?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
-  ai_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_dept_matched?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ai_soap_assisted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  redirected?: Prisma.BoolFieldUpdateOperationsInput | boolean
   status?: Prisma.StringFieldUpdateOperationsInput | string
   queue_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   order_no?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
@@ -1169,7 +1239,9 @@ export type appointmentsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   assessment?: boolean
   plan?: boolean
   assessed_by?: boolean
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: boolean
   queue_no?: boolean
   order_no?: boolean
@@ -1195,7 +1267,9 @@ export type appointmentsSelectScalar = {
   assessment?: boolean
   plan?: boolean
   assessed_by?: boolean
-  ai_assisted?: boolean
+  ai_dept_matched?: boolean
+  ai_soap_assisted?: boolean
+  redirected?: boolean
   status?: boolean
   queue_no?: boolean
   order_no?: boolean
@@ -1203,7 +1277,7 @@ export type appointmentsSelectScalar = {
   created_at?: boolean
 }
 
-export type appointmentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "patient_id" | "department_id" | "step" | "scheduled_at" | "complaint" | "type" | "subjective" | "objective" | "assessment" | "plan" | "assessed_by" | "ai_assisted" | "status" | "queue_no" | "order_no" | "priority" | "created_at", ExtArgs["result"]["appointments"]>
+export type appointmentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "patient_id" | "department_id" | "step" | "scheduled_at" | "complaint" | "type" | "subjective" | "objective" | "assessment" | "plan" | "assessed_by" | "ai_dept_matched" | "ai_soap_assisted" | "redirected" | "status" | "queue_no" | "order_no" | "priority" | "created_at", ExtArgs["result"]["appointments"]>
 export type appointmentsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   patient?: boolean | Prisma.patientsDefaultArgs<ExtArgs>
   department?: boolean | Prisma.departmentsDefaultArgs<ExtArgs>
@@ -1229,7 +1303,9 @@ export type $appointmentsPayload<ExtArgs extends runtime.Types.Extensions.Intern
     assessment: string | null
     plan: string | null
     assessed_by: number | null
-    ai_assisted: boolean
+    ai_dept_matched: boolean
+    ai_soap_assisted: boolean
+    redirected: boolean
     status: string
     queue_no: number | null
     order_no: number | null
@@ -1619,7 +1695,9 @@ export interface appointmentsFieldRefs {
   readonly assessment: Prisma.FieldRef<"appointments", 'String'>
   readonly plan: Prisma.FieldRef<"appointments", 'String'>
   readonly assessed_by: Prisma.FieldRef<"appointments", 'Int'>
-  readonly ai_assisted: Prisma.FieldRef<"appointments", 'Boolean'>
+  readonly ai_dept_matched: Prisma.FieldRef<"appointments", 'Boolean'>
+  readonly ai_soap_assisted: Prisma.FieldRef<"appointments", 'Boolean'>
+  readonly redirected: Prisma.FieldRef<"appointments", 'Boolean'>
   readonly status: Prisma.FieldRef<"appointments", 'String'>
   readonly queue_no: Prisma.FieldRef<"appointments", 'Int'>
   readonly order_no: Prisma.FieldRef<"appointments", 'Int'>

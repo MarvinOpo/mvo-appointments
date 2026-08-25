@@ -8,4 +8,5 @@ export interface AccessRight {
   can_manage_holidays: boolean;
   can_manage_queue: boolean;
   can_view_all_appts: boolean;
+  dept_ids: number[] | null;
 }

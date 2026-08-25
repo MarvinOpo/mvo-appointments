@@ -17,13 +17,16 @@
                     </template>
 
                     <template v-slot:item.scheduled_at="{ item }">
-                        {{ item.scheduled_at ? formatDate(item.scheduled_at, 'MMM. DD, YYYY hh:mm A') : 'N/A' }}
+                        <span style="white-space: pre-line;">
+                            {{ item.scheduled_at ? formatDate(item.scheduled_at, 'MMM. DD, YYYY[\n]hh:mm A') : 'N/A' }}
+                        </span>
                     </template>
 
                     <template v-slot:item.status="{ item }">
-                        <v-chip :color="getStatusColor(item.status)" size="small">
-                            {{ item.status }}
-                        </v-chip>
+                        <template v-if="item.step" v-for="config in [getApptStatus(item.step, item.status, item.type)]"
+                            :key="item.step">
+                            <v-chip :color="config?.color">{{ config?.label }}</v-chip>
+                        </template>
                     </template>
 
                     <template v-slot:item.options="{ item }">
@@ -43,21 +46,21 @@
             </v-card-text>
         </v-card>
 
-        <TeleconsultForm v-model="dialog.consult.isVisible" :appointment="dialog.consult.data"
+        <AppointmentTeleconsultForm v-model="dialog.consult.isVisible" :appointment="dialog.consult.data"
             @update-appointment="handleUpdateAppointment" />
     </div>
 </template>
 
 <script setup lang="ts">
 const { smAndDown } = useDisplay();
-const { token } = useUser();
+const { access, token } = useUser();
 const snackbar = useSnackbar();
 
 const teleconsult = reactive({
     headers: <any[]>[
         { title: "Patient", align: "start", value: "patient", sortable: false },
         { title: "Phone Number", align: "start", value: "phone_number", sortable: false },
-        { title: "Scheduled", align: "start", value: "scheduled_at", sortable: false },
+        { title: "Scheduled", align: "center", value: "scheduled_at", sortable: false },
         { title: "Complaint", align: "start", value: "complaint", sortable: false },
         { title: "Status", align: "center", value: "status", sortable: false },
         { title: "Options", align: "center", value: "options", sortable: false, width: "150" },
@@ -86,23 +89,30 @@ const getStatusColor = (status: string | null) => {
 const getTeleconsultAppointments = async () => {
     isLoading.value = true;
 
-    const data = await fetchJsonData("/appointments?type=teleconsult", token.value);
+    const data = await fetchJsonData("/appointments?type=T&status=O", token.value);
     if (data.error) {
         isLoading.value = false;
         return;
     }
 
-    teleconsult.list = data;
+    console.log(access.value);
+
+    teleconsult.list = data.filter((a: Appointment) => {
+        if (!access.value?.dept_ids) return true;
+        return a.department?.id != null && access.value.dept_ids.includes(a.department.id);
+    });
 
     isLoading.value = false;
 };
 
 const handleUpdateAppointment = (appointment: Appointment) => {
     const index = teleconsult.list.findIndex(a => a.id === appointment.id);
-    if (index !== -1) teleconsult.list[index] = appointment;
+    if (index !== -1) {
+        teleconsult.list.splice(index, 1);
+    }
 
     snackbar.show({
-        message: "Appointment updated with SOAP notes",
+        message: "Appointment completed with SOAP notes",
         title: "Success",
         type: "success",
     })
@@ -115,6 +125,11 @@ const openDialogConsult = (item: Appointment) => {
 
 onMounted(() => {
     getTeleconsultAppointments();
+});
+
+definePageMeta({
+    middleware: 'require-access',
+    requiredAccess: ['can_manage_appts']
 });
 </script>
 

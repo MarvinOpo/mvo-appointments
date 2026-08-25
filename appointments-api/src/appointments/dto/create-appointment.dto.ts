@@ -39,5 +39,5 @@ export class CreateAppointmentDto {
   type: string;
 
   @IsBoolean()
-  ai_assisted: boolean;
+  ai_dept_matched: boolean;
 }

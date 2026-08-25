@@ -242,7 +242,7 @@ const defaultForm = (): AppointmentFormData => (
         assessment: null,
         plan: null,
         assessed_by: null,
-        ai_assisted: false
+        ai_dept_matched: false
     }
 )
 
@@ -405,7 +405,7 @@ const checkAvailability = async () => {
 }
 
 const setDepartment = (id: number) => {
-    form.value.ai_assisted = true;
+    form.value.ai_dept_matched = true;
     form.value.department_id = id;
 }
 

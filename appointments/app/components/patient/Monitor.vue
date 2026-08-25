@@ -51,14 +51,15 @@
                         <div class="now-serving-number font-weight-bold text-primary my-2">
                             <template v-if="!session?.has_started">Not Started</template>
                             <template v-else>
-                                {{
-                                    queueStat?.now_serving ?
-                                        `${department?.code}-${queueStat?.now_serving}` : '-'
-                                }}
+                                {{ nowServing }}
                             </template>
                         </div>
                         <v-chip v-if="isMyTurn" color="success" size="large" prepend-icon="mdi-bell-ring">
                             It's your turn — please proceed
+                        </v-chip>
+                        <v-chip v-else-if="queueStat && queueStat.now_serving > props.appointment.queue_no!"
+                            color="error" size="large" prepend-icon="mdi-bell-ring">
+                            A patient was prioritized due to special circumstances.
                         </v-chip>
                     </v-col>
                 </v-row>
@@ -74,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import moment from 'moment';
+import moment, { now } from 'moment';
 
 const { mobile } = useDisplay();
 const { connectSocket } = useQueueSocket();
@@ -90,13 +91,13 @@ const model = defineModel<boolean>({ default: false });
 const department = computed(() => props.appointment.department);
 
 const headers = computed(() => [
-    { title: 'My Number', value: `${department.value?.code}-${queueNo.value}` },
+    { title: 'My Number', value: myQueueNo.value },
     { title: `Ahead of you`, value: isMyTurn.value ? 'Your Turn' : aheadOfYou.value },
     { title: 'Doctors on Duty', value: session.value?.doctors_on_duty ?? 0 },
     { title: 'Avg. time per Patient', value: formatAvgTime(queueStat.value?.avg_seconds) },
 ]);
 
-const queueNo = computed(() => props.appointment.queue_no);
+const myQueueNo = computed(() => `${department.value?.code}${props.appointment.queue_no}-${formatDate(props.appointment.scheduled_at!, 'hA').replace(/M$/, '')}`);
 
 const scheduledAppointments = ref<AppointmentQueue[]>([]);
 
@@ -120,19 +121,26 @@ const apptSchedule = computed(() => {
 })
 
 const queueStat = computed(() => session.value?.stats?.find(item => item.step === props.appointment.step));
-const avgWaitTime = ref<number>(0);
 
 const aheadOfYou = computed(() => {
     const filteredQueue = scheduledAppointments.value.filter(item => item.step === props.appointment.step);
 
-    const index = filteredQueue.findIndex(item => item.queue_no === queueNo.value);
+    const index = filteredQueue.findIndex(item => item.id === props.appointment.id);
     return index > 0 ? index : `You're Next`;
 });
 
 const isLoading = ref(false);
 
+const nowServing = computed(() => {
+    if (queueStat.value) {
+        return `${department.value?.code}${queueStat.value?.now_serving}-${queueStat.value.served_sched}`;
+    }
+
+    return '-';
+});
+
 const isMyTurn = computed(() =>
-    !!queueNo.value && queueStat.value?.now_serving === queueNo.value
+    !!myQueueNo.value && nowServing.value === myQueueNo.value
 );
 
 const getQueueItems = async () => {

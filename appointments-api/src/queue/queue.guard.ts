@@ -9,6 +9,8 @@ export class QueueStaffGuard implements CanActivate {
     const data = context.switchToWs().getData();
     const user = client.data.user;
 
+    console.log(user);
+
     if (!user || !user.access?.can_manage_queue) {
       throw new WsException('You dont seem to have access to this feature.');
     }

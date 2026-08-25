@@ -54,13 +54,15 @@ export class AuthGuard implements CanActivate {
     });
     request.user = user;
 
-    if (dbUser.services_rights.length) {
-      const accessRight = dbUser.services_rights[0].access_right;
+    const userAccess = await this.usersService.getAccess(userId);
 
-      if (accessRight) {
-        const access = await this.usersService.getAccess(accessRight);
-        request.user.access = access ?? undefined;
-      }
+    if (userAccess) {
+      const access = {
+        ...userAccess.access,
+        dept_ids: userAccess.dept_ids as number[] | null,
+      };
+
+      request.user.access = access ?? undefined;
     }
 
     return true;

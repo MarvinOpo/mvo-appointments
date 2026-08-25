@@ -14,14 +14,14 @@
                             queue from your phone — no need to stand around the
                             waiting area.
                         </p>
-                        <div class="d-flex flex-wrap ga-3 mt-6">
+                        <!-- <div class="d-flex flex-wrap ga-3 mt-6">
                             <v-btn size="x-large" color="primary" class="cta-primary" @click="goToBooking">
                                 Book an appointment
                             </v-btn>
                             <v-btn size="x-large" variant="tonal" color="secondary" @click="goToQueue">
                                 Check my queue number
                             </v-btn>
-                        </div>
+                        </div> -->
                     </v-col>
 
                     <v-col cols="12" md="6">
@@ -144,7 +144,7 @@
             <v-container class="py-14">
                 <div class="d-flex flex-wrap justify-space-between align-end mb-8 ga-4">
                     <h2 class="section-title mb-0">Departments open for booking</h2>
-                    <v-btn variant="text" color="primary" @click="goToBooking">
+                    <v-btn variant="text" color="primary">
                         View all departments
                         <v-icon end size="18">mdi-arrow-right</v-icon>
                     </v-btn>
@@ -152,10 +152,10 @@
 
                 <v-row>
                     <v-col v-for="dept in departments" :key="dept.name" cols="6" sm="4" md="2">
-                        <div class="dept-card" @click="goToBooking">
-                            <v-icon size="28" color="secondary">{{
-                                dept.icon
-                                }}</v-icon>
+                        <div class="dept-card">
+                            <v-icon size=" 28" color="secondary">
+                                {{ dept.icon }}
+                            </v-icon>
                             <span class="dept-name">{{ dept.name }}</span>
                         </div>
                     </v-col>
@@ -233,8 +233,8 @@ const steps = [
     }
 ];
 
-const goToBooking = () => navigateTo("/book");
-const goToQueue = () => navigateTo("/queue");
+// const goToBooking = () => navigateTo("/book");
+// const goToQueue = () => navigateTo("/queue");
 </script>
 
 <style scoped>

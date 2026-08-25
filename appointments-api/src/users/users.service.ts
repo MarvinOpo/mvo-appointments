@@ -17,18 +17,16 @@ export class UsersService {
       where: {
         id: id,
       },
-      include: {
-        services_rights: {
-          where: { service_id: 4 },
-        },
-      },
     });
   }
 
-  async getAccess(id: number) {
-    return await mvo_appointments.access_rights.findFirst({
+  async getAccess(userId: number) {
+    return await mvo_appointments.user_access.findFirst({
       where: {
-        id: id,
+        user_id: userId,
+      },
+      include: {
+        access: true,
       },
     });
   }

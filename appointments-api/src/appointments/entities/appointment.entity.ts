@@ -12,7 +12,8 @@ export class Appointment {
   assessment: string | null;
   plan: string | null;
   assessed_by: number | null;
-  ai_assisted: boolean;
+  ai_dept_matched: boolean;
+  ai_soap_assisted: boolean;
   status: string;
   queue_no: number | null;
   created_at: Date;

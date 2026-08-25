@@ -110,7 +110,9 @@ export const AppointmentsScalarFieldEnum = {
   assessment: 'assessment',
   plan: 'plan',
   assessed_by: 'assessed_by',
-  ai_assisted: 'ai_assisted',
+  ai_dept_matched: 'ai_dept_matched',
+  ai_soap_assisted: 'ai_soap_assisted',
+  redirected: 'redirected',
   status: 'status',
   queue_no: 'queue_no',
   order_no: 'order_no',
@@ -233,6 +235,7 @@ export const Queue_session_statScalarFieldEnum = {
   session_id: 'session_id',
   step: 'step',
   now_serving: 'now_serving',
+  served_sched: 'served_sched',
   served_count: 'served_count',
   avg_seconds: 'avg_seconds',
   updated_at: 'updated_at'
@@ -375,4 +378,11 @@ export const patientsOrderByRelevanceFieldEnum = {
 } as const
 
 export type patientsOrderByRelevanceFieldEnum = (typeof patientsOrderByRelevanceFieldEnum)[keyof typeof patientsOrderByRelevanceFieldEnum]
+
+
+export const queue_session_statOrderByRelevanceFieldEnum = {
+  served_sched: 'served_sched'
+} as const
+
+export type queue_session_statOrderByRelevanceFieldEnum = (typeof queue_session_statOrderByRelevanceFieldEnum)[keyof typeof queue_session_statOrderByRelevanceFieldEnum]
 

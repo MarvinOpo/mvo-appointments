@@ -17,10 +17,7 @@
                                     Not Started
                                 </template>
                                 <template v-else>
-                                    {{
-                                        queueStat?.now_serving ?
-                                            `${session?.dept_code}-${queueStat?.now_serving}` : '-'
-                                    }}
+                                    {{ nowServing }}
                                 </template>
                             </div>
 
@@ -98,7 +95,12 @@
                                         </template>
 
                                         <template v-slot:item.queue_no="{ item }">
-                                            {{ session?.dept_code }}-{{ item.queue_no }}
+                                            {{ session?.dept_code }}{{ item.queue_no }}-
+                                            {{ formatDate(item.scheduled_at, 'hA').replace(/M$/, '') }}
+                                        </template>
+
+                                        <template v-slot:item.name="{ item }">
+                                            {{ getFullName(item.patient) }}
                                         </template>
 
                                         <template v-slot:item.scheduled_at="{ item }">
@@ -110,6 +112,18 @@
 
                                         <template v-slot:item.status="{ item }">
                                             <v-chip color="primary">{{ getQueueStep(item.step) }}</v-chip>
+                                        </template>
+
+                                        <template v-slot:item.options="{ item }">
+                                            <v-col cols="auto">
+                                                <v-tooltip location="top">
+                                                    <template v-slot:activator="{ props }">
+                                                        <v-icon @click="callPriority(item)" color="red" v-bind="props"
+                                                            size="x-large">mdi-priority-high</v-icon>
+                                                    </template>
+                                                    <span>Prioritize</span>
+                                                </v-tooltip>
+                                            </v-col>
                                         </template>
                                     </v-data-table>
                                 </v-card-text>
@@ -138,7 +152,7 @@
 </template>
 
 <script setup lang="ts">
-import moment, { duration, type Moment } from 'moment';
+import moment, { type Moment } from 'moment';
 
 const { token } = useUser();
 
@@ -182,6 +196,7 @@ const appointments = reactive({
     headers: <any[]>([
         { title: "Queue No.", align: "start", value: "queue_no", sortable: false },
         { title: "Schedule", align: " d-none", value: "scheduled_at", sortable: false },
+        { title: "Name", align: "start", value: "name", sortable: false },
         { title: "Status", align: "center", value: "status", sortable: false },
         { title: "Options", align: "center", value: "options", sortable: false, width: "200" },
     ]),
@@ -191,6 +206,15 @@ const appointments = reactive({
 const filteredAppointments = computed(() => {
     return appointments.list.filter(item => item.step === queueRole.value?.step);
 })
+
+
+const nowServing = computed(() => {
+    if (props.session && queueStat.value) {
+        return `${props.session.dept_code}${queueStat.value?.now_serving}-${queueStat.value.served_sched}`;
+    }
+
+    return '-';
+});
 
 const snackbar = useSnackbar();
 
@@ -244,6 +268,20 @@ const callComplete = () => {
             payload: {
                 duration: moment().diff(callStart.value!, 'seconds'),
             }
+        }, (res: any) => {
+            if (res.error) {
+                console.error(res.error);
+                return;
+            }
+
+            snackbar.show({
+                message: 'Marked complete. You may now call the next patient.',
+                title: 'Success',
+                type: 'success',
+            })
+
+            currentCall.value = null;
+            dialog.confirm.isVisible = false;
         })
     }
 }
@@ -264,6 +302,37 @@ const callNext = () => {
             payload: {
                 skipped_appointment_id,
                 now_serving: Number(next.queue_no),
+                served_sched: formatDate(next.scheduled_at, 'hA').replace(/M$/, ''),
+            },
+        }, (res: any) => {
+            if (res.error) {
+                console.error(res.error);
+                return;
+            }
+
+            callStart.value = moment();
+            callQueueNo();
+        });
+    }
+};
+
+const callPriority = (item: AppointmentQueue) => {
+    if (!filteredAppointments.value.length || !queueStat.value) return;
+
+    const next = item;
+    if (!next) return;
+
+    const skipped_appointment_id = currentCall.value ? Number(currentCall.value.id) : null;
+
+    if (socket.value) {
+        socket.value.emit('queue:callSkip', {
+            step: queueRole.value?.step,
+            deptId: props.session?.dept_id,
+            statId: queueStat.value.id,
+            payload: {
+                skipped_appointment_id,
+                now_serving: Number(next.queue_no),
+                served_sched: formatDate(next.scheduled_at, 'hA').replace(/M$/, ''),
             },
         }, (res: any) => {
             if (res.error) {
@@ -279,7 +348,7 @@ const callNext = () => {
 
 const callQueueNo = () => {
     if (queueStat.value?.now_serving) {
-        const code = spellOutCode(`${props.session?.dept_code}-${queueStat.value?.now_serving}`);
+        const code = spellOutCode(`${props.session?.dept_code}${queueStat.value?.now_serving}-${queueStat.value.served_sched}`);
         const msg = new SpeechSynthesisUtterance(`Now serving, ${code}`);
         msg.lang = 'fil-PH';
         msg.rate = 0.9;
@@ -305,8 +374,10 @@ const handleQueueUpdate = (payload: QueueUpdate) => {
 
         if (payload.stat.now_serving) {
             const index = appointments.list.findIndex(
-                item => item.queue_no === payload.stat.now_serving
-            );
+                item => {
+                    const schedTime = formatDate(item.scheduled_at, 'hA').replace(/M$/, '');
+                    return item.queue_no === payload.stat.now_serving && schedTime === payload.stat.served_sched;
+                });
 
             if (index !== -1) {
                 currentCall.value = appointments.list.splice(index, 1)[0];
@@ -360,7 +431,10 @@ watch(model, async (isOpen) => {
             socket.value.on('exception', handleSocketException);
 
             if (queueStat.value?.now_serving) {
-                const index = appointments.list.findIndex(item => item.queue_no === queueStat.value!.now_serving);
+                const index = appointments.list.findIndex(item => {
+                    const schedTime = formatDate(item.scheduled_at, 'hA').replace(/M$/, '');
+                    return item.queue_no === queueStat.value!.now_serving && schedTime === queueStat.value!.served_sched;
+                });
                 if (index !== -1) {
                     currentCall.value = appointments.list.splice(index, 1)[0];
                 }

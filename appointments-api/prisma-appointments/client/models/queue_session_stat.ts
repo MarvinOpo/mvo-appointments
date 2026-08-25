@@ -49,6 +49,7 @@ export type Queue_session_statMinAggregateOutputType = {
   session_id: number | null
   step: number | null
   now_serving: number | null
+  served_sched: string | null
   served_count: number | null
   avg_seconds: number | null
   updated_at: Date | null
@@ -59,6 +60,7 @@ export type Queue_session_statMaxAggregateOutputType = {
   session_id: number | null
   step: number | null
   now_serving: number | null
+  served_sched: string | null
   served_count: number | null
   avg_seconds: number | null
   updated_at: Date | null
@@ -69,6 +71,7 @@ export type Queue_session_statCountAggregateOutputType = {
   session_id: number
   step: number
   now_serving: number
+  served_sched: number
   served_count: number
   avg_seconds: number
   updated_at: number
@@ -99,6 +102,7 @@ export type Queue_session_statMinAggregateInputType = {
   session_id?: true
   step?: true
   now_serving?: true
+  served_sched?: true
   served_count?: true
   avg_seconds?: true
   updated_at?: true
@@ -109,6 +113,7 @@ export type Queue_session_statMaxAggregateInputType = {
   session_id?: true
   step?: true
   now_serving?: true
+  served_sched?: true
   served_count?: true
   avg_seconds?: true
   updated_at?: true
@@ -119,6 +124,7 @@ export type Queue_session_statCountAggregateInputType = {
   session_id?: true
   step?: true
   now_serving?: true
+  served_sched?: true
   served_count?: true
   avg_seconds?: true
   updated_at?: true
@@ -216,6 +222,7 @@ export type Queue_session_statGroupByOutputType = {
   session_id: number
   step: number
   now_serving: number
+  served_sched: string | null
   served_count: number
   avg_seconds: number
   updated_at: Date
@@ -249,6 +256,7 @@ export type queue_session_statWhereInput = {
   session_id?: Prisma.IntFilter<"queue_session_stat"> | number
   step?: Prisma.IntFilter<"queue_session_stat"> | number
   now_serving?: Prisma.IntFilter<"queue_session_stat"> | number
+  served_sched?: Prisma.StringNullableFilter<"queue_session_stat"> | string | null
   served_count?: Prisma.IntFilter<"queue_session_stat"> | number
   avg_seconds?: Prisma.FloatFilter<"queue_session_stat"> | number
   updated_at?: Prisma.DateTimeFilter<"queue_session_stat"> | Date | string
@@ -260,10 +268,12 @@ export type queue_session_statOrderByWithRelationInput = {
   session_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   now_serving?: Prisma.SortOrder
+  served_sched?: Prisma.SortOrderInput | Prisma.SortOrder
   served_count?: Prisma.SortOrder
   avg_seconds?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   session?: Prisma.queue_sessionsOrderByWithRelationInput
+  _relevance?: Prisma.queue_session_statOrderByRelevanceInput
 }
 
 export type queue_session_statWhereUniqueInput = Prisma.AtLeast<{
@@ -275,6 +285,7 @@ export type queue_session_statWhereUniqueInput = Prisma.AtLeast<{
   session_id?: Prisma.IntFilter<"queue_session_stat"> | number
   step?: Prisma.IntFilter<"queue_session_stat"> | number
   now_serving?: Prisma.IntFilter<"queue_session_stat"> | number
+  served_sched?: Prisma.StringNullableFilter<"queue_session_stat"> | string | null
   served_count?: Prisma.IntFilter<"queue_session_stat"> | number
   avg_seconds?: Prisma.FloatFilter<"queue_session_stat"> | number
   updated_at?: Prisma.DateTimeFilter<"queue_session_stat"> | Date | string
@@ -286,6 +297,7 @@ export type queue_session_statOrderByWithAggregationInput = {
   session_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   now_serving?: Prisma.SortOrder
+  served_sched?: Prisma.SortOrderInput | Prisma.SortOrder
   served_count?: Prisma.SortOrder
   avg_seconds?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -304,6 +316,7 @@ export type queue_session_statScalarWhereWithAggregatesInput = {
   session_id?: Prisma.IntWithAggregatesFilter<"queue_session_stat"> | number
   step?: Prisma.IntWithAggregatesFilter<"queue_session_stat"> | number
   now_serving?: Prisma.IntWithAggregatesFilter<"queue_session_stat"> | number
+  served_sched?: Prisma.StringNullableWithAggregatesFilter<"queue_session_stat"> | string | null
   served_count?: Prisma.IntWithAggregatesFilter<"queue_session_stat"> | number
   avg_seconds?: Prisma.FloatWithAggregatesFilter<"queue_session_stat"> | number
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"queue_session_stat"> | Date | string
@@ -312,6 +325,7 @@ export type queue_session_statScalarWhereWithAggregatesInput = {
 export type queue_session_statCreateInput = {
   step: number
   now_serving?: number
+  served_sched?: string | null
   served_count?: number
   avg_seconds?: number
   updated_at?: Date | string
@@ -323,6 +337,7 @@ export type queue_session_statUncheckedCreateInput = {
   session_id: number
   step: number
   now_serving?: number
+  served_sched?: string | null
   served_count?: number
   avg_seconds?: number
   updated_at?: Date | string
@@ -331,6 +346,7 @@ export type queue_session_statUncheckedCreateInput = {
 export type queue_session_statUpdateInput = {
   step?: Prisma.IntFieldUpdateOperationsInput | number
   now_serving?: Prisma.IntFieldUpdateOperationsInput | number
+  served_sched?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   served_count?: Prisma.IntFieldUpdateOperationsInput | number
   avg_seconds?: Prisma.FloatFieldUpdateOperationsInput | number
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -342,6 +358,7 @@ export type queue_session_statUncheckedUpdateInput = {
   session_id?: Prisma.IntFieldUpdateOperationsInput | number
   step?: Prisma.IntFieldUpdateOperationsInput | number
   now_serving?: Prisma.IntFieldUpdateOperationsInput | number
+  served_sched?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   served_count?: Prisma.IntFieldUpdateOperationsInput | number
   avg_seconds?: Prisma.FloatFieldUpdateOperationsInput | number
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -352,6 +369,7 @@ export type queue_session_statCreateManyInput = {
   session_id: number
   step: number
   now_serving?: number
+  served_sched?: string | null
   served_count?: number
   avg_seconds?: number
   updated_at?: Date | string
@@ -360,6 +378,7 @@ export type queue_session_statCreateManyInput = {
 export type queue_session_statUpdateManyMutationInput = {
   step?: Prisma.IntFieldUpdateOperationsInput | number
   now_serving?: Prisma.IntFieldUpdateOperationsInput | number
+  served_sched?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   served_count?: Prisma.IntFieldUpdateOperationsInput | number
   avg_seconds?: Prisma.FloatFieldUpdateOperationsInput | number
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -370,6 +389,7 @@ export type queue_session_statUncheckedUpdateManyInput = {
   session_id?: Prisma.IntFieldUpdateOperationsInput | number
   step?: Prisma.IntFieldUpdateOperationsInput | number
   now_serving?: Prisma.IntFieldUpdateOperationsInput | number
+  served_sched?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   served_count?: Prisma.IntFieldUpdateOperationsInput | number
   avg_seconds?: Prisma.FloatFieldUpdateOperationsInput | number
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -385,6 +405,12 @@ export type queue_session_statOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type queue_session_statOrderByRelevanceInput = {
+  fields: Prisma.queue_session_statOrderByRelevanceFieldEnum | Prisma.queue_session_statOrderByRelevanceFieldEnum[]
+  sort: Prisma.SortOrder
+  search: string
+}
+
 export type queue_session_statSession_idStepCompoundUniqueInput = {
   session_id: number
   step: number
@@ -395,6 +421,7 @@ export type queue_session_statCountOrderByAggregateInput = {
   session_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   now_serving?: Prisma.SortOrder
+  served_sched?: Prisma.SortOrder
   served_count?: Prisma.SortOrder
   avg_seconds?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -414,6 +441,7 @@ export type queue_session_statMaxOrderByAggregateInput = {
   session_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   now_serving?: Prisma.SortOrder
+  served_sched?: Prisma.SortOrder
   served_count?: Prisma.SortOrder
   avg_seconds?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -424,6 +452,7 @@ export type queue_session_statMinOrderByAggregateInput = {
   session_id?: Prisma.SortOrder
   step?: Prisma.SortOrder
   now_serving?: Prisma.SortOrder
+  served_sched?: Prisma.SortOrder
   served_count?: Prisma.SortOrder
   avg_seconds?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -491,6 +520,7 @@ export type FloatFieldUpdateOperationsInput = {
 export type queue_session_statCreateWithoutSessionInput = {
   step: number
   now_serving?: number
+  served_sched?: string | null
   served_count?: number
   avg_seconds?: number
   updated_at?: Date | string
@@ -500,6 +530,7 @@ export type queue_session_statUncheckedCreateWithoutSessionInput = {
   id?: number
   step: number
   now_serving?: number
+  served_sched?: string | null
   served_count?: number
   avg_seconds?: number
   updated_at?: Date | string
@@ -539,6 +570,7 @@ export type queue_session_statScalarWhereInput = {
   session_id?: Prisma.IntFilter<"queue_session_stat"> | number
   step?: Prisma.IntFilter<"queue_session_stat"> | number
   now_serving?: Prisma.IntFilter<"queue_session_stat"> | number
+  served_sched?: Prisma.StringNullableFilter<"queue_session_stat"> | string | null
   served_count?: Prisma.IntFilter<"queue_session_stat"> | number
   avg_seconds?: Prisma.FloatFilter<"queue_session_stat"> | number
   updated_at?: Prisma.DateTimeFilter<"queue_session_stat"> | Date | string
@@ -548,6 +580,7 @@ export type queue_session_statCreateManySessionInput = {
   id?: number
   step: number
   now_serving?: number
+  served_sched?: string | null
   served_count?: number
   avg_seconds?: number
   updated_at?: Date | string
@@ -556,6 +589,7 @@ export type queue_session_statCreateManySessionInput = {
 export type queue_session_statUpdateWithoutSessionInput = {
   step?: Prisma.IntFieldUpdateOperationsInput | number
   now_serving?: Prisma.IntFieldUpdateOperationsInput | number
+  served_sched?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   served_count?: Prisma.IntFieldUpdateOperationsInput | number
   avg_seconds?: Prisma.FloatFieldUpdateOperationsInput | number
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -565,6 +599,7 @@ export type queue_session_statUncheckedUpdateWithoutSessionInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   step?: Prisma.IntFieldUpdateOperationsInput | number
   now_serving?: Prisma.IntFieldUpdateOperationsInput | number
+  served_sched?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   served_count?: Prisma.IntFieldUpdateOperationsInput | number
   avg_seconds?: Prisma.FloatFieldUpdateOperationsInput | number
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -574,6 +609,7 @@ export type queue_session_statUncheckedUpdateManyWithoutSessionInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   step?: Prisma.IntFieldUpdateOperationsInput | number
   now_serving?: Prisma.IntFieldUpdateOperationsInput | number
+  served_sched?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   served_count?: Prisma.IntFieldUpdateOperationsInput | number
   avg_seconds?: Prisma.FloatFieldUpdateOperationsInput | number
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -586,6 +622,7 @@ export type queue_session_statSelect<ExtArgs extends runtime.Types.Extensions.In
   session_id?: boolean
   step?: boolean
   now_serving?: boolean
+  served_sched?: boolean
   served_count?: boolean
   avg_seconds?: boolean
   updated_at?: boolean
@@ -599,12 +636,13 @@ export type queue_session_statSelectScalar = {
   session_id?: boolean
   step?: boolean
   now_serving?: boolean
+  served_sched?: boolean
   served_count?: boolean
   avg_seconds?: boolean
   updated_at?: boolean
 }
 
-export type queue_session_statOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "session_id" | "step" | "now_serving" | "served_count" | "avg_seconds" | "updated_at", ExtArgs["result"]["queue_session_stat"]>
+export type queue_session_statOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "session_id" | "step" | "now_serving" | "served_sched" | "served_count" | "avg_seconds" | "updated_at", ExtArgs["result"]["queue_session_stat"]>
 export type queue_session_statInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   session?: boolean | Prisma.queue_sessionsDefaultArgs<ExtArgs>
 }
@@ -619,6 +657,7 @@ export type $queue_session_statPayload<ExtArgs extends runtime.Types.Extensions.
     session_id: number
     step: number
     now_serving: number
+    served_sched: string | null
     served_count: number
     avg_seconds: number
     updated_at: Date
@@ -996,6 +1035,7 @@ export interface queue_session_statFieldRefs {
   readonly session_id: Prisma.FieldRef<"queue_session_stat", 'Int'>
   readonly step: Prisma.FieldRef<"queue_session_stat", 'Int'>
   readonly now_serving: Prisma.FieldRef<"queue_session_stat", 'Int'>
+  readonly served_sched: Prisma.FieldRef<"queue_session_stat", 'String'>
   readonly served_count: Prisma.FieldRef<"queue_session_stat", 'Int'>
   readonly avg_seconds: Prisma.FieldRef<"queue_session_stat", 'Float'>
   readonly updated_at: Prisma.FieldRef<"queue_session_stat", 'DateTime'>

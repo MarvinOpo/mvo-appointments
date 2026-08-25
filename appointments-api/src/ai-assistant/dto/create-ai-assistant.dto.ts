@@ -7,7 +7,7 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class CreateAiAssistantDto {
+export class DepartmentAiAssistantDto {
   @IsString()
   @IsNotEmpty()
   complaint: string;
@@ -35,4 +35,34 @@ export class CreateAiAssistantDto {
   @IsString()
   @IsIn(['T', 'F'])
   type: string;
+}
+
+export class GenerateSoapDto {
+  @IsString()
+  @IsNotEmpty()
+  chief_complaint: string;
+
+  @IsString()
+  @IsOptional()
+  history_of_present_illness?: string;
+
+  @IsString()
+  @IsOptional()
+  symptoms_reported?: string;
+
+  @IsString()
+  @IsOptional()
+  relevant_history?: string;
+
+  @IsString()
+  @IsOptional()
+  visual_audio_observations?: string;
+
+  @IsString()
+  @IsOptional()
+  self_reported_vitals?: string;
+
+  @IsString()
+  @IsOptional()
+  additional_notes?: string;
 }

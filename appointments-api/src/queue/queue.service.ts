@@ -133,7 +133,8 @@ export class QueueService {
 
   async callSkip(id: number, updateQueueStatDto: UpdateQueueStatDto) {
     return await mvo_appointments.$transaction(async (tx) => {
-      const { skipped_appointment_id, now_serving } = updateQueueStatDto;
+      const { skipped_appointment_id, now_serving, served_sched } =
+        updateQueueStatDto;
 
       if (skipped_appointment_id) {
         const appt = await tx.appointments.findFirst({
@@ -166,6 +167,7 @@ export class QueueService {
         where: { id },
         data: {
           now_serving,
+          served_sched,
         },
         include: {
           session: {
