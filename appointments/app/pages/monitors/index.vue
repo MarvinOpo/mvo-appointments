@@ -22,7 +22,7 @@
                             <v-col cols="auto">
                                 <v-tooltip location="top">
                                     <template v-slot:activator="{ props }">
-                                        <v-icon @click="openMonitorView(item)" color="blue" v-bind="props"
+                                        <v-icon @click="openMonitorView(item)" color="green" v-bind="props"
                                             size="x-large">mdi-monitor-eye</v-icon>
                                     </template>
                                     <span>View Monitor</span>
@@ -31,7 +31,7 @@
                             <v-col cols="auto">
                                 <v-tooltip location="top">
                                     <template v-slot:activator="{ props }">
-                                        <v-icon @click="openDialogForm(item)" color="amber" v-bind="props"
+                                        <v-icon @click="openDialogForm(item)" color="blue" v-bind="props"
                                             size="x-large">mdi-pencil</v-icon>
                                     </template>
                                     <span>Edit</span>
@@ -52,7 +52,7 @@
             </v-card-text>
         </v-card>
 
-        <MonitorForm v-model="dialog.form.isVisible" :monitor="dialog.form.data" :departments="departments.list"
+        <QueueMonitorForm v-model="dialog.form.isVisible" :monitor="dialog.form.data" :departments="departments.list"
             @saved="getMonitors" />
 
         <DialogConfirm v-model="dialog.confirm.isVisible" :label="dialog.confirm.label" color="red"
@@ -78,8 +78,8 @@ const dialog = reactive({
 
 const monitors = reactive({
     headers: <any[]>[
-        { title: 'Name', align: 'start', key: 'name', sortable: false },
-        { title: 'Departments', align: 'start', key: 'dept_ids', sortable: false },
+        { title: 'Name', align: 'start', key: 'name', sortable: false, width: '300' },
+        { title: 'Departments', align: 'start', key: 'dept_ids', sortable: false, width: '900' },
         { title: 'Options', align: 'center', key: 'options', sortable: false, width: '200' },
     ],
     list: <QueueMonitor[]>[],
@@ -96,12 +96,12 @@ const getMonitors = async () => {
     monitors.isLoading = true;
 
     const data = await fetchJsonData('/monitors', token.value);
+    console.log(data);
     if (!data.error) monitors.list = data;
 
     monitors.isLoading = false;
 }
 
-// TODO: point this at your actual department list endpoint/composable
 const getDepartments = async () => {
     const data = await fetchJsonData('/departments', token.value);
     if (!data.error) departments.list = data;

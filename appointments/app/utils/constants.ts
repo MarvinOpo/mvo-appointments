@@ -16,6 +16,7 @@ export const options = {
         SAT: 6,
     } as Record<string, number>,
     extensionName: ["Jr.", "Sr.", "II", "III", "IV", "V"],
+    priorityType: ["EMPLOYEE", "SENIOR", "PWD", "PREGNANT", "REGULAR"],
     queueRoles: [
         {
             value: "check_in",
@@ -81,4 +82,7 @@ export const rules = {
 
     confirmPassword: (original: string) => (v: string) =>
         v === original || "Passwords do not match",
+
+    maxDepts: (v: number[]) =>
+        (v?.length ?? 0) <= 12 || "Maximum of 12 departments per monitor",
 };

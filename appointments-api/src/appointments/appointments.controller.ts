@@ -39,6 +39,7 @@ export class AppointmentsController {
     @Query('lname') lname?: string,
     @Query('type') type?: string,
     @Query('schedule') schedule?: string,
+    @Query('since') since?: string,
   ) {
     const statusArray = status?.split(',');
     return this.appointmentsService.findAppointmentByStatus(statusArray, {
@@ -46,6 +47,7 @@ export class AppointmentsController {
       lname,
       type,
       schedule,
+      since,
     });
   }
 

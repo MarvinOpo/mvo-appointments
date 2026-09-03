@@ -3,6 +3,7 @@ export interface AppointmentQueue {
     scheduled_at: string;
     queue_no: number;
     step: number;
+    priority: string;
 
     patient?: Patient;
 }
@@ -55,4 +56,16 @@ export interface QueueMonitor {
     id: number;
     name: string;
     dept_ids: number[];
+}
+
+export interface QueueMonitorPublic {
+    id: number;
+    name: string;
+    departments: QueueMonitorDept[];
+}
+
+export interface QueueMonitorDept {
+    id: number;
+    name: string;
+    code: string;
 }

@@ -19,6 +19,9 @@
         <v-list-item v-if="access?.can_manage_queue" to="/queue/sessions" prepend-icon="mdi-human-queue"
             title="Queue Sessions" link />
 
+        <v-list-item v-if="access?.can_manage_queue" to="/monitors" prepend-icon="mdi-television" title="Queue Monitors"
+            link />
+
         <v-list-item v-if="access?.can_manage_holidays" to="/holidays" prepend-icon="mdi-sun-clock-outline"
             title="Holidays" link />
 

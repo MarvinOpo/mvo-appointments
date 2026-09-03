@@ -81,7 +81,7 @@
                                 <v-card-text>
                                     <v-data-table :headers="appointments.headers" :items="filteredAppointments"
                                         :items-per-page="-1" :group-by="[{ key: 'scheduled_at', order: 'asc' }]"
-                                        hide-default-footer>
+                                        :row-props="getRowProps" hide-default-footer>
                                         <template v-slot:group-header="{ item, columns, toggleGroup, isGroupOpen }">
                                             <tr class="bg-blue-lighten-5">
                                                 <td :colspan="columns.length">
@@ -101,6 +101,12 @@
 
                                         <template v-slot:item.name="{ item }">
                                             {{ getFullName(item.patient) }}
+                                        </template>
+
+                                        <template v-slot:item.priority="{ item }">
+                                            <v-select v-model="item.priority" :items="options.priorityType"
+                                                density="compact" hide-details single-line variant="outlined"
+                                                @update:model-value="updatePriority(item)"></v-select>
                                         </template>
 
                                         <template v-slot:item.scheduled_at="{ item }">
@@ -197,6 +203,7 @@ const appointments = reactive({
         { title: "Queue No.", align: "start", value: "queue_no", sortable: false },
         { title: "Schedule", align: " d-none", value: "scheduled_at", sortable: false },
         { title: "Name", align: "start", value: "name", sortable: false },
+        { title: "Priority", align: "start", value: "priority", sortable: false },
         { title: "Status", align: "center", value: "status", sortable: false },
         { title: "Options", align: "center", value: "options", sortable: false, width: "200" },
     ]),
@@ -232,20 +239,10 @@ const closeDialog = () => {
     model.value = false;
 };
 
-const updateDoctorCount = (delta: number) => {
-    if (!props.session) return;
-
-    const current = props.session.doctors_on_duty ?? 0;
-    const newCount = Math.max(0, current + delta); // never go below 0
-
-    if (socket.value) {
-        socket.value.emit('queue:updateDoctorCount', {
-            step: queueRole.value?.step,
-            deptId: props.session.dept_id,
-            sessionId: props.session.id,
-            doctorsOnDuty: newCount,
-        });
-    }
+const getRowProps = ({ item }: { item: AppointmentQueue }) => {
+    return {
+        class: item.priority && item.priority !== 'REGULAR' ? 'bg-amber-lighten-5' : '',
+    };
 };
 
 const getQueueItems = async () => {
@@ -421,14 +418,61 @@ const openDialogComplete = () => {
     dialog.confirm.isVisible = true;
 }
 
+
+const updateDoctorCount = (delta: number) => {
+    if (!props.session) return;
+
+    const current = props.session.doctors_on_duty ?? 0;
+    const newCount = Math.max(0, current + delta); // never go below 0
+
+    if (socket.value) {
+        socket.value.emit('queue:updateDoctorCount', {
+            step: queueRole.value?.step,
+            deptId: props.session.dept_id,
+            sessionId: props.session.id,
+            doctorsOnDuty: newCount,
+        });
+    }
+};
+
+const updatePriority = async (item: AppointmentQueue) => {
+    const body = {
+        id: item.id,
+        priority: item.priority,
+    }
+
+    const data = await updateJsonData(`/appointments/${item.id}/priority`, body, token.value);
+    if (data.error) {
+        snackbar.show({
+            message: data.error,
+            type: 'error',
+            title: 'Error',
+        })
+
+        return;
+    }
+}
+
 watch(model, async (isOpen) => {
     if (isOpen) {
         if (props.session) {
             await getQueueItems();
             socket.value = connectSocket();
-            socket.value.emit('joinQueue', { step: queueRole.value?.step, deptId: props.session.dept_id });
+
+            socket.value.on('connect', () => {
+                console.log('Socket (re)connected, id:', socket.value?.id);
+                if (props.session) {
+                    socket.value?.emit('joinQueue', { step: queueRole.value?.step, deptId: props.session.dept_id });
+                }
+            });
+
             socket.value.on('queue:update', handleQueueUpdate);
-            socket.value.on('exception', handleSocketException);
+            socket.value.on('disconnect', (reason) => console.warn('DISCONNECT:', reason));
+            socket.value.on('connect_error', (err) => console.warn('CONNECT_ERROR:', err));
+            socket.value.on('exception', (err) => {
+                console.warn('EXCEPTION:', err);
+                handleSocketException(err);
+            });
 
             if (queueStat.value?.now_serving) {
                 const index = appointments.list.findIndex(item => {

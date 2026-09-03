@@ -71,3 +71,14 @@ export interface GeneratedSoap {
     assessment: string;
     plan: string;
 }
+
+export interface ReportAppointment {
+    id: number;
+    patient: Patient;
+    department: Department;
+    status: string;
+    scheduled_at: string;
+    ai_dept_matched: boolean | null;
+    ai_soap_assisted: boolean | null;
+    type: string;
+}

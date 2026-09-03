@@ -1,22 +1,40 @@
 <template>
     <v-dialog v-model="model" max-width="600" persistent>
         <v-card>
-            <v-card-title>{{ isEdit ? 'Edit Monitor' : 'Add Monitor' }}</v-card-title>
+            <v-card-title class="d-flex align-center">
+                {{ isEdit ? 'Edit Monitor' : 'Add Monitor' }}
+                <v-spacer />
+                <v-btn icon="mdi-close" variant="text" @click="closeDialog" />
+            </v-card-title>
 
             <v-card-text>
-                <v-form ref="form" v-model="isValid">
-                    <v-text-field v-model="formData.name" label="Monitor Name" :rules="[rules.required]" />
+                <v-form ref="formMonitor" v-model="isValid">
+                    <v-row>
+                        <v-col cols="12">
+                            <v-text-field v-model="formData.name" label="Monitor Name" :rules="[rules.required]"
+                                variant="outlined" autocomplete="off" />
+                        </v-col>
 
-                    <v-select v-model="formData.dept_ids" :items="departments" item-title="name" item-value="id"
-                        label="Departments (max 10)" multiple chips closable-chips
-                        :rules="[rules.required, rules.maxDepts]" />
+                        <v-col cols="12">
+                            <v-autocomplete v-model="formData.dept_ids" :items="departments" item-title="name" item-value="id"
+                                label="Departments (max 10)" multiple chips closable-chips
+                                :rules="[rules.required, rules.maxDepts]" variant="outlined" autocomplete="off" />
+                        </v-col>
+                    </v-row>
                 </v-form>
             </v-card-text>
 
-            <v-card-actions>
-                <v-spacer />
-                <v-btn variant="text" @click="closeDialog">Cancel</v-btn>
-                <v-btn color="accent" variant="flat" :loading="isSaving" @click="save">Save</v-btn>
+            <v-card-actions class="sticky-bottom bg-white">
+                <v-container>
+                    <v-row justify="center">
+                        <v-col cols="auto">
+                            <v-btn color="grey" @click="closeDialog" variant="tonal">CANCEL</v-btn>
+                        </v-col>
+                        <v-col cols="auto">
+                            <v-btn color="blue" @click="save" :loading="isLoading" variant="tonal">SAVE</v-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -36,8 +54,8 @@ const props = defineProps<{
 const emit = defineEmits<{ saved: [] }>();
 
 const isValid = ref(false);
-const isSaving = ref(false);
-const form = ref();
+const isLoading = ref(false);
+const formMonitor = ref();
 
 const isEdit = computed(() => !!props.monitor?.id);
 
@@ -45,11 +63,6 @@ const formData = reactive<{ id?: number; name: string; dept_ids: number[] }>({
     name: '',
     dept_ids: [],
 });
-
-const rules = {
-    required: (v: any) => (v && (Array.isArray(v) ? v.length > 0 : true)) || 'Required',
-    maxDepts: (v: number[]) => (v?.length ?? 0) <= 10 || 'Maximum of 10 departments per monitor',
-};
 
 watch(() => props.monitor, (val) => {
     formData.id = val?.id;
@@ -62,24 +75,20 @@ const closeDialog = () => {
 }
 
 const save = async () => {
-    const { valid } = await form.value.validate();
+    const { valid } = await formMonitor.value.validate();
     if (!valid) return;
 
-    isSaving.value = true;
+    isLoading.value = true;
 
     const payload = { name: formData.name, dept_ids: formData.dept_ids };
 
-    // TODO: swap for your actual POST/PATCH helpers
     const data = isEdit.value
         ? await updateJsonData(`/monitors/${formData.id}`, payload, token.value)
         : await postJsonData('/monitors', payload, token.value);
 
-    isSaving.value = false;
+    isLoading.value = false;
 
-    if (data.error) {
-        snackbar.show({ message: 'Failed to save monitor.', type: 'error', title: 'Error' });
-        return;
-    }
+    if (data.error) return;
 
     snackbar.show({ message: `Monitor ${isEdit.value ? 'updated' : 'created'}.`, type: 'success', title: 'Success' });
     emit('saved');

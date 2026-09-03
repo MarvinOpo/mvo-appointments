@@ -104,9 +104,10 @@ export class AppointmentsService {
       lname?: string;
       type?: string;
       schedule?: string;
+      since?: string;
     },
   ) {
-    const { fname, lname, type, schedule } = filters;
+    const { fname, lname, type, schedule, since } = filters;
 
     const patientFilter = {
       ...(fname && { fname: { contains: fname } }),
@@ -124,6 +125,7 @@ export class AppointmentsService {
             lte: dayjs.utc(schedule).endOf('day').toDate(),
           },
         }),
+        ...(since && { createdAt: { gt: new Date(since) } }),
       },
       include: {
         patient: {

@@ -2,7 +2,7 @@
     <div>
         <v-card class="child-component" flat>
             <v-card-title class="d-flex align-center">
-                Dashboard
+                Dashboard ({{ appointments.from }} - {{ appointments.to }})
                 <v-spacer />
                 <v-row justify="end">
                     <v-col cols="auto">
@@ -12,6 +12,11 @@
                     <v-col cols="auto">
                         <v-date-input v-model="filter.to" label="Date To" prepend-icon="" variant="outlined"
                             autocomplete="off" width="300" clearable />
+                    </v-col>
+                    <v-col cols="auto">
+                        <v-btn @click="getReports" color="green" prepend-icon="mdi-magnify" size="x-large">
+                            Search
+                        </v-btn>
                     </v-col>
                 </v-row>
             </v-card-title>
@@ -30,7 +35,7 @@
                 <v-row class="mt-2">
                     <v-col cols="12" md="6">
                         <v-card flat>
-                            <v-card-title>AI-Assisted SOAP</v-card-title>
+                            <v-card-title>AI-Assisted SOAP (Teleconsult)</v-card-title>
                             <v-card-text class="d-flex align-center justify-center" style="height: 300px;">
                                 <apexchart type="radialBar" height="280" :options="aiConsultChart.options"
                                     :series="aiConsultChart.series" />
@@ -41,8 +46,8 @@
                     <v-col cols="12" md="6">
                         <v-card flat>
                             <v-card-title>AI Department Matching</v-card-title>
-                            <v-card-text>
-                                <apexchart type="bar" height="300" :options="aiDeptChart.options"
+                            <v-card-text class="d-flex align-center justify-center" style="height: 300px;">
+                                <apexchart type="radialBar" height="280" :options="aiDeptChart.options"
                                     :series="aiDeptChart.series" />
                             </v-card-text>
                         </v-card>
@@ -86,40 +91,74 @@
                 </v-row>
             </v-card-text>
         </v-card>
+
+        <v-dialog v-model="isLoading" persistent width="300">
+            <LayoutLoader />
+        </v-dialog>
     </div>
 </template>
 
 <script setup lang="ts">
 import moment from 'moment';
 
-const aiDeptSelection = [
-    { department: 'IM', ai_matched: 22, redirected: 4 },
-    { department: 'Pediatrics', ai_matched: 15, redirected: 2 },
-    { department: 'OB-GYNE', ai_matched: 12, redirected: 3 },
-    { department: 'Orthopedics', ai_matched: 9, redirected: 5 },
-    { department: 'ENT', ai_matched: 8, redirected: 6 },
-    { department: 'Dermatology', ai_matched: 6, redirected: 1 },
-    { department: 'Cardiology', ai_matched: 5, redirected: 2 },
-    { department: 'Dental', ai_matched: 4, redirected: 1 },
-];
+const { token } = useUser();
 
-const aiDeptChart = computed(() => ({
-    series: [
-        { name: 'AI-Matched', data: aiDeptSelection.map(d => d.ai_matched) },
-        { name: 'Redirected', data: aiDeptSelection.map(d => d.redirected) },
-    ],
-    options: {
-        chart: { toolbar: { show: false }, stacked: true },
-        xaxis: { categories: aiDeptSelection.map(d => d.department) },
-        colors: ['#66BB6A', '#EF5350'],
-        plotOptions: { bar: { borderRadius: 4, horizontal: false } },
-        dataLabels: { enabled: false },
-        legend: { position: 'bottom' },
-    },
-}));
+const appointments = reactive({
+    from: '',
+    to: '',
+    list: <ReportAppointment[]>[]
+})
+
+const filter = reactive({
+    from: moment().startOf('month').format('YYYY-MM-DD'),
+    to: moment().endOf('month').format('YYYY-MM-DD'),
+});
+
+const isLoading = ref(true);
+
+const summary = reactive({
+    pending: 0,
+    ongoing: 0,
+    completed: 0,
+    cancelled: 0,
+    noShow: 0,
+    total: 0,
+});
+
+const summaryStats = computed(() => [
+    { label: 'Pending', value: summary.pending, color: 'orange' },
+    { label: 'Ongoing', value: summary.ongoing, color: 'blue' },
+    { label: 'Completed', value: summary.completed, color: 'green' },
+    { label: 'Cancelled', value: summary.cancelled, color: 'grey-darken-1' },
+    { label: 'No Show', value: summary.noShow, color: 'red' },
+    { label: 'Total Appointments', value: summary.total, color: 'indigo' },
+]);
+
+const typeChart = computed(() => {
+    const faceToFace = appointments.list.filter(a => a.type === 'F').length;
+    const teleconsult = appointments.list.filter(a => a.type === 'T').length;
+
+    return {
+        series: [faceToFace, teleconsult],
+        options: {
+            labels: ['Face to Face', 'Teleconsult'],
+            colors: ['#AB47BC', '#26A69A'],
+            legend: { position: 'bottom' },
+        },
+    };
+});
+
+// AI-Assisted SOAP: real ratio from ai_soap_assisted
+const aiAssistedCount = computed(() => appointments.list.filter(a => a.ai_soap_assisted).length);
+
+
+const teleconsultAppointments = computed(() => appointments.list.filter(a => a.type === 'T'));
+const totalTeleconsults = computed(() => teleconsultAppointments.value.length);
 
 const aiConsultChart = computed(() => {
-    const percentage = totalAppointments ? Math.round((aiAssistedCount / totalAppointments) * 100) : 0;
+    const percentage = totalTeleconsults.value
+        ? Math.round((aiAssistedCount.value / totalTeleconsults.value) * 100)
+        : 0;
 
     return {
         series: [percentage],
@@ -136,7 +175,7 @@ const aiConsultChart = computed(() => {
                             fontSize: '28px',
                             fontWeight: 700,
                             offsetY: 5,
-                            formatter: () => `${aiAssistedCount}/${totalAppointments}`,
+                            formatter: () => `${aiAssistedCount.value}/${totalTeleconsults.value}`,
                         },
                     },
                 },
@@ -146,103 +185,104 @@ const aiConsultChart = computed(() => {
     };
 });
 
-const filter = reactive({
-    from: moment().startOf('month').format('YYYY-MM-DD'),
-    to: moment().endOf('month').format('YYYY-MM-DD'),
-    pie: 0,
+const aiDeptMatchedCount = computed(() => appointments.list.filter(a => a.ai_dept_matched).length);
+const aiDeptRedirectedCount = computed(() => appointments.list.filter(a => !a.ai_dept_matched).length);
+
+const aiDeptChart = computed(() => {
+    const total = appointments.list.length;
+    const percentage = total ? Math.round((aiDeptMatchedCount.value / total) * 100) : 0;
+
+    return {
+        series: [percentage],
+        options: {
+            chart: { toolbar: { show: false } },
+            colors: ['#66BB6A'],
+            plotOptions: {
+                radialBar: {
+                    hollow: { size: '65%' },
+                    dataLabels: {
+                        name: { show: true, fontSize: '14px', color: '#888', offsetY: -10 },
+                        value: {
+                            show: true,
+                            fontSize: '28px',
+                            fontWeight: 700,
+                            offsetY: 5,
+                            formatter: () => `${aiDeptMatchedCount.value}/${appointments.list.length}`,
+                        },
+                    },
+                },
+            },
+            labels: ['AI-Matched'],
+        },
+    };
 });
 
-const summary = reactive({
-    pending: 42,
-    ongoing: 38,
-    completed: 187,
-    cancelled: 19,
-    total: 248,
+// Appointments by Department
+const departmentChart = computed(() => {
+    const grouped = new Map<string, number>();
+    for (const a of appointments.list) {
+        const deptName = a.department?.code ?? 'Unassigned';
+        grouped.set(deptName, (grouped.get(deptName) ?? 0) + 1);
+    }
+
+    return {
+        series: [{ name: 'Appointments', data: [...grouped.values()] }],
+        options: {
+            chart: { toolbar: { show: false } },
+            xaxis: { categories: [...grouped.keys()] },
+            colors: ['#42A5F5'],
+            plotOptions: { bar: { borderRadius: 4, horizontal: false } },
+            dataLabels: { enabled: false },
+        },
+    };
 });
 
-const statusBreakdown = [
-    { status: 'pending', count: 42 },
-    { status: 'completed', count: 187 },
-    { status: 'X', count: 19 },
-];
+// Appointments Trend by scheduled_at date
+const trendChart = computed(() => {
+    const grouped = new Map<string, number>();
+    for (const a of appointments.list) {
+        const day = moment(a.scheduled_at).format('YYYY-MM-DD');
+        grouped.set(day, (grouped.get(day) ?? 0) + 1);
+    }
 
-const departmentBreakdown = [
-    { department: 'IM', count: 68 },
-    { department: 'Pediatrics', count: 45 },
-    { department: 'OB-GYNE', count: 37 },
-    { department: 'Orthopedics', count: 29 },
-    { department: 'ENT', count: 24 },
-    { department: 'Dermatology', count: 18 },
-    { department: 'Cardiology', count: 15 },
-    { department: 'Dental', count: 12 },
-];
+    const sortedDates = [...grouped.keys()].sort();
 
-const typeBreakdown = [
-    { type: 'F', count: 165 },
-    { type: 'T', count: 83 },
-    { type: 'W', count: 10 },
-];
+    return {
+        series: [{ name: 'Appointments', data: sortedDates.map(d => grouped.get(d)!) }],
+        options: {
+            chart: { toolbar: { show: false }, zoom: { enabled: false } },
+            xaxis: { categories: sortedDates.map(d => formatDate(d, 'MMM DD')) },
+            colors: ['#42A5F5'],
+            stroke: { curve: 'smooth', width: 3 },
+            dataLabels: { enabled: false },
+        },
+    };
+});
 
-const trend = [
-    { date: '2026-08-04', count: 12 },
-    { date: '2026-08-05', count: 18 },
-    { date: '2026-08-06', count: 15 },
-    { date: '2026-08-07', count: 21 },
-    { date: '2026-08-08', count: 9 },
-    { date: '2026-08-09', count: 6 },
-    { date: '2026-08-10', count: 14 },
-    { date: '2026-08-11', count: 19 },
-    { date: '2026-08-12', count: 23 },
-    { date: '2026-08-13', count: 17 },
-    { date: '2026-08-14', count: 20 },
-    { date: '2026-08-15', count: 11 },
-    { date: '2026-08-16', count: 8 },
-    { date: '2026-08-17', count: 16 },
-];
+const getReports = async () => {
+    isLoading.value = true;
 
-const aiAssistedCount = 83;
-const totalAppointments = 248;
+    const param = `?from=${moment(filter.from).format('YYYY-MM-DD HH:mm:ss')}&to=${moment(filter.to).format('YYYY-MM-DD HH:mm:ss')}`;
+    const data = await fetchJsonData('/appointments/report' + param, token.value);
+    if (data) {
+        appointments.list = data;
 
-const summaryStats = computed(() => [
-    { label: 'Pending', value: summary.pending, color: 'orange' },
-    { label: 'Ongoing', value: summary.ongoing, color: 'blue' },
-    { label: 'Completed', value: summary.completed, color: 'green' },
-    { label: 'Cancelled', value: summary.cancelled, color: 'red' },
-    { label: 'Total Appointments', value: summary.total, color: 'black' },
-]);
+        summary.pending = appointments.list.filter(a => a.status === 'P').length;
+        summary.ongoing = appointments.list.filter(a => a.status === 'O').length;
+        summary.completed = appointments.list.filter(a => a.status === 'C').length;
+        summary.cancelled = appointments.list.filter(a => a.status === 'X').length;
+        summary.noShow = appointments.list.filter(a => a.status === 'NS').length;
+        summary.total = appointments.list.length;
+    }
 
-const departmentChart = computed(() => ({
-    series: [{ name: 'Appointments', data: departmentBreakdown.map(d => d.count) }],
-    options: {
-        chart: { toolbar: { show: false } },
-        xaxis: { categories: departmentBreakdown.map(d => d.department) },
-        colors: ['#42A5F5'],
-        plotOptions: { bar: { borderRadius: 4, horizontal: false } },
-        dataLabels: { enabled: false },
-    },
-}));
+    appointments.from = moment(filter.from).format('MMM DD, YYYY');
+    appointments.to = moment(filter.to).format('MMM DD, YYYY');
 
-const typeChart = computed(() => ({
-    series: typeBreakdown.map(t => t.count),
-    options: {
-        labels: ['Face to Face', 'Teleconsult', 'Walk-in'],
-        colors: ['#AB47BC', '#26A69A', '#EF5350'],
-        legend: { position: 'bottom' },
-    },
-}));
+    isLoading.value = false;
+}
 
-const trendChart = computed(() => ({
-    series: [{ name: 'Appointments', data: trend.map(t => t.count) }],
-    options: {
-        chart: { toolbar: { show: false }, zoom: { enabled: false } },
-        xaxis: { categories: trend.map(t => formatDate(t.date, 'MMM DD')) },
-        colors: ['#42A5F5'],
-        stroke: { curve: 'smooth', width: 3 },
-        dataLabels: { enabled: false },
-    },
-}));
+onMounted(() => getReports());
 </script>
-
 <style scoped>
 .stat-label {
     font-size: clamp(0.75rem, 1.2vw, 0.9rem);

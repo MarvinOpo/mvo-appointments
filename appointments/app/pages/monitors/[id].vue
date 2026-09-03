@@ -6,16 +6,19 @@
 
         <div v-if="isLoading" class="loading-state">Loading...</div>
 
-        <div v-else class="monitor-grid" :style="{ gridTemplateColumns: gridColumns }">
-            <div v-for="dept in deptCards" :key="dept.id" class="dept-card">
+        <div v-else class="monitor-grid" :style="gridStyle">
+            <div v-for="dept in deptCards" :key="dept.id" class="dept-card" :style="cardStyle">
                 <div class="dept-name">{{ dept.name }}</div>
 
-                <div v-for="role in queueRoles" :key="role.value" class="step-row">
-                    <div class="step-label">{{ role.label }}</div>
-                    <div class="step-number">
-                        {{ dept.steps[role.value]?.now_serving
-                            ? `${dept.code}${dept.steps[role.value]!.now_serving}-${dept.steps[role.value]!.served_sched}`
-                            : '—' }}
+                <div class="dept-steps">
+                    <div v-for="role in queueRoles" :key="role.value" class="step-row">
+                        <div class="step-label">{{ role.label }}</div>
+                        <div class="step-number" :class="{ 'flash': isFlashing(dept.id, role.value) }">
+                            {{ dept.steps[role.value]?.now_serving
+                                ?
+                                `${dept.code}${dept.steps[role.value]!.now_serving}-${dept.steps[role.value]!.served_sched}`
+                                : '—' }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -24,16 +27,55 @@
 </template>
 
 <script setup lang="ts">
+import type { CSSProperties } from 'vue';
+
+const { token } = useUser();
+
 const route = useRoute();
 const { connectSocket } = useQueueSocket();
 
-const monitorId = route.params.id as string;
+const flashingCells = reactive(new Set<string>());
+const flashTimers = new Map<string, ReturnType<typeof setTimeout>>();
+
+const flashKey = (deptId: number, roleValue: string) => `${deptId}:${roleValue}`;
+
+const GAP_REM = 1.5;
+
+const gridCols = computed(() => {
+    const count = deptCards.length || 1;
+    return Math.min(Math.ceil(Math.sqrt(count)), 5);
+})
+
+const gridRows = computed(() => {
+    const count = deptCards.length || 1;
+    return Math.ceil(count / gridCols.value);
+})
+
+const gridStyle = computed<CSSProperties>(() => ({
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignContent: 'center',
+    gap: `${GAP_REM}rem`,
+}))
+
+const cardStyle = computed<CSSProperties>(() => {
+    const cols = gridCols.value;
+    const rows = gridRows.value;
+
+    return {
+        flex: `0 0 calc((100% - ${(cols - 1) * GAP_REM}rem) / ${cols})`,
+        height: `calc((100% - ${(rows - 1) * GAP_REM}rem) / ${rows})`,
+    };
+})
+
+const isFlashing = (deptId: number, roleValue: string) => flashingCells.has(flashKey(deptId, roleValue));
 
 const isLoading = ref(true);
+
+const monitorId = route.params.id as string;
 const monitor = ref<{ id: number; name: string } | null>(null);
 
-// TODO: confirm shape matches your existing options.queueRoles
-// e.g. [{ value: 'registration', label: 'Registration', step: 1 }, { value: 'vitals', label: 'Vital Signs', step: 2 }, { value: 'consultation', label: 'Consultation', step: 3 }]
 const queueRoles = options.queueRoles;
 
 interface DeptCard {
@@ -48,8 +90,7 @@ const deptCards = reactive<DeptCard[]>([]);
 let socket: ReturnType<typeof connectSocket> | null = null;
 
 const getMonitorConfig = async () => {
-    // Public, unauthenticated call — no token
-    const data = await fetchJsonData(`/monitors/${monitorId}/public`);
+    const data = await fetchJsonData(`/monitors/${monitorId}`, token.value);
 
     if (data.error) {
         isLoading.value = false;
@@ -58,8 +99,6 @@ const getMonitorConfig = async () => {
 
     monitor.value = { id: data.id, name: data.name };
 
-    // TODO: this assumes your public endpoint returns joined dept name/code —
-    // i.e. data.departments = [{ id, name, code }], not just raw dept_ids
     deptCards.splice(0, deptCards.length, ...data.departments.map((d: any) => ({
         id: d.id,
         name: d.name,
@@ -80,13 +119,13 @@ const joinAllQueues = () => {
     }
 }
 
-const handleQueueUpdate = (payload: any) => {
+const handleQueueUpdate = async (payload: any) => {
     if (payload.action === 'updateDoctorCount') return;
 
     const stat = payload.stat;
-    if (!stat?.dept_id) return; // TODO: backend must include dept_id on the emitted stat
 
-    const dept = deptCards.find(d => d.id === stat.dept_id);
+    if (!payload.dept_id) return;
+    const dept = deptCards.find(d => d.id === payload.dept_id);
     if (!dept) return;
 
     const role = queueRoles.find(r => r.step === stat.step);
@@ -96,17 +135,38 @@ const handleQueueUpdate = (payload: any) => {
         now_serving: stat.now_serving,
         served_sched: stat.served_sched,
     };
+
+    await triggerFlash(dept.id, role.value);
 }
 
-const gridColumns = computed(() => {
-    const cols = Math.min(deptCards.length, 5) || 1;
-    return `repeat(${cols}, 1fr)`;
-})
+const triggerFlash = async (deptId: number, roleValue: string) => {
+    const key = flashKey(deptId, roleValue);
+
+    const existingTimer = flashTimers.get(key);
+    if (existingTimer) clearTimeout(existingTimer);
+
+    if (flashingCells.has(key)) {
+        flashingCells.delete(key);
+        await nextTick();
+        
+        const el = document.querySelector(`[data-flash-key="${key}"]`);
+        if (el) void (el as HTMLElement).offsetWidth;
+    }
+
+    flashingCells.add(key);
+
+    const timer = setTimeout(() => {
+        flashingCells.delete(key);
+        flashTimers.delete(key);
+    }, 5000);
+
+    flashTimers.set(key, timer);
+}
+
 
 onMounted(async () => {
     await getMonitorConfig();
 
-    // TODO: confirm connectSocket() works without a JWT/token for a listen-only connection
     socket = connectSocket();
     socket.on('queue:update', handleQueueUpdate);
     socket.on('connect', joinAllQueues);
@@ -124,10 +184,12 @@ onUnmounted(() => {
         socket.off('queue:update', handleQueueUpdate);
         socket.disconnect();
     }
+
+    flashTimers.clear();
 })
 
 definePageMeta({
-    layout: false, // kiosk mode — no nav/header chrome
+    layout: false,
     middleware: 'require-access',
     requiredAccess: ['can_manage_queue'],
 });
@@ -135,15 +197,20 @@ definePageMeta({
 
 <style scoped>
 .monitor-page {
-    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     background: #0d1b2a;
     color: white;
     padding: 2rem;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .monitor-header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+    flex-shrink: 0;
 }
 
 .monitor-title {
@@ -154,8 +221,8 @@ definePageMeta({
 }
 
 .monitor-grid {
-    display: grid;
-    gap: 1.5rem;
+    flex: 1;
+    min-height: 0;
 }
 
 .dept-card {
@@ -163,6 +230,10 @@ definePageMeta({
     border-radius: 12px;
     padding: 1.5rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    min-height: 0;
 }
 
 .dept-name {
@@ -171,6 +242,21 @@ definePageMeta({
     opacity: 0.8;
     text-transform: uppercase;
     margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.dept-steps {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
+}
+
+.loading-state {
+    text-align: center;
+    font-size: 1.5rem;
+    padding: 4rem;
 }
 
 .step-row {
@@ -193,9 +279,20 @@ definePageMeta({
     color: #4fc3f7;
 }
 
-.loading-state {
-    text-align: center;
-    font-size: 1.5rem;
-    padding: 4rem;
+.step-number.flash {
+    animation: blink-red 0.5s step-start 10;
+    /* 0.5s * 10 = 5s */
+}
+
+@keyframes blink-red {
+
+    0%,
+    100% {
+        color: #4fc3f7;
+    }
+
+    50% {
+        color: #ff1744;
+    }
 }
 </style>
