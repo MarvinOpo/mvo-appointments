@@ -71,6 +71,13 @@ export class AppointmentsController {
     );
   }
 
+  @UseGuards(AuthGuard)
+  @Permissions('can_manage_appts')
+  @Get('report')
+  getReport(@Query('from') from: string, @Query('to') to: string) {
+    return this.appointmentsService.getReport(from, to);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.appointmentsService.findOne(+id);
@@ -93,6 +100,16 @@ export class AppointmentsController {
   }
 
   @UseGuards(AuthGuard)
+  @Patch(':id/cancel')
+  cancel(
+    @Param('id') id: string,
+    @Body() updateAppointmentDto: UpdateAppointmentDto,
+    @Req() req: Request & { user: UserDto },
+  ) {
+    return this.appointmentsService.cancel(+id, updateAppointmentDto, req.user);
+  }
+
+  @UseGuards(AuthGuard)
   @Permissions('can_manage_appts')
   @Patch(':id/soap')
   updateSoap(
@@ -104,21 +121,21 @@ export class AppointmentsController {
 
   @UseGuards(AuthGuard)
   @Permissions('can_manage_appts')
+  @Patch(':id/priority')
+  updatePriority(
+    @Param('id') id: string,
+    @Body() updateAppointmentDto: UpdateAppointmentDto,
+  ) {
+    return this.appointmentsService.updatePriority(+id, updateAppointmentDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Permissions('can_manage_appts')
   @Patch(':id/resched')
   resched(
     @Param('id') id: string,
     @Body() updateAppointmentDto: UpdateAppointmentDto,
   ) {
     return this.appointmentsService.resched(+id, updateAppointmentDto);
-  }
-
-  @UseGuards(AuthGuard)
-  @Patch(':id/cancel')
-  cancel(
-    @Param('id') id: string,
-    @Body() updateAppointmentDto: UpdateAppointmentDto,
-    @Req() req: Request & { user: UserDto },
-  ) {
-    return this.appointmentsService.cancel(+id, updateAppointmentDto, req.user);
   }
 }

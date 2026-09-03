@@ -167,6 +167,12 @@ model queue_session_stat {
   @@unique([session_id, step])
 }
 
+model queue_monitors {
+  id       Int    @id @default(autoincrement())
+  name     String
+  dept_ids Json // number[]
+}
+
 model user_access {
   id           Int   @id @default(autoincrement())
   user_id      Int   @unique(map: "user_id_UNIQUE")

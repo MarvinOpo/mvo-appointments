@@ -395,6 +395,7 @@ export const ModelName = {
   patients: 'patients',
   queue_sessions: 'queue_sessions',
   queue_session_stat: 'queue_session_stat',
+  queue_monitors: 'queue_monitors',
   user_access: 'user_access'
 } as const
 
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "access_rights" | "appointments" | "appointment_logs" | "departments" | "department_schedule" | "department_assignment" | "holidays" | "patient_dependents" | "patients" | "queue_sessions" | "queue_session_stat" | "user_access"
+    modelProps: "access_rights" | "appointments" | "appointment_logs" | "departments" | "department_schedule" | "department_assignment" | "holidays" | "patient_dependents" | "patients" | "queue_sessions" | "queue_session_stat" | "queue_monitors" | "user_access"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1141,6 +1142,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    queue_monitors: {
+      payload: Prisma.$queue_monitorsPayload<ExtArgs>
+      fields: Prisma.queue_monitorsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.queue_monitorsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.queue_monitorsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload>
+        }
+        findFirst: {
+          args: Prisma.queue_monitorsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.queue_monitorsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload>
+        }
+        findMany: {
+          args: Prisma.queue_monitorsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload>[]
+        }
+        create: {
+          args: Prisma.queue_monitorsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload>
+        }
+        createMany: {
+          args: Prisma.queue_monitorsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.queue_monitorsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload>
+        }
+        update: {
+          args: Prisma.queue_monitorsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload>
+        }
+        deleteMany: {
+          args: Prisma.queue_monitorsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.queue_monitorsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.queue_monitorsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$queue_monitorsPayload>
+        }
+        aggregate: {
+          args: Prisma.Queue_monitorsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateQueue_monitors>
+        }
+        groupBy: {
+          args: Prisma.queue_monitorsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Queue_monitorsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.queue_monitorsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Queue_monitorsCountAggregateOutputType> | number
+        }
+      }
+    }
     user_access: {
       payload: Prisma.$user_accessPayload<ExtArgs>
       fields: Prisma.user_accessFieldRefs
@@ -1409,6 +1476,15 @@ export const Queue_session_statScalarFieldEnum = {
 export type Queue_session_statScalarFieldEnum = (typeof Queue_session_statScalarFieldEnum)[keyof typeof Queue_session_statScalarFieldEnum]
 
 
+export const Queue_monitorsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  dept_ids: 'dept_ids'
+} as const
+
+export type Queue_monitorsScalarFieldEnum = (typeof Queue_monitorsScalarFieldEnum)[keyof typeof Queue_monitorsScalarFieldEnum]
+
+
 export const User_accessScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
@@ -1550,6 +1626,13 @@ export const queue_session_statOrderByRelevanceFieldEnum = {
 } as const
 
 export type queue_session_statOrderByRelevanceFieldEnum = (typeof queue_session_statOrderByRelevanceFieldEnum)[keyof typeof queue_session_statOrderByRelevanceFieldEnum]
+
+
+export const queue_monitorsOrderByRelevanceFieldEnum = {
+  name: 'name'
+} as const
+
+export type queue_monitorsOrderByRelevanceFieldEnum = (typeof queue_monitorsOrderByRelevanceFieldEnum)[keyof typeof queue_monitorsOrderByRelevanceFieldEnum]
 
 
 
@@ -1734,6 +1817,7 @@ export type GlobalOmitConfig = {
   patients?: Prisma.patientsOmit
   queue_sessions?: Prisma.queue_sessionsOmit
   queue_session_stat?: Prisma.queue_session_statOmit
+  queue_monitors?: Prisma.queue_monitorsOmit
   user_access?: Prisma.user_accessOmit
 }
 

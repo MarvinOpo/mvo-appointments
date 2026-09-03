@@ -118,12 +118,14 @@ export class QueueGateway {
       action: 'callComplete',
       stat: updatedStat,
       queue: updatedQueue,
+      deptId: data.deptId,
     });
 
     this.emitQueueUpdate(room2, {
       action: 'callComplete',
       stat: updatedStat,
       queue: updatedQueue,
+      dept_id: data.deptId,
     });
 
     return { success: true };
@@ -160,6 +162,7 @@ export class QueueGateway {
       action: 'callSkip',
       stat: updatedStat,
       queue: updatedQueue,
+      dept_id: data.deptId,
     });
 
     return { success: true };

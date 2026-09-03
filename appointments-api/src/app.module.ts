@@ -12,6 +12,7 @@ import { DepartmentScheduleModule } from './department-schedule/department-sched
 import { QueueModule } from './queue/queue.module';
 import { HolidaysModule } from './holidays/holidays.module';
 import { UserAccessModule } from './user-access/user-access.module';
+import { MonitorsModule } from './monitors/monitors.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UserAccessModule } from './user-access/user-access.module';
     QueueModule,
     HolidaysModule,
     UserAccessModule,
+    MonitorsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

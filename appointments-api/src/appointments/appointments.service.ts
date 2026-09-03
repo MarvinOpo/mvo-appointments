@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   ForbiddenException,
   Injectable,
@@ -161,6 +162,7 @@ export class AppointmentsService {
         scheduled_at: true,
         queue_no: true,
         step: true,
+        priority: true,
         ...(user.access?.can_manage_queue && {
           patient: {
             select: {
@@ -183,6 +185,39 @@ export class AppointmentsService {
         },
       },
       orderBy: [{ scheduled_at: 'asc' }, { order_no: 'asc' }],
+    });
+  }
+
+  async getReport(from: string, to: string) {
+    return await mvo_appointments.appointments.findMany({
+      select: {
+        id: true,
+        patient: {
+          select: {
+            fname: true,
+            lname: true,
+            mname: true,
+            ext_name: true,
+          },
+        },
+        department: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+        type: true,
+        status: true,
+        scheduled_at: true,
+        ai_dept_matched: true,
+        ai_soap_assisted: true,
+      },
+      where: {
+        scheduled_at: {
+          gte: dayjs.utc(from).startOf('day').toDate(),
+          lte: dayjs.utc(to).endOf('day').toDate(),
+        },
+      },
     });
   }
 
@@ -252,6 +287,21 @@ export class AppointmentsService {
           order_no: nextOrderNo,
         },
       });
+    });
+  }
+
+  async updatePriority(id: number, updateAppointmentDto: UpdateAppointmentDto) {
+    const { priority } = updateAppointmentDto;
+
+    if (!priority) {
+      throw new BadRequestException('Priority is required.');
+    }
+
+    return await mvo_appointments.appointments.update({
+      where: { id: id },
+      data: {
+        priority,
+      },
     });
   }
 

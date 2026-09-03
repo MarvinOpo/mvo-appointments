@@ -73,6 +73,11 @@ export type queue_sessions = Prisma.queue_sessionsModel
  */
 export type queue_session_stat = Prisma.queue_session_statModel
 /**
+ * Model queue_monitors
+ * 
+ */
+export type queue_monitors = Prisma.queue_monitorsModel
+/**
  * Model user_access
  * 
  */

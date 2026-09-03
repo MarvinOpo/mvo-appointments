@@ -62,6 +62,7 @@ export const ModelName = {
   patients: 'patients',
   queue_sessions: 'queue_sessions',
   queue_session_stat: 'queue_session_stat',
+  queue_monitors: 'queue_monitors',
   user_access: 'user_access'
 } as const
 
@@ -244,6 +245,15 @@ export const Queue_session_statScalarFieldEnum = {
 export type Queue_session_statScalarFieldEnum = (typeof Queue_session_statScalarFieldEnum)[keyof typeof Queue_session_statScalarFieldEnum]
 
 
+export const Queue_monitorsScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  dept_ids: 'dept_ids'
+} as const
+
+export type Queue_monitorsScalarFieldEnum = (typeof Queue_monitorsScalarFieldEnum)[keyof typeof Queue_monitorsScalarFieldEnum]
+
+
 export const User_accessScalarFieldEnum = {
   id: 'id',
   user_id: 'user_id',
@@ -385,4 +395,11 @@ export const queue_session_statOrderByRelevanceFieldEnum = {
 } as const
 
 export type queue_session_statOrderByRelevanceFieldEnum = (typeof queue_session_statOrderByRelevanceFieldEnum)[keyof typeof queue_session_statOrderByRelevanceFieldEnum]
+
+
+export const queue_monitorsOrderByRelevanceFieldEnum = {
+  name: 'name'
+} as const
+
+export type queue_monitorsOrderByRelevanceFieldEnum = (typeof queue_monitorsOrderByRelevanceFieldEnum)[keyof typeof queue_monitorsOrderByRelevanceFieldEnum]
 
