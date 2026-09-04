@@ -84,7 +84,9 @@ export class AiAssistantService {
               e.g. bone/joint pain in limbs or spine -> Orthopedics; pain in jaw, face,
               or teeth -> ENT or Dental, not Orthopedics; ear/nose/throat symptoms -> ENT
               even if described as "pain" or "swelling".
-            - Return your top 1-2 candidates. If genuinely ambiguous, return 2.
+            - Return your top 1-3 candidates. If genuinely ambiguous, return 2.
+            - Consider min age and max age if provided.
+            - If department allowed_gender is null, assume it's for all genders.
 
             Respond ONLY with JSON, no other text, in this exact shape:
             {

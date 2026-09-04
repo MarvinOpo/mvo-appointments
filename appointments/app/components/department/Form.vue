@@ -24,6 +24,21 @@
                             <v-textarea v-model="form.description" label="Description" variant="outlined"
                                 :rules="[rules.required]" counter="255" autocomplete="off" />
                         </v-col>
+
+                        <v-col cols="12" md="6">
+                            <v-text-field v-model="form.min_age" label="Min Age (Empty if no limit)" type="number"
+                                variant="outlined" autocomplete="off" />
+                        </v-col>
+
+                        <v-col cols="12" md="6">
+                            <v-text-field v-model="form.max_age" label="Max Age (Empty if no limit)" type="number"
+                                variant="outlined" autocomplete="off" />
+                        </v-col>
+
+                        <v-col cols="12">
+                            <v-select v-model="form.allowed_gender" :items="options.sex"
+                                label="Allowed sex (Empty for both)" variant="outlined" />
+                        </v-col>
                     </v-row>
                 </v-form>
             </v-card-text>

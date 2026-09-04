@@ -23,7 +23,10 @@ dayjs.extend(utc);
 
 @Injectable()
 export class AppointmentsService {
-  async create(createAppointmentDto: CreateAppointmentDto) {
+  async create(
+    createAppointmentDto: CreateAppointmentDto,
+    unli_appts: boolean,
+  ) {
     return await mvo_appointments.$transaction(async (tx) => {
       const pendingAppts = await tx.$queryRaw<Appointment[]>`
           SELECT * FROM appointments
@@ -31,7 +34,7 @@ export class AppointmentsService {
           FOR UPDATE
         `;
 
-      if (pendingAppts.length > 2)
+      if (!unli_appts && pendingAppts.length > 2)
         throw new ConflictException('You already have 3 pending appointments.');
 
       const sameDepartmentPending = pendingAppts.some(
@@ -125,7 +128,7 @@ export class AppointmentsService {
             lte: dayjs.utc(schedule).endOf('day').toDate(),
           },
         }),
-        ...(since && { createdAt: { gt: new Date(since) } }),
+        ...(since && { created_at: { gt: new Date(since) } }),
       },
       include: {
         patient: {

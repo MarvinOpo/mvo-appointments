@@ -28,10 +28,14 @@ export type AggregateDepartments = {
 
 export type DepartmentsAvgAggregateOutputType = {
   id: number | null
+  min_age: number | null
+  max_age: number | null
 }
 
 export type DepartmentsSumAggregateOutputType = {
   id: number | null
+  min_age: number | null
+  max_age: number | null
 }
 
 export type DepartmentsMinAggregateOutputType = {
@@ -39,6 +43,9 @@ export type DepartmentsMinAggregateOutputType = {
   name: string | null
   code: string | null
   description: string | null
+  min_age: number | null
+  max_age: number | null
+  allowed_gender: $Enums.Gender | null
 }
 
 export type DepartmentsMaxAggregateOutputType = {
@@ -46,6 +53,9 @@ export type DepartmentsMaxAggregateOutputType = {
   name: string | null
   code: string | null
   description: string | null
+  min_age: number | null
+  max_age: number | null
+  allowed_gender: $Enums.Gender | null
 }
 
 export type DepartmentsCountAggregateOutputType = {
@@ -53,16 +63,23 @@ export type DepartmentsCountAggregateOutputType = {
   name: number
   code: number
   description: number
+  min_age: number
+  max_age: number
+  allowed_gender: number
   _all: number
 }
 
 
 export type DepartmentsAvgAggregateInputType = {
   id?: true
+  min_age?: true
+  max_age?: true
 }
 
 export type DepartmentsSumAggregateInputType = {
   id?: true
+  min_age?: true
+  max_age?: true
 }
 
 export type DepartmentsMinAggregateInputType = {
@@ -70,6 +87,9 @@ export type DepartmentsMinAggregateInputType = {
   name?: true
   code?: true
   description?: true
+  min_age?: true
+  max_age?: true
+  allowed_gender?: true
 }
 
 export type DepartmentsMaxAggregateInputType = {
@@ -77,6 +97,9 @@ export type DepartmentsMaxAggregateInputType = {
   name?: true
   code?: true
   description?: true
+  min_age?: true
+  max_age?: true
+  allowed_gender?: true
 }
 
 export type DepartmentsCountAggregateInputType = {
@@ -84,6 +107,9 @@ export type DepartmentsCountAggregateInputType = {
   name?: true
   code?: true
   description?: true
+  min_age?: true
+  max_age?: true
+  allowed_gender?: true
   _all?: true
 }
 
@@ -178,6 +204,9 @@ export type DepartmentsGroupByOutputType = {
   name: string
   code: string
   description: string
+  min_age: number | null
+  max_age: number | null
+  allowed_gender: $Enums.Gender | null
   _count: DepartmentsCountAggregateOutputType | null
   _avg: DepartmentsAvgAggregateOutputType | null
   _sum: DepartmentsSumAggregateOutputType | null
@@ -208,6 +237,9 @@ export type departmentsWhereInput = {
   name?: Prisma.StringFilter<"departments"> | string
   code?: Prisma.StringFilter<"departments"> | string
   description?: Prisma.StringFilter<"departments"> | string
+  min_age?: Prisma.IntNullableFilter<"departments"> | number | null
+  max_age?: Prisma.IntNullableFilter<"departments"> | number | null
+  allowed_gender?: Prisma.EnumGenderNullableFilter<"departments"> | $Enums.Gender | null
   schedules?: Prisma.Department_scheduleListRelationFilter
   appointments?: Prisma.AppointmentsListRelationFilter
 }
@@ -217,6 +249,9 @@ export type departmentsOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  min_age?: Prisma.SortOrderInput | Prisma.SortOrder
+  max_age?: Prisma.SortOrderInput | Prisma.SortOrder
+  allowed_gender?: Prisma.SortOrderInput | Prisma.SortOrder
   schedules?: Prisma.department_scheduleOrderByRelationAggregateInput
   appointments?: Prisma.appointmentsOrderByRelationAggregateInput
   _relevance?: Prisma.departmentsOrderByRelevanceInput
@@ -230,6 +265,9 @@ export type departmentsWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.departmentsWhereInput | Prisma.departmentsWhereInput[]
   code?: Prisma.StringFilter<"departments"> | string
   description?: Prisma.StringFilter<"departments"> | string
+  min_age?: Prisma.IntNullableFilter<"departments"> | number | null
+  max_age?: Prisma.IntNullableFilter<"departments"> | number | null
+  allowed_gender?: Prisma.EnumGenderNullableFilter<"departments"> | $Enums.Gender | null
   schedules?: Prisma.Department_scheduleListRelationFilter
   appointments?: Prisma.AppointmentsListRelationFilter
 }, "id" | "name">
@@ -239,6 +277,9 @@ export type departmentsOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  min_age?: Prisma.SortOrderInput | Prisma.SortOrder
+  max_age?: Prisma.SortOrderInput | Prisma.SortOrder
+  allowed_gender?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.departmentsCountOrderByAggregateInput
   _avg?: Prisma.departmentsAvgOrderByAggregateInput
   _max?: Prisma.departmentsMaxOrderByAggregateInput
@@ -254,12 +295,18 @@ export type departmentsScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"departments"> | string
   code?: Prisma.StringWithAggregatesFilter<"departments"> | string
   description?: Prisma.StringWithAggregatesFilter<"departments"> | string
+  min_age?: Prisma.IntNullableWithAggregatesFilter<"departments"> | number | null
+  max_age?: Prisma.IntNullableWithAggregatesFilter<"departments"> | number | null
+  allowed_gender?: Prisma.EnumGenderNullableWithAggregatesFilter<"departments"> | $Enums.Gender | null
 }
 
 export type departmentsCreateInput = {
   name: string
   code: string
   description: string
+  min_age?: number | null
+  max_age?: number | null
+  allowed_gender?: $Enums.Gender | null
   schedules?: Prisma.department_scheduleCreateNestedManyWithoutDepartmentInput
   appointments?: Prisma.appointmentsCreateNestedManyWithoutDepartmentInput
 }
@@ -269,6 +316,9 @@ export type departmentsUncheckedCreateInput = {
   name: string
   code: string
   description: string
+  min_age?: number | null
+  max_age?: number | null
+  allowed_gender?: $Enums.Gender | null
   schedules?: Prisma.department_scheduleUncheckedCreateNestedManyWithoutDepartmentInput
   appointments?: Prisma.appointmentsUncheckedCreateNestedManyWithoutDepartmentInput
 }
@@ -277,6 +327,9 @@ export type departmentsUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  min_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  max_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  allowed_gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   schedules?: Prisma.department_scheduleUpdateManyWithoutDepartmentNestedInput
   appointments?: Prisma.appointmentsUpdateManyWithoutDepartmentNestedInput
 }
@@ -286,6 +339,9 @@ export type departmentsUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  min_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  max_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  allowed_gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   schedules?: Prisma.department_scheduleUncheckedUpdateManyWithoutDepartmentNestedInput
   appointments?: Prisma.appointmentsUncheckedUpdateManyWithoutDepartmentNestedInput
 }
@@ -295,12 +351,18 @@ export type departmentsCreateManyInput = {
   name: string
   code: string
   description: string
+  min_age?: number | null
+  max_age?: number | null
+  allowed_gender?: $Enums.Gender | null
 }
 
 export type departmentsUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  min_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  max_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  allowed_gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
 }
 
 export type departmentsUncheckedUpdateManyInput = {
@@ -308,6 +370,9 @@ export type departmentsUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  min_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  max_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  allowed_gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
 }
 
 export type DepartmentsScalarRelationFilter = {
@@ -326,10 +391,15 @@ export type departmentsCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  min_age?: Prisma.SortOrder
+  max_age?: Prisma.SortOrder
+  allowed_gender?: Prisma.SortOrder
 }
 
 export type departmentsAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  min_age?: Prisma.SortOrder
+  max_age?: Prisma.SortOrder
 }
 
 export type departmentsMaxOrderByAggregateInput = {
@@ -337,6 +407,9 @@ export type departmentsMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  min_age?: Prisma.SortOrder
+  max_age?: Prisma.SortOrder
+  allowed_gender?: Prisma.SortOrder
 }
 
 export type departmentsMinOrderByAggregateInput = {
@@ -344,10 +417,15 @@ export type departmentsMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   code?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  min_age?: Prisma.SortOrder
+  max_age?: Prisma.SortOrder
+  allowed_gender?: Prisma.SortOrder
 }
 
 export type departmentsSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  min_age?: Prisma.SortOrder
+  max_age?: Prisma.SortOrder
 }
 
 export type departmentsCreateNestedOneWithoutAppointmentsInput = {
@@ -362,6 +440,10 @@ export type departmentsUpdateOneRequiredWithoutAppointmentsNestedInput = {
   upsert?: Prisma.departmentsUpsertWithoutAppointmentsInput
   connect?: Prisma.departmentsWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.departmentsUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.departmentsUpdateWithoutAppointmentsInput>, Prisma.departmentsUncheckedUpdateWithoutAppointmentsInput>
+}
+
+export type NullableEnumGenderFieldUpdateOperationsInput = {
+  set?: $Enums.Gender | null
 }
 
 export type departmentsCreateNestedOneWithoutSchedulesInput = {
@@ -382,6 +464,9 @@ export type departmentsCreateWithoutAppointmentsInput = {
   name: string
   code: string
   description: string
+  min_age?: number | null
+  max_age?: number | null
+  allowed_gender?: $Enums.Gender | null
   schedules?: Prisma.department_scheduleCreateNestedManyWithoutDepartmentInput
 }
 
@@ -390,6 +475,9 @@ export type departmentsUncheckedCreateWithoutAppointmentsInput = {
   name: string
   code: string
   description: string
+  min_age?: number | null
+  max_age?: number | null
+  allowed_gender?: $Enums.Gender | null
   schedules?: Prisma.department_scheduleUncheckedCreateNestedManyWithoutDepartmentInput
 }
 
@@ -413,6 +501,9 @@ export type departmentsUpdateWithoutAppointmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  min_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  max_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  allowed_gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   schedules?: Prisma.department_scheduleUpdateManyWithoutDepartmentNestedInput
 }
 
@@ -421,6 +512,9 @@ export type departmentsUncheckedUpdateWithoutAppointmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  min_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  max_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  allowed_gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   schedules?: Prisma.department_scheduleUncheckedUpdateManyWithoutDepartmentNestedInput
 }
 
@@ -428,6 +522,9 @@ export type departmentsCreateWithoutSchedulesInput = {
   name: string
   code: string
   description: string
+  min_age?: number | null
+  max_age?: number | null
+  allowed_gender?: $Enums.Gender | null
   appointments?: Prisma.appointmentsCreateNestedManyWithoutDepartmentInput
 }
 
@@ -436,6 +533,9 @@ export type departmentsUncheckedCreateWithoutSchedulesInput = {
   name: string
   code: string
   description: string
+  min_age?: number | null
+  max_age?: number | null
+  allowed_gender?: $Enums.Gender | null
   appointments?: Prisma.appointmentsUncheckedCreateNestedManyWithoutDepartmentInput
 }
 
@@ -459,6 +559,9 @@ export type departmentsUpdateWithoutSchedulesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  min_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  max_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  allowed_gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   appointments?: Prisma.appointmentsUpdateManyWithoutDepartmentNestedInput
 }
 
@@ -467,6 +570,9 @@ export type departmentsUncheckedUpdateWithoutSchedulesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.StringFieldUpdateOperationsInput | string
+  min_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  max_age?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  allowed_gender?: Prisma.NullableEnumGenderFieldUpdateOperationsInput | $Enums.Gender | null
   appointments?: Prisma.appointmentsUncheckedUpdateManyWithoutDepartmentNestedInput
 }
 
@@ -515,6 +621,9 @@ export type departmentsSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   name?: boolean
   code?: boolean
   description?: boolean
+  min_age?: boolean
+  max_age?: boolean
+  allowed_gender?: boolean
   schedules?: boolean | Prisma.departments$schedulesArgs<ExtArgs>
   appointments?: boolean | Prisma.departments$appointmentsArgs<ExtArgs>
   _count?: boolean | Prisma.DepartmentsCountOutputTypeDefaultArgs<ExtArgs>
@@ -527,9 +636,12 @@ export type departmentsSelectScalar = {
   name?: boolean
   code?: boolean
   description?: boolean
+  min_age?: boolean
+  max_age?: boolean
+  allowed_gender?: boolean
 }
 
-export type departmentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description", ExtArgs["result"]["departments"]>
+export type departmentsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "code" | "description" | "min_age" | "max_age" | "allowed_gender", ExtArgs["result"]["departments"]>
 export type departmentsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   schedules?: boolean | Prisma.departments$schedulesArgs<ExtArgs>
   appointments?: boolean | Prisma.departments$appointmentsArgs<ExtArgs>
@@ -547,6 +659,9 @@ export type $departmentsPayload<ExtArgs extends runtime.Types.Extensions.Interna
     name: string
     code: string
     description: string
+    min_age: number | null
+    max_age: number | null
+    allowed_gender: $Enums.Gender | null
   }, ExtArgs["result"]["departments"]>
   composites: {}
 }
@@ -922,6 +1037,9 @@ export interface departmentsFieldRefs {
   readonly name: Prisma.FieldRef<"departments", 'String'>
   readonly code: Prisma.FieldRef<"departments", 'String'>
   readonly description: Prisma.FieldRef<"departments", 'String'>
+  readonly min_age: Prisma.FieldRef<"departments", 'Int'>
+  readonly max_age: Prisma.FieldRef<"departments", 'Int'>
+  readonly allowed_gender: Prisma.FieldRef<"departments", 'Gender'>
 }
     
 

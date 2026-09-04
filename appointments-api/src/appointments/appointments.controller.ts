@@ -26,8 +26,14 @@ export class AppointmentsController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createAppointmentDto: CreateAppointmentDto) {
-    return this.appointmentsService.create(createAppointmentDto);
+  create(
+    @Body() createAppointmentDto: CreateAppointmentDto,
+    @Req() req: Request & { user: UserDto },
+  ) {
+    return this.appointmentsService.create(
+      createAppointmentDto,
+      req.user.access?.unli_appts || false,
+    );
   }
 
   @UseGuards(AuthGuard)

@@ -91,7 +91,8 @@ export const Access_rightsScalarFieldEnum = {
   can_manage_access: 'can_manage_access',
   can_manage_holidays: 'can_manage_holidays',
   can_manage_queue: 'can_manage_queue',
-  can_view_all_appts: 'can_view_all_appts'
+  can_view_all_appts: 'can_view_all_appts',
+  unli_appts: 'unli_appts'
 } as const
 
 export type Access_rightsScalarFieldEnum = (typeof Access_rightsScalarFieldEnum)[keyof typeof Access_rightsScalarFieldEnum]
@@ -139,7 +140,10 @@ export const DepartmentsScalarFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
-  description: 'description'
+  description: 'description',
+  min_age: 'min_age',
+  max_age: 'max_age',
+  allowed_gender: 'allowed_gender'
 } as const
 
 export type DepartmentsScalarFieldEnum = (typeof DepartmentsScalarFieldEnum)[keyof typeof DepartmentsScalarFieldEnum]

@@ -3,6 +3,9 @@ export interface Department {
     code: string;
     name: string;
     description: string;
+    min_age?: number;
+    max_age?: number;
+    allowed_gender?: string;
     schedules: DeptSchedule[];
 }
 

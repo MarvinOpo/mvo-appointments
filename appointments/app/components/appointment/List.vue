@@ -27,7 +27,8 @@
                     hide-details />
             </v-col>
         </v-row>
-        <v-data-table :headers="headers" :items="list" :loading="isLoading" class="mt-5" :search="search">
+        <v-data-table :headers="headers" :items="list" :loading="isLoading" class="mt-5" :row-props="getRowProps"
+            :search="search">
             <template v-slot:item.track="{ item }">
                 <v-btn @click="trackAppointment(item.id!, item.step!, item.type!, item.status!)" color="green"
                     prepend-icon="mdi-magnify" variant="tonal">Track</v-btn>
@@ -157,7 +158,8 @@ const filter = ref({
     fname: '',
     lname: '',
     type: null,
-    schedule: null
+    schedule: null,
+    since: moment()
 })
 
 const isLoading = ref(false);
@@ -202,8 +204,51 @@ const getData = async () => {
         return;
     }
 
-    list.value = data;
+    list.value = data.map((a: any) => ({ ...a, is_new: false }));
+
+    if (data.length) {
+        const newestCreatedAt = data.reduce((max: string, item: any) =>
+            item.created_at > max ? item.created_at : max, data[0].created_at);
+        filter.value.since = moment(newestCreatedAt);
+    }
+
     isLoading.value = false;
+}
+
+const getNewData = async () => {
+    const statusParam = props.status?.join(',');
+    let param = `?status=${statusParam}&since=${filter.value.since.format('YYYY-MM-DD HH:mm:ss')}`
+
+    const data = await fetchJsonData(`/appointments` + param, token.value);
+    if (data.error) {
+        isLoading.value = false;
+        return;
+    }
+
+    if (data.length) {
+        const newIds = new Set(data.map((item: { id: number }) => item.id));
+
+        list.value.push(...data.map((a: any) => ({ ...a, is_new: true })));
+        list.value.sort((a, b) => moment(a.scheduled_at).diff(moment(b.scheduled_at)));
+
+        const newestCreatedAt = data.reduce((max: string, item: any) =>
+            item.created_at > max ? item.created_at : max, data[0].created_at);
+        filter.value.since = moment(newestCreatedAt);
+
+        const msg = new SpeechSynthesisUtterance(
+            `${data.length} new appointment${data.length > 1 ? 's' : ''} awaiting approval.`
+        );
+        msg.lang = 'fil-PH';
+        msg.rate = 0.9;
+        speechSynthesis.speak(msg);
+
+        setTimeout(() => {
+            list.value.forEach(item => {
+                if (newIds.has(item.id)) item.is_new = false;
+            });
+        }, 60000);
+
+    }
 }
 
 const getDepartments = async () => {
@@ -211,6 +256,12 @@ const getDepartments = async () => {
     if (data.error) return;
 
     departments.list = data;
+}
+
+const getRowProps = ({ item }: { item: Appointment }) => {
+    return {
+        class: item.is_new ? 'bg-amber-lighten-5' : '',
+    }
 }
 
 const handleAppointmentApproval = (id: number) => {
@@ -255,13 +306,23 @@ const openDialogResched = (item: Appointment) => {
     dialog.resched.isVisible = true;
 };
 
-watch(() => props.status, () => {
+watch(() => props.status, (_, __, onCleanup) => {
     const isAutoFetch = props.status?.some(s => ACTIVE_STATUS.includes(s));
-    if (isAutoFetch) {
-        filter.value = { fname: '', lname: '', type: null, schedule: null };
-        getData();
-    } else list.value = [];
 
+    if (isAutoFetch) {
+        filter.value = { fname: '', lname: '', type: null, schedule: null, since: moment() };
+        getData();
+
+        if (props.status && props.status.includes('P') && import.meta.client) {
+            const intervalId = setInterval(() => {
+                getNewData();
+            }, 20000);
+
+            onCleanup(() => clearInterval(intervalId));
+        }
+    } else {
+        list.value = [];
+    }
 }, { immediate: true });
 
 onMounted(() => {

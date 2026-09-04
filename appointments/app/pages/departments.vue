@@ -20,6 +20,20 @@
                 <v-data-table :headers="departments.headers" :items="departments.list" :loading="departments.isLoading"
                     :search="departments.search">
 
+                    <template v-slot:item.min_age="{ item }">
+                        {{ item.min_age ?? 'N/A' }}
+                    </template>
+
+                    <template v-slot:item.max_age="{ item }">
+                        {{ item.max_age ?? 'N/A' }}
+                    </template>
+
+                    <template v-slot:item.allowed_gender="{ item }">
+                        {{
+                            !item.allowed_gender ? 'Both' : item.allowed_gender == 'M' ? 'Male Only' : 'Female Only'
+                        }}
+                    </template>
+
                     <template v-slot:item.options="{ item }">
                         <v-row justify="center">
                             <v-col cols="auto">
@@ -75,7 +89,10 @@ const departments = reactive({
         { title: '', align: 'center', key: 'track', sortable: false },
         { title: 'Name', align: 'start', key: 'name', sortable: false },
         { title: 'Code', align: 'start', key: 'code', sortable: false },
-        { title: 'Description', align: 'start', key: 'description', sortable: false },
+        { title: 'Description', align: 'start', key: 'description', sortable: false, width: "600" },
+        { title: 'Min Age', align: 'center', key: 'min_age', sortable: false },
+        { title: 'Max Age', align: 'center', key: 'max_age', sortable: false },
+        { title: 'Allowed Sex', align: 'center', key: 'allowed_gender', sortable: false },
         { title: 'Options', align: 'center', key: 'options', sortable: false, width: "200" },
     ],
     list: <Department[]>[],

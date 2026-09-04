@@ -44,6 +44,7 @@ export type Access_rightsMinAggregateOutputType = {
   can_manage_holidays: boolean | null
   can_manage_queue: boolean | null
   can_view_all_appts: boolean | null
+  unli_appts: boolean | null
 }
 
 export type Access_rightsMaxAggregateOutputType = {
@@ -56,6 +57,7 @@ export type Access_rightsMaxAggregateOutputType = {
   can_manage_holidays: boolean | null
   can_manage_queue: boolean | null
   can_view_all_appts: boolean | null
+  unli_appts: boolean | null
 }
 
 export type Access_rightsCountAggregateOutputType = {
@@ -68,6 +70,7 @@ export type Access_rightsCountAggregateOutputType = {
   can_manage_holidays: number
   can_manage_queue: number
   can_view_all_appts: number
+  unli_appts: number
   _all: number
 }
 
@@ -90,6 +93,7 @@ export type Access_rightsMinAggregateInputType = {
   can_manage_holidays?: true
   can_manage_queue?: true
   can_view_all_appts?: true
+  unli_appts?: true
 }
 
 export type Access_rightsMaxAggregateInputType = {
@@ -102,6 +106,7 @@ export type Access_rightsMaxAggregateInputType = {
   can_manage_holidays?: true
   can_manage_queue?: true
   can_view_all_appts?: true
+  unli_appts?: true
 }
 
 export type Access_rightsCountAggregateInputType = {
@@ -114,6 +119,7 @@ export type Access_rightsCountAggregateInputType = {
   can_manage_holidays?: true
   can_manage_queue?: true
   can_view_all_appts?: true
+  unli_appts?: true
   _all?: true
 }
 
@@ -213,6 +219,7 @@ export type Access_rightsGroupByOutputType = {
   can_manage_holidays: boolean
   can_manage_queue: boolean
   can_view_all_appts: boolean
+  unli_appts: boolean
   _count: Access_rightsCountAggregateOutputType | null
   _avg: Access_rightsAvgAggregateOutputType | null
   _sum: Access_rightsSumAggregateOutputType | null
@@ -248,6 +255,7 @@ export type access_rightsWhereInput = {
   can_manage_holidays?: Prisma.BoolFilter<"access_rights"> | boolean
   can_manage_queue?: Prisma.BoolFilter<"access_rights"> | boolean
   can_view_all_appts?: Prisma.BoolFilter<"access_rights"> | boolean
+  unli_appts?: Prisma.BoolFilter<"access_rights"> | boolean
   userAccesses?: Prisma.User_accessListRelationFilter
 }
 
@@ -261,6 +269,7 @@ export type access_rightsOrderByWithRelationInput = {
   can_manage_holidays?: Prisma.SortOrder
   can_manage_queue?: Prisma.SortOrder
   can_view_all_appts?: Prisma.SortOrder
+  unli_appts?: Prisma.SortOrder
   userAccesses?: Prisma.user_accessOrderByRelationAggregateInput
   _relevance?: Prisma.access_rightsOrderByRelevanceInput
 }
@@ -278,6 +287,7 @@ export type access_rightsWhereUniqueInput = Prisma.AtLeast<{
   can_manage_holidays?: Prisma.BoolFilter<"access_rights"> | boolean
   can_manage_queue?: Prisma.BoolFilter<"access_rights"> | boolean
   can_view_all_appts?: Prisma.BoolFilter<"access_rights"> | boolean
+  unli_appts?: Prisma.BoolFilter<"access_rights"> | boolean
   userAccesses?: Prisma.User_accessListRelationFilter
 }, "id">
 
@@ -291,6 +301,7 @@ export type access_rightsOrderByWithAggregationInput = {
   can_manage_holidays?: Prisma.SortOrder
   can_manage_queue?: Prisma.SortOrder
   can_view_all_appts?: Prisma.SortOrder
+  unli_appts?: Prisma.SortOrder
   _count?: Prisma.access_rightsCountOrderByAggregateInput
   _avg?: Prisma.access_rightsAvgOrderByAggregateInput
   _max?: Prisma.access_rightsMaxOrderByAggregateInput
@@ -311,6 +322,7 @@ export type access_rightsScalarWhereWithAggregatesInput = {
   can_manage_holidays?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
   can_manage_queue?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
   can_view_all_appts?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
+  unli_appts?: Prisma.BoolWithAggregatesFilter<"access_rights"> | boolean
 }
 
 export type access_rightsCreateInput = {
@@ -322,6 +334,7 @@ export type access_rightsCreateInput = {
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  unli_appts?: boolean
   userAccesses?: Prisma.user_accessCreateNestedManyWithoutAccessInput
 }
 
@@ -335,6 +348,7 @@ export type access_rightsUncheckedCreateInput = {
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  unli_appts?: boolean
   userAccesses?: Prisma.user_accessUncheckedCreateNestedManyWithoutAccessInput
 }
 
@@ -347,6 +361,7 @@ export type access_rightsUpdateInput = {
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unli_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAccesses?: Prisma.user_accessUpdateManyWithoutAccessNestedInput
 }
 
@@ -360,6 +375,7 @@ export type access_rightsUncheckedUpdateInput = {
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unli_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
   userAccesses?: Prisma.user_accessUncheckedUpdateManyWithoutAccessNestedInput
 }
 
@@ -373,6 +389,7 @@ export type access_rightsCreateManyInput = {
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  unli_appts?: boolean
 }
 
 export type access_rightsUpdateManyMutationInput = {
@@ -384,6 +401,7 @@ export type access_rightsUpdateManyMutationInput = {
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unli_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type access_rightsUncheckedUpdateManyInput = {
@@ -396,6 +414,7 @@ export type access_rightsUncheckedUpdateManyInput = {
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unli_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type access_rightsOrderByRelevanceInput = {
@@ -414,6 +433,7 @@ export type access_rightsCountOrderByAggregateInput = {
   can_manage_holidays?: Prisma.SortOrder
   can_manage_queue?: Prisma.SortOrder
   can_view_all_appts?: Prisma.SortOrder
+  unli_appts?: Prisma.SortOrder
 }
 
 export type access_rightsAvgOrderByAggregateInput = {
@@ -430,6 +450,7 @@ export type access_rightsMaxOrderByAggregateInput = {
   can_manage_holidays?: Prisma.SortOrder
   can_manage_queue?: Prisma.SortOrder
   can_view_all_appts?: Prisma.SortOrder
+  unli_appts?: Prisma.SortOrder
 }
 
 export type access_rightsMinOrderByAggregateInput = {
@@ -442,6 +463,7 @@ export type access_rightsMinOrderByAggregateInput = {
   can_manage_holidays?: Prisma.SortOrder
   can_manage_queue?: Prisma.SortOrder
   can_view_all_appts?: Prisma.SortOrder
+  unli_appts?: Prisma.SortOrder
 }
 
 export type access_rightsSumOrderByAggregateInput = {
@@ -492,6 +514,7 @@ export type access_rightsCreateWithoutUserAccessesInput = {
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  unli_appts?: boolean
 }
 
 export type access_rightsUncheckedCreateWithoutUserAccessesInput = {
@@ -504,6 +527,7 @@ export type access_rightsUncheckedCreateWithoutUserAccessesInput = {
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  unli_appts?: boolean
 }
 
 export type access_rightsCreateOrConnectWithoutUserAccessesInput = {
@@ -531,6 +555,7 @@ export type access_rightsUpdateWithoutUserAccessesInput = {
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unli_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type access_rightsUncheckedUpdateWithoutUserAccessesInput = {
@@ -543,6 +568,7 @@ export type access_rightsUncheckedUpdateWithoutUserAccessesInput = {
   can_manage_holidays?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_manage_queue?: Prisma.BoolFieldUpdateOperationsInput | boolean
   can_view_all_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  unli_appts?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 
@@ -586,6 +612,7 @@ export type access_rightsSelect<ExtArgs extends runtime.Types.Extensions.Interna
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  unli_appts?: boolean
   userAccesses?: boolean | Prisma.access_rights$userAccessesArgs<ExtArgs>
   _count?: boolean | Prisma.Access_rightsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["access_rights"]>
@@ -602,9 +629,10 @@ export type access_rightsSelectScalar = {
   can_manage_holidays?: boolean
   can_manage_queue?: boolean
   can_view_all_appts?: boolean
+  unli_appts?: boolean
 }
 
-export type access_rightsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "can_complete_appt" | "can_manage_appts" | "can_manage_departments" | "can_manage_access" | "can_manage_holidays" | "can_manage_queue" | "can_view_all_appts", ExtArgs["result"]["access_rights"]>
+export type access_rightsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "description" | "can_complete_appt" | "can_manage_appts" | "can_manage_departments" | "can_manage_access" | "can_manage_holidays" | "can_manage_queue" | "can_view_all_appts" | "unli_appts", ExtArgs["result"]["access_rights"]>
 export type access_rightsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   userAccesses?: boolean | Prisma.access_rights$userAccessesArgs<ExtArgs>
   _count?: boolean | Prisma.Access_rightsCountOutputTypeDefaultArgs<ExtArgs>
@@ -625,6 +653,7 @@ export type $access_rightsPayload<ExtArgs extends runtime.Types.Extensions.Inter
     can_manage_holidays: boolean
     can_manage_queue: boolean
     can_view_all_appts: boolean
+    unli_appts: boolean
   }, ExtArgs["result"]["access_rights"]>
   composites: {}
 }
@@ -1004,6 +1033,7 @@ export interface access_rightsFieldRefs {
   readonly can_manage_holidays: Prisma.FieldRef<"access_rights", 'Boolean'>
   readonly can_manage_queue: Prisma.FieldRef<"access_rights", 'Boolean'>
   readonly can_view_all_appts: Prisma.FieldRef<"access_rights", 'Boolean'>
+  readonly unli_appts: Prisma.FieldRef<"access_rights", 'Boolean'>
 }
     
 

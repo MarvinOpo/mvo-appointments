@@ -17,6 +17,7 @@ export interface Appointment {
     ai_soap_assisted: boolean;
     queue_no?: number | null;
     created_at: string | null;
+    is_new: boolean;
 
     department?: Department | null;
     patient?: AppointmentPatient | null;

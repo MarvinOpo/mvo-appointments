@@ -242,7 +242,8 @@ const defaultForm = (): AppointmentFormData => (
         assessment: null,
         plan: null,
         assessed_by: null,
-        ai_dept_matched: false
+        ai_dept_matched: false,
+        is_new: false
     }
 )
 
@@ -290,6 +291,8 @@ const typeSchedule = computed(() => {
         schedule => schedule.type === form.value.type
     )
 })
+
+const snackbar = useSnackbar();
 
 const availableSchedules = computed(() => {
     const days = typeSchedule.value?.days as string[] | undefined
@@ -390,9 +393,39 @@ const goToSchedule = async () => {
     const { valid } = await formInfo.value.validate();
     if (!valid) return;
 
+    const patientAge = getAge(selectedPatient.value!.birth_date);
+    const dept = selectedDepartment.value!;
+
+    let errorFlag = false;
+    let errorMsg = '';
+    if (dept.min_age != null && patientAge < dept.min_age) {
+        errorFlag = true;
+        errorMsg = `This department requires patients to be at least ${dept.min_age} years old.`;
+    }
+
+    if (dept.max_age != null && patientAge > dept.max_age) {
+        errorFlag = true;
+        errorMsg = `This department only accepts patients up to ${dept.max_age} years old.`;
+    }
+
+    if (dept.allowed_gender && selectedPatient.value!.sex !== dept.allowed_gender) {
+        errorFlag = true;
+        
+        const genderLabel = dept.allowed_gender === 'M' ? 'male' : 'female';
+        errorMsg = `This department only accepts ${genderLabel} patients.`;
+    }
+
+    if (errorFlag) {
+        snackbar.show({
+            message: errorMsg,
+            title: "Error",
+            type: "error",
+        })
+        return
+    }
+
     step.value = 2;
 };
-
 const checkAvailability = async () => {
     isLoadingSchedule.value = true;
 

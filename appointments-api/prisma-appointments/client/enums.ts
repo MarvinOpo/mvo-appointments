@@ -18,3 +18,11 @@ export const PriorityType = {
 } as const
 
 export type PriorityType = (typeof PriorityType)[keyof typeof PriorityType]
+
+
+export const Gender = {
+  M: 'M',
+  F: 'F'
+} as const
+
+export type Gender = (typeof Gender)[keyof typeof Gender]
